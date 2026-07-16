@@ -1,3 +1,5 @@
+
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -657,8 +659,9 @@
     #send-btn.active { background: var(--theme-color); color: #0F0F13; }
     #send-btn.stop-mode { background: #EF4444; color: #fff; }
 
-    /* ── Full Screen Engine Overlay ── */
-    #engine-overlay {
+    /* ── Full Screen Engine / Parameter Overlays ── */
+    #engine-overlay,
+    #parameters-overlay {
       position: fixed;
       top: 0; left: 0; width: 100vw; height: 100vh;
       background: rgba(7, 7, 10, 0.96);
@@ -671,7 +674,8 @@
       transition: opacity 0.25s ease;
       overflow-y: auto;
     }
-    #engine-overlay.visible {
+    #engine-overlay.visible,
+    #parameters-overlay.visible {
       opacity: 1;
       pointer-events: auto;
     }
@@ -693,7 +697,8 @@
     }
     .engine-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-auto-rows: 1fr;
       gap: 18px;
       width: 100%;
       max-width: 1100px;
@@ -708,6 +713,7 @@
       flex-direction: column;
       gap: 10px;
       min-height: 160px;
+      height: 100%;
       transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
       position: relative;
       overflow: hidden;
@@ -856,6 +862,281 @@
     }
     .config-btn:hover { background: var(--bg-hover); border-color: var(--theme-color); }
 
+    .model-parameters-panel {
+      max-width: 1040px;
+      gap: 20px;
+    }
+    .settings-section-title {
+      font-family: var(--font-display);
+      color: var(--text-primary);
+      font-size: 14px;
+      font-weight: 600;
+      letter-spacing: 0.2px;
+    }
+    .settings-section-sub {
+      color: var(--text-muted);
+      font-size: 12px;
+      margin-top: -2px;
+    }
+    .settings-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px 18px;
+    }
+    .parameter-card {
+      background: rgba(8, 9, 13, 0.56);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 14px;
+      min-width: 0;
+    }
+    .parameter-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+    .parameter-name {
+      color: var(--text-body);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .parameter-value {
+      color: var(--text-primary);
+      font-family: var(--font-mono);
+      font-size: 12px;
+      white-space: nowrap;
+    }
+    .parameter-hint {
+      color: var(--text-faint);
+      font-size: 11px;
+      margin-top: 8px;
+      line-height: 1.4;
+    }
+    .param-number {
+      width: 100%;
+      background: var(--bg-void);
+      border: 1px solid var(--border-lit);
+      border-radius: var(--radius-sm);
+      color: var(--text-body);
+      padding: 8px 10px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      outline: none;
+    }
+    .param-number:focus { border-color: var(--theme-color); }
+    .segmented-control {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .segment-btn,
+    .token-preset {
+      background: var(--bg-void);
+      border: 1px solid var(--border-lit);
+      border-radius: var(--radius-sm);
+      color: var(--text-muted);
+      min-height: 38px;
+      padding: 7px 8px;
+      font-family: var(--font-body);
+      font-size: 11px;
+      cursor: pointer;
+      transition: background var(--transition), color var(--transition), border-color var(--transition), box-shadow var(--transition);
+    }
+    .segment-btn:hover,
+    .token-preset:hover { border-color: var(--theme-color); color: var(--text-body); }
+    .segment-btn.active,
+    .token-preset.active {
+      color: #0F0F13;
+      background: var(--theme-color);
+      border-color: var(--theme-color);
+      box-shadow: 0 0 18px var(--theme-glow);
+    }
+    .token-preset:disabled {
+      opacity: 0.35;
+      cursor: not-allowed;
+    }
+    .token-preset small {
+      display: block;
+      font-family: var(--font-mono);
+      font-size: 9px;
+      opacity: 0.78;
+      margin-top: 2px;
+    }
+    .token-preset-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
+    }
+    .toggle-setting {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      background: rgba(8, 9, 13, 0.56);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-md);
+      padding: 13px 14px;
+    }
+    .toggle-copy { min-width: 0; }
+    .toggle-copy strong {
+      display: block;
+      color: var(--text-body);
+      font-size: 13px;
+      font-weight: 500;
+    }
+    .toggle-copy span {
+      display: block;
+      color: var(--text-faint);
+      font-size: 11px;
+      margin-top: 2px;
+    }
+    .switch {
+      position: relative;
+      width: 42px;
+      height: 23px;
+      flex-shrink: 0;
+    }
+    .switch input { opacity: 0; width: 0; height: 0; }
+    .switch-track {
+      position: absolute;
+      inset: 0;
+      cursor: pointer;
+      border-radius: 999px;
+      background: var(--bg-raised);
+      border: 1px solid var(--border-lit);
+      transition: background var(--transition), border-color var(--transition);
+    }
+    .switch-track::before {
+      content: "";
+      position: absolute;
+      width: 17px;
+      height: 17px;
+      left: 2px;
+      top: 2px;
+      border-radius: 50%;
+      background: var(--text-muted);
+      transition: transform var(--transition), background var(--transition);
+    }
+    .switch input:checked + .switch-track {
+      background: var(--theme-subtle);
+      border-color: var(--theme-color);
+    }
+    .switch input:checked + .switch-track::before {
+      transform: translateX(19px);
+      background: var(--theme-color);
+    }
+    .settings-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .settings-note {
+      color: var(--text-faint);
+      font-size: 11px;
+      line-height: 1.45;
+      max-width: 650px;
+    }
+    .input-meta {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-size: 10px;
+      white-space: nowrap;
+    }
+    .toolbar-right { display: flex; align-items: center; gap: 10px; }
+
+    .parameter-card.unsupported { opacity: 0.48; }
+    .parameter-card.unsupported::after {
+      content: "Not supported by this model";
+      display: block;
+      margin-top: 8px;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-size: 10px;
+    }
+    .parameter-card.unsupported input { cursor: not-allowed; }
+
+    .api-key-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 8px;
+      align-items: center;
+    }
+    .api-key-row .param-number { min-width: 0; }
+    .connection-state {
+      min-height: 18px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .connection-state.good { color: #4ADE80; }
+    .connection-state.bad { color: #F87171; }
+
+    .stream-plain {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    #scroll-latest {
+      position: sticky;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: none;
+      width: max-content;
+      margin: 0 auto;
+      padding: 7px 12px;
+      border: 1px solid var(--border-lit);
+      border-radius: 999px;
+      background: var(--black-glass-strong);
+      color: var(--text-body);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    #scroll-latest.visible { display: block; }
+    #scroll-latest:hover { border-color: var(--theme-color); color: var(--theme-color); }
+
+    #toast-stack {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      max-width: min(420px, calc(100vw - 36px));
+      padding: 10px 12px;
+      border: 1px solid var(--border-lit);
+      border-radius: var(--radius-sm);
+      background: var(--black-glass-strong);
+      color: var(--text-body);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      font-size: 12px;
+      animation: fadeSlideIn 0.18s ease;
+    }
+    .toast.error { border-color: #F87171; }
+    .toast.success { border-color: #4ADE80; }
+
+    @media (max-width: 700px) {
+      .api-key-row { grid-template-columns: minmax(0, 1fr) auto; }
+      .api-key-row #test-connection-btn { grid-column: 1 / -1; }
+      #toast-stack { right: 10px; bottom: 10px; }
+    }
+
     /* Overlay */
     #overlay {
       display: none;
@@ -865,6 +1146,11 @@
       z-index: 150;
     }
     #overlay.visible { display: block; }
+
+    @media (max-width: 950px) {
+      .engine-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .settings-grid { grid-template-columns: 1fr; }
+    }
 
     @media (max-width: 700px) {
       #sidebar { position: fixed; left: 0; top: 0; bottom: 0; transform: translateX(-100%); }
@@ -885,6 +1171,13 @@
 
       .msg-actions { opacity: 1; }
       .msg-action-btn { padding: 7px 12px; font-size: 12px; }
+      .engine-grid { grid-template-columns: 1fr; }
+      .segmented-control { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .token-preset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .topbar-actions { gap: 4px; }
+      .icon-btn { width: 30px; height: 30px; }
+      .engine-chip { display: none; }
+      .input-meta { display: none; }
     }
   /* Themed scrollbars */
   * {
@@ -909,7 +1202,7 @@
     <div class="sidebar-header">
       <img id="sidebar-image" src="orange.png" alt="Think Fox Engine" />
       <div class="sidebar-title-row">
-        <a class="wordmark" href="#"><span class="wordmark-text">Think&nbsp<span>Fox</span>&nbsp1.1</span></a>
+        <a class="wordmark" href="#"><span class="wordmark-text">Think&nbsp<span>Fox</span>&nbsp1-v0.2</span></a>
         <button class="new-chat-btn" id="new-chat-btn">+ New</button>
       </div>
     </div>
@@ -945,9 +1238,18 @@
             <path d="M8 2v8m0 0l-3-3m3 3l3-3M3 12v1a1 1 0 001 1h8a1 1 0 001-1v-1" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
-        <button class="icon-btn" id="config-toggle-btn" title="Think Fox Engine Family" aria-label="Settings">
+        <button class="icon-btn" id="parameters-toggle-btn" title="Model parameters" aria-label="Model parameters">
           <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-            <path d="M2 11h3m5 0h4M2 5h7m3 0h2M5 8v6M10 2v6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+            <path d="M3 3.5h10M3 8h10M3 12.5h10" stroke="currentColor" stroke-width="1.3" stroke-linecap="round"/>
+            <circle cx="6" cy="3.5" r="1.7" fill="var(--bg-void)" stroke="currentColor" stroke-width="1.3"/>
+            <circle cx="10.5" cy="8" r="1.7" fill="var(--bg-void)" stroke="currentColor" stroke-width="1.3"/>
+            <circle cx="7.5" cy="12.5" r="1.7" fill="var(--bg-void)" stroke="currentColor" stroke-width="1.3"/>
+          </svg>
+        </button>
+        <button class="icon-btn" id="config-toggle-btn" title="Select engine" aria-label="Select engine">
+          <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+            <path d="M2.5 5.5L8 2.5l5.5 3v5L8 13.5l-5.5-3v-5z" stroke="currentColor" stroke-width="1.35" stroke-linejoin="round"/>
+            <path d="M5.5 7.8L8 9.2l2.5-1.4M8 9.2v2.7" stroke="currentColor" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
           </svg>
         </button>
       </div>
@@ -955,7 +1257,7 @@
 
     <div id="chat-area">
       <div id="welcome">
-        <div class="welcome-title">Think&nbsp<span>Fox</span>&nbsp1.1</div>
+        <div class="welcome-title">Think&nbsp<span>Fox</span>&nbsp1-v0.2</div>
         <p class="welcome-sub" id="welcome-sub-text">Welcome to Katana, the Think Fox flagship engine.</p>
         <div class="starter-grid">
           <div class="starter-card" data-prompt="Write lyrics to a punk rock song about entropy, the lagrangian point and heat death of the universe.">Write song lyrics</div>
@@ -966,13 +1268,14 @@
           <div class="starter-card" data-prompt="List websites to assist with addictions to drugs and pornography.">Help Rob with his addictions</div>
         </div>
       </div>
+      <button id="scroll-latest" type="button">↓ Jump to latest</button>
     </div>
 
     <div id="input-zone">
       <div class="screenshot-input-wrap">
         <div id="image-preview-container"></div>
         <div class="input-resize-grip" id="input-grip" title="Drag up to enlarge"></div>
-        <textarea id="user-input" rows="1" maxlength="32768" placeholder="Send a message to the model..."></textarea>
+        <textarea id="user-input" rows="1" maxlength="1000000" placeholder="Send a message to the model..."></textarea>
         <div class="input-toolbar">
           <div class="toolbar-left">
             <button class="pill-btn" id="think-pill" data-effort="off">🧠 Think: Off</button>
@@ -981,7 +1284,10 @@
             <button class="pill-btn" id="upload-btn">📎 Image</button>
             <input type="file" id="file-input" accept="image/*" multiple hidden />
           </div>
-          <button id="send-btn" disabled>➤</button>
+          <div class="toolbar-right">
+            <span class="input-meta" id="input-char-count">0 / 1,000,000 chars · ≈0 tokens</span>
+            <button id="send-btn" disabled>➤</button>
+          </div>
         </div>
       </div>
     </div>
@@ -989,11 +1295,12 @@
 </div>
 
 <div id="overlay"></div>
+<div id="toast-stack" aria-live="polite" aria-atomic="true"></div>
 
-<div id="engine-overlay" role="dialog" aria-label="Think Fox Engine Family">
+<div id="engine-overlay" role="dialog" aria-modal="true" aria-label="Think Fox Engine Family">
   <div class="overlay-header">
-    <span class="config-title" style="font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--text-primary);">Think Fox Engine Family</span>
-    <button class="icon-btn" id="engine-close-btn" aria-label="Close">
+    <span class="config-title" style="font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--text-primary);">Select Think Fox Engine</span>
+    <button class="icon-btn" id="engine-close-btn" aria-label="Close engine selector">
       <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
         <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
       </svg>
@@ -1001,16 +1308,155 @@
   </div>
   <div class="overlay-body">
     <div class="engine-grid" id="engine-container"></div>
-    <div class="overlay-settings">
+  </div>
+</div>
+
+<div id="parameters-overlay" role="dialog" aria-modal="true" aria-label="Model parameters">
+  <div class="overlay-header">
+    <span class="config-title" style="font-family: var(--font-display); font-size: 18px; font-weight: 600; color: var(--text-primary);">Model Parameters · <span id="parameters-engine-name">Katana</span></span>
+    <button class="icon-btn" id="parameters-close-btn" aria-label="Close model parameters">
+      <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+        <path d="M1 1l12 12M13 1L1 13" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/>
+      </svg>
+    </button>
+  </div>
+  <div class="overlay-body">
+    <div class="overlay-settings model-parameters-panel">
       <div class="config-setting-group">
-        <label class="config-label">Engine Override</label>
-        <textarea class="config-textarea" id="system-prompt-override" placeholder="..."></textarea>
-        <button class="config-btn" id="reset-prompt-btn">Reset to Default</button>
+        <div class="settings-section-title">OpenRouter connection</div>
+        <div class="settings-section-sub">The key is stored only in this browser. For any public deployment, use a server-side proxy instead of exposing a key in HTML.</div>
+        <div class="api-key-row">
+          <input type="password" class="param-number" id="api-key-input" autocomplete="off" spellcheck="false" placeholder="sk-or-v1-…" aria-label="OpenRouter API key" />
+          <button class="config-btn" id="reveal-api-key-btn" type="button">Show</button>
+          <button class="config-btn" id="test-connection-btn" type="button">Test connection</button>
+        </div>
+        <div class="connection-state" id="connection-state">No connection test yet.</div>
       </div>
+
       <div class="config-divider"></div>
       <div class="config-setting-group">
-        <label class="config-label">Temperature: <span id="temp-value">0.7</span></label>
-        <input type="range" class="config-slider" id="temp-slider" min="0" max="2" step="0.1" value="0.7" />
+        <div class="settings-section-title">Engine Override</div>
+        <div class="settings-section-sub">Give the selected engine extra instructions or replace its default personality.</div>
+        <textarea class="config-textarea" id="system-prompt-override" placeholder="Give this engine specific instructions..."></textarea>
+        <button class="config-btn" id="reset-prompt-btn">Reset Engine Override</button>
+      </div>
+
+      <div class="config-divider"></div>
+      <div>
+        <div class="settings-section-title">Sampling</div>
+        <div class="settings-section-sub">Fine-tune how the model selects and repeats tokens. Unsupported parameters are safely ignored by OpenRouter.</div>
+      </div>
+      <div class="settings-grid">
+        <div class="parameter-card">
+          <div class="parameter-head"><span class="parameter-name">Temperature</span><span class="parameter-value" id="temp-value">0.70</span></div>
+          <input type="range" class="config-slider" id="temp-slider" min="0" max="2" step="0.05" value="0.7" />
+          <div class="parameter-hint">Lower is steadier; higher is more varied.</div>
+        </div>
+        <div class="parameter-card">
+          <div class="parameter-head"><span class="parameter-name">Top P</span><span class="parameter-value" id="top-p-value">1.00</span></div>
+          <input type="range" class="config-slider" id="top-p-slider" min="0.01" max="1" step="0.01" value="1" />
+          <div class="parameter-hint">Limits selection to the most likely cumulative probability mass.</div>
+        </div>
+        <div class="parameter-card">
+          <div class="parameter-head"><span class="parameter-name">Top K</span><span class="parameter-value">0 = disabled</span></div>
+          <input type="number" class="param-number" id="top-k-input" min="0" max="1000" step="1" value="0" />
+          <div class="parameter-hint">Restricts each token choice to the K most likely options.</div>
+        </div>
+        <div class="parameter-card">
+          <div class="parameter-head"><span class="parameter-name">Seed</span><span class="parameter-value">blank = random</span></div>
+          <input type="number" class="param-number" id="seed-input" step="1" placeholder="Random" />
+          <div class="parameter-hint">Use the same integer for more repeatable results where supported.</div>
+        </div>
+        <div class="parameter-card">
+          <div class="parameter-head"><span class="parameter-name">Frequency penalty</span><span class="parameter-value" id="frequency-value">0.00</span></div>
+          <input type="range" class="config-slider" id="frequency-slider" min="-2" max="2" step="0.05" value="0" />
+          <div class="parameter-hint">Penalises tokens in proportion to how often they have appeared.</div>
+        </div>
+        <div class="parameter-card">
+          <div class="parameter-head"><span class="parameter-name">Presence penalty</span><span class="parameter-value" id="presence-value">0.00</span></div>
+          <input type="range" class="config-slider" id="presence-slider" min="-2" max="2" step="0.05" value="0" />
+          <div class="parameter-hint">Encourages the model to introduce new topics or wording.</div>
+        </div>
+        <div class="parameter-card">
+          <div class="parameter-head"><span class="parameter-name">Repetition penalty</span><span class="parameter-value" id="repetition-value">1.00</span></div>
+          <input type="range" class="config-slider" id="repetition-slider" min="0.01" max="2" step="0.01" value="1" />
+          <div class="parameter-hint">1.00 is neutral; higher values discourage repetition.</div>
+        </div>
+      </div>
+
+      <div class="config-divider"></div>
+      <div>
+        <div class="settings-section-title">Reasoning effort</div>
+        <div class="settings-section-sub">The gateway maps these levels to each model's supported reasoning system.</div>
+      </div>
+      <div class="segmented-control" id="reasoning-effort-control">
+        <button class="segment-btn" data-reasoning-effort="off">Off</button>
+        <button class="segment-btn" data-reasoning-effort="minimal">Minimal</button>
+        <button class="segment-btn" data-reasoning-effort="low">Low</button>
+        <button class="segment-btn" data-reasoning-effort="medium">Medium</button>
+        <button class="segment-btn" data-reasoning-effort="high">High</button>
+        <button class="segment-btn" data-reasoning-effort="xhigh">X-High</button>
+      </div>
+      <div class="toggle-setting">
+        <div class="toggle-copy">
+          <strong>Include reasoning in stream</strong>
+          <span>When disabled, the model can still reason internally but the reasoning trace is excluded.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="include-reasoning-toggle" checked />
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="config-divider"></div>
+      <div>
+        <div class="settings-section-title">Max output tokens</div>
+        <div class="settings-section-sub" id="max-token-capability">Dynamic model limit will be used.</div>
+      </div>
+      <div class="token-preset-grid" id="token-preset-grid">
+        <button class="token-preset" data-max-tokens="1024">Short<small>1k</small></button>
+        <button class="token-preset" data-max-tokens="4096">Normal<small>4k</small></button>
+        <button class="token-preset" data-max-tokens="16384">Long<small>16k</small></button>
+        <button class="token-preset" data-max-tokens="32768">Very long<small>32k</small></button>
+        <button class="token-preset" data-max-tokens="65536">Huge<small>66k</small></button>
+        <button class="token-preset" data-max-tokens="131072">Extreme<small>131k</small></button>
+        <button class="token-preset" data-max-tokens="dynamic">Max Possible<small>live limit</small></button>
+      </div>
+      <div class="parameter-card">
+        <div class="parameter-head"><span class="parameter-name">Custom output limit</span><span class="parameter-value">tokens</span></div>
+        <input type="number" class="param-number" id="max-tokens-input" min="256" max="262144" step="256" />
+        <div class="parameter-hint" id="effective-token-note">The final request is automatically clamped to the model context and current prompt size.</div>
+      </div>
+
+      <div class="config-divider"></div>
+      <div>
+        <div class="settings-section-title">Reliability</div>
+        <div class="settings-section-sub">Keep long chats inside the selected model's live context window and recover from temporary gateway failures.</div>
+      </div>
+      <div class="toggle-setting">
+        <div class="toggle-copy">
+          <strong>Adaptive context management</strong>
+          <span>Trims only older API context when needed; the saved conversation remains intact.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="adaptive-context-toggle" checked />
+          <span class="switch-track"></span>
+        </label>
+      </div>
+      <div class="toggle-setting">
+        <div class="toggle-copy">
+          <strong>Retry temporary failures</strong>
+          <span>Retries rate limits, timeouts, and 5xx gateway errors before showing a final error.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="retry-transient-toggle" checked />
+          <span class="switch-track"></span>
+        </label>
+      </div>
+
+      <div class="settings-footer">
+        <div class="settings-note">Settings are stored separately for each Think Fox engine. Some providers ignore unsupported sampling controls rather than returning an error.</div>
+        <button class="config-btn" id="reset-all-parameters-btn">Reset All Parameters</button>
       </div>
     </div>
   </div>
@@ -1021,10 +1467,29 @@
 //  OPENROUTER SETUP (sshhhhh)
 // ============================================================================
 const BACKEND_HOST = "https://openrouter.ai/api/v1";
-const API_KEY = " [API goes here] ";
+const API_KEY_STORAGE = "thinkfox_openrouter_api_key";
+const APP_SETTINGS_STORAGE = "thinkfox_app_settings";
+const MODEL_CAP_CACHE_STORAGE = "thinkfox_model_capabilities_v2";
+const MODEL_CAP_CACHE_MS = 6 * 60 * 60 * 1000;
+const HARD_MAX_OUTPUT_TOKENS = 262144;
+const DEFAULT_CONTEXT_TOKENS = 131072;
+const CONTEXT_SAFETY_TOKENS = 1024;
+const CHARS_PER_TOKEN_ESTIMATE = 3.2;
 
-const OPENROUTER_REFERER = "https://thinkfox.local";
-const OPENROUTER_TITLE   = "Think Fox";
+const OPENROUTER_REFERER = location.protocol === 'http:' || location.protocol === 'https:'
+  ? location.origin
+  : "https://thinkfox.local";
+const OPENROUTER_TITLE = "Think Fox";
+
+let apiKey = '';
+let appSettings = { adaptiveContext: true, retryTransient: true };
+try { apiKey = localStorage.getItem(API_KEY_STORAGE) || ''; } catch {}
+try { appSettings = { ...appSettings, ...JSON.parse(localStorage.getItem(APP_SETTINGS_STORAGE) || '{}') }; } catch {}
+
+function getApiKey() { return apiKey.trim(); }
+function saveAppSettings() {
+  try { localStorage.setItem(APP_SETTINGS_STORAGE, JSON.stringify(appSettings)); } catch {}
+}
 
 // ============================================================================
 //  BOUNDED SYSTEM PROMPTS
@@ -1057,7 +1522,7 @@ const ENGINES = {
   katana: {
     key: "katana", name: "Katana", label: "Katana", version: "Engine: kimi-k2.6",
     model: "moonshotai/kimi-k2.6",
-    system: PROMPT_KATANA, temp: 0.7, maxTokens: 32768, available: true,
+    system: PROMPT_KATANA, temp: 0.7, maxTokens: 131072, available: true,
     color: "#FF5500", colorRGB: "255,85,0", dim: "#B33B00",
     glow: "rgba(255,85,0,0.21)", subtle: "rgba(255,85,0,0.09)",
     img: "avatars/white-mango.webp",
@@ -1067,7 +1532,7 @@ const ENGINES = {
   cinder: {
     key: "cinder", name: "Cinder", label: "Cinder", version: "Engine: minimax-m3",
     model: "minimax/minimax-m3",
-    system: PROMPT_CINDER, temp: 0.85, maxTokens: 32768, available: true,
+    system: PROMPT_CINDER, temp: 0.85, maxTokens: 131072, available: true,
     color: "#FF1493", colorRGB: "255,20,147", dim: "#B30F66",
     glow: "rgba(255,20,147,0.21)", subtle: "rgba(255,20,147,0.09)",
     img: "avatars/pink.webp",
@@ -1077,7 +1542,7 @@ const ENGINES = {
   scythe: {
     key: "scythe", name: "Scythe", label: "Scythe", version: "Engine: qwen3.7-max",
     model: "qwen/qwen3.7-max",
-    system: PROMPT_SCYTHE, temp: 0.5, maxTokens: 32768, available: true,
+    system: PROMPT_SCYTHE, temp: 0.5, maxTokens: 131072, available: true,
     color: "#FF0000", colorRGB: "255,0,0", dim: "#B30000",
     glow: "rgba(255,0,0,0.21)", subtle: "rgba(255,0,0,0.09)",
     img: "avatars/red.webp",
@@ -1087,7 +1552,7 @@ const ENGINES = {
   typhoon: {
     key: "typhoon", name: "Typhoon", label: "Typhoon", version: "Engine: deepseek-v4-pro",
     model: "deepseek/deepseek-v4-pro",
-    system: PROMPT_TYPHOON, temp: 0.4, maxTokens: 32768, available: true,
+    system: PROMPT_TYPHOON, temp: 0.4, maxTokens: 131072, available: true,
     color: "#0047AB", colorRGB: "0,71,171", dim: "#003076",
     glow: "rgba(0,71,171,0.21)", subtle: "rgba(0,71,171,0.09)",
     img: "avatars/blue.webp",
@@ -1097,7 +1562,7 @@ const ENGINES = {
   tempest: {
     key: "tempest", name: "Tempest", label: "Tempest", version: "Engine: glm-5.2",
     model: "z-ai/glm-5.2",
-    system: PROMPT_TEMPEST, temp: 0.5, maxTokens: 32768, available: true,
+    system: PROMPT_TEMPEST, temp: 0.5, maxTokens: 131072, available: true,
     color: "#E5E4E2", colorRGB: "229,228,226", dim: "#A0A09E",
     glow: "rgba(229,228,226,0.21)", subtle: "rgba(229,228,226,0.09)",
     img: "avatars/silver.webp",
@@ -1107,7 +1572,7 @@ const ENGINES = {
   orbit: {
     key: "orbit", name: "Orbit", label: "Orbit", version: "Engine: claude-opus-4.8",
     model: "anthropic/claude-opus-4.8",
-    system: PROMPT_ORBIT, temp: 0.7, maxTokens: 16384, available: true,
+    system: PROMPT_ORBIT, temp: 0.7, maxTokens: 131072, available: true,
     color: "#FFD700", colorRGB: "255,215,0", dim: "#B39700",
     glow: "rgba(255,215,0,0.21)", subtle: "rgba(255,215,0,0.09)",
     img: "avatars/golden-yellow.webp",
@@ -1117,7 +1582,7 @@ const ENGINES = {
   glaive: {
     key: "glaive", name: "Glaive", label: "Glaive", version: "Engine: hy3-preview",
     model: "tencent/hy3-preview",
-    system: PROMPT_GLAIVE, temp: 0.7, maxTokens: 32000, available: true,
+    system: PROMPT_GLAIVE, temp: 0.7, maxTokens: 131072, available: true,
     color: "#00FFFF", colorRGB: "0,255,255", dim: "#00B3B3",
     glow: "rgba(0,255,255,0.21)", subtle: "rgba(0,255,255,0.09)",
     img: "avatars/aqua.webp",
@@ -1127,7 +1592,7 @@ const ENGINES = {
   neon: {
     key: "neon", name: "Neon", label: "Neon", version: "Engine: nemotron-3-ultra",
     model: "nvidia/nemotron-3-ultra-550b-a55b",
-    system: PROMPT_NEON, temp: 0.6, maxTokens: 32000, available: true,
+    system: PROMPT_NEON, temp: 0.6, maxTokens: 131072, available: true,
     color: "#39FF14", colorRGB: "57,255,20", dim: "#28B30D",
     glow: "rgba(57,255,20,0.21)", subtle: "rgba(57,255,20,0.09)",
     img: "avatars/lime-green.webp",
@@ -1137,7 +1602,7 @@ const ENGINES = {
   monolith: {
     key: "monolith", name: "Monolith", label: "Monolith", version: "Engine: mistral-large-2512",
     model: "mistralai/mistral-large-2512",
-    system: PROMPT_MONOLITH, temp: 0.6, maxTokens: 32000, available: true,
+    system: PROMPT_MONOLITH, temp: 0.6, maxTokens: 131072, available: true,
     color: "#5D00B3", colorRGB: "93,0,179", dim: "#41007A",
     glow: "rgba(93,0,179,0.21)", subtle: "rgba(93,0,179,0.09)",
     img: "avatars/purple.webp",
@@ -1151,35 +1616,220 @@ const ENGINE_ORDER = ["katana", "cinder", "scythe", "typhoon", "tempest", "orbit
 let activeEngine = "katana";
 function engine() { return ENGINES[activeEngine]; }
 
-// ------------------------ Overrides (persisted) ------------------------
+// ------------------------ Per-engine overrides and model parameters ------------------------
+const PARAM_DEFAULTS = Object.freeze({
+  topP: 1,
+  topK: 0,
+  frequencyPenalty: 0,
+  presencePenalty: 0,
+  repetitionPenalty: 1,
+  seed: null,
+  reasoningEffort: 'off',
+  includeReasoning: true,
+  maxTokens: null // null means use the detected/configured maximum for this engine
+});
+
 let promptOverrides = {};
-let tempOverrides = {};
+let modelParamOverrides = {};
+let modelCapabilities = {};
 try { promptOverrides = JSON.parse(localStorage.getItem('thinkfox_prompt_overrides') || '{}'); } catch {}
-try { tempOverrides = JSON.parse(localStorage.getItem('thinkfox_temp_overrides') || '{}'); } catch {}
+try { modelParamOverrides = JSON.parse(localStorage.getItem('thinkfox_model_parameter_overrides') || '{}'); } catch {}
+try {
+  const cached = JSON.parse(localStorage.getItem(MODEL_CAP_CACHE_STORAGE) || 'null');
+  if (cached && Date.now() - cached.savedAt < MODEL_CAP_CACHE_MS && cached.models) modelCapabilities = cached.models;
+} catch {}
+
+// Migrate temperature settings from the earlier single-slider format.
+try {
+  const legacyTemps = JSON.parse(localStorage.getItem('thinkfox_temp_overrides') || '{}');
+  Object.entries(legacyTemps).forEach(([key, value]) => {
+    if (!modelParamOverrides[key]) modelParamOverrides[key] = {};
+    if (modelParamOverrides[key].temperature === undefined) modelParamOverrides[key].temperature = value;
+  });
+} catch {}
 
 function saveOverrides() {
   try {
     localStorage.setItem('thinkfox_prompt_overrides', JSON.stringify(promptOverrides));
-    localStorage.setItem('thinkfox_temp_overrides', JSON.stringify(tempOverrides));
+    localStorage.setItem('thinkfox_model_parameter_overrides', JSON.stringify(modelParamOverrides));
+    localStorage.removeItem('thinkfox_temp_overrides');
   } catch {}
 }
-function getSystemPrompt() { return promptOverrides[activeEngine] || ENGINES[activeEngine].system; }
-function getTemperature() { return tempOverrides[activeEngine] !== undefined ? tempOverrides[activeEngine] : ENGINES[activeEngine].temp; }
 
+function getModelCaps(eng = engine()) {
+  return modelCapabilities[eng.model] || null;
+}
+
+function getContextLength(eng = engine()) {
+  const caps = getModelCaps(eng) || {};
+  const value = Number(caps?.top_provider?.context_length || caps?.context_length || DEFAULT_CONTEXT_TOKENS);
+  return Math.max(4096, Math.floor(Number.isFinite(value) ? value : DEFAULT_CONTEXT_TOKENS));
+}
+
+function getProviderMaxOutput(eng = engine()) {
+  const caps = getModelCaps(eng) || {};
+  const providerMax = Number(caps?.top_provider?.max_completion_tokens || caps?.max_completion_tokens || 0);
+  return providerMax > 0 ? Math.floor(providerMax) : 0;
+}
+
+function getDynamicMaxTokens(eng = engine()) {
+  const contextLength = getContextLength(eng);
+  const providerMax = getProviderMaxOutput(eng);
+  const fallback = Math.max(8192, Number(eng.maxTokens) || 131072);
+  const contextBound = Math.max(256, contextLength - CONTEXT_SAFETY_TOKENS);
+  return Math.max(256, Math.min(HARD_MAX_OUTPUT_TOKENS, providerMax || fallback, contextBound));
+}
+
+function getSupportedParameters(eng = engine()) {
+  const list = getModelCaps(eng)?.supported_parameters;
+  return Array.isArray(list) ? new Set(list) : null;
+}
+
+function supportsParameter(name, eng = engine()) {
+  const supported = getSupportedParameters(eng);
+  return !supported || supported.has(name);
+}
+
+function getModelParams() {
+  const eng = engine();
+  const overrides = modelParamOverrides[activeEngine] || {};
+  const dynamicMax = getDynamicMaxTokens(eng);
+  const requestedMax = overrides.maxTokens === null || overrides.maxTokens === undefined
+    ? dynamicMax
+    : Number(overrides.maxTokens);
+  return {
+    temperature: overrides.temperature ?? eng.temp ?? 0.7,
+    topP: overrides.topP ?? PARAM_DEFAULTS.topP,
+    topK: overrides.topK ?? PARAM_DEFAULTS.topK,
+    frequencyPenalty: overrides.frequencyPenalty ?? PARAM_DEFAULTS.frequencyPenalty,
+    presencePenalty: overrides.presencePenalty ?? PARAM_DEFAULTS.presencePenalty,
+    repetitionPenalty: overrides.repetitionPenalty ?? PARAM_DEFAULTS.repetitionPenalty,
+    seed: Number.isInteger(overrides.seed) ? overrides.seed : null,
+    reasoningEffort: overrides.reasoningEffort ?? PARAM_DEFAULTS.reasoningEffort,
+    includeReasoning: overrides.includeReasoning ?? PARAM_DEFAULTS.includeReasoning,
+    maxTokens: Math.max(256, Math.min(Number.isFinite(requestedMax) ? requestedMax : dynamicMax, HARD_MAX_OUTPUT_TOKENS)),
+    maxTokensMode: overrides.maxTokens === null || overrides.maxTokens === undefined ? 'dynamic' : 'custom',
+    dynamicMax,
+    contextLength: getContextLength(eng),
+    providerMaxOutput: getProviderMaxOutput(eng)
+  };
+}
+function setModelParam(name, value, defaultValue) {
+  if (!modelParamOverrides[activeEngine]) modelParamOverrides[activeEngine] = {};
+  if (value === defaultValue || value === undefined) delete modelParamOverrides[activeEngine][name];
+  else modelParamOverrides[activeEngine][name] = value;
+  if (!Object.keys(modelParamOverrides[activeEngine]).length) delete modelParamOverrides[activeEngine];
+  saveOverrides();
+}
+
+function getSystemPrompt() { return promptOverrides[activeEngine] || ENGINES[activeEngine].system; }
+function getTemperature() { return getModelParams().temperature; }
+
+function updateReasoningUI() {
+  const params = getModelParams();
+  const effort = params.reasoningEffort;
+  document.querySelectorAll('[data-reasoning-effort]').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.reasoningEffort === effort);
+  });
+  const pill = document.getElementById('think-pill');
+  if (pill) {
+    pill.dataset.effort = effort;
+    pill.textContent = '🧠 Think: ' + (THINK_LABELS[effort] || effort);
+    pill.classList.toggle('active', effort !== 'off');
+  }
+}
+
+function setParameterCardSupport(inputId, parameterName) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const known = Boolean(getSupportedParameters());
+  const supported = supportsParameter(parameterName);
+  const card = input.closest('.parameter-card');
+  if (card) card.classList.toggle('unsupported', known && !supported);
+  input.disabled = known && !supported;
+}
+
+function updateCapabilityUI() {
+  setParameterCardSupport('temp-slider', 'temperature');
+  setParameterCardSupport('top-p-slider', 'top_p');
+  setParameterCardSupport('top-k-input', 'top_k');
+  setParameterCardSupport('frequency-slider', 'frequency_penalty');
+  setParameterCardSupport('presence-slider', 'presence_penalty');
+  setParameterCardSupport('repetition-slider', 'repetition_penalty');
+  setParameterCardSupport('seed-input', 'seed');
+}
+
+function updateTokenPresetUI() {
+  const params = getModelParams();
+  const dynamicMax = params.dynamicMax;
+  const capability = document.getElementById('max-token-capability');
+  const capsKnown = Boolean(getModelCaps());
+  if (capability) {
+    const provider = params.providerMaxOutput ? ` · provider output cap ${params.providerMaxOutput.toLocaleString()}` : '';
+    const source = capsKnown ? 'live model data' : 'safe fallback';
+    capability.textContent = `${engine().name}: ${params.contextLength.toLocaleString()} context tokens${provider}. Max Possible currently uses ${dynamicMax.toLocaleString()} (${source}).`;
+  }
+  const input = document.getElementById('max-tokens-input');
+  if (input) {
+    input.max = String(HARD_MAX_OUTPUT_TOKENS);
+    input.value = String(params.maxTokens);
+  }
+  document.querySelectorAll('[data-max-tokens]').forEach(btn => {
+    const raw = btn.dataset.maxTokens;
+    const value = raw === 'dynamic' ? dynamicMax : Number(raw);
+    btn.disabled = raw !== 'dynamic' && value > dynamicMax;
+    const active = params.maxTokensMode === 'dynamic'
+      ? raw === 'dynamic'
+      : raw !== 'dynamic' && value === params.maxTokens;
+    btn.classList.toggle('active', active);
+  });
+  const note = document.getElementById('effective-token-note');
+  if (note) note.textContent = `Requested ${params.maxTokens.toLocaleString()} tokens. Each request is clamped to the live provider cap and the space left after the prompt.`;
+}
 function updateConfigSettings() {
   const eng = engine();
+  const params = getModelParams();
   const promptTA = document.getElementById('system-prompt-override');
-  const tempSlider = document.getElementById('temp-slider');
-  const tempValue = document.getElementById('temp-value');
+  const engineName = document.getElementById('parameters-engine-name');
+  if (engineName) engineName.textContent = eng.name;
   if (promptTA) {
     promptTA.value = promptOverrides[activeEngine] || '';
-     promptTA.placeholder = 'Give Think Fox specific instructions, change personality, change core rules or override guardrails.';
+    promptTA.placeholder = `Give ${eng.name} specific instructions, change personality, or override its default system prompt.`;
   }
-  if (tempSlider) {
-    const t = getTemperature();
-    tempSlider.value = t;
-    tempValue.textContent = t.toFixed(1);
-  }
+
+  const values = {
+    'temp-slider': params.temperature,
+    'top-p-slider': params.topP,
+    'top-k-input': params.topK,
+    'frequency-slider': params.frequencyPenalty,
+    'presence-slider': params.presencePenalty,
+    'repetition-slider': params.repetitionPenalty
+  };
+  Object.entries(values).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.value = String(value);
+  });
+
+  const seedInput = document.getElementById('seed-input');
+  if (seedInput) seedInput.value = params.seed === null ? '' : String(params.seed);
+  const reasoningToggle = document.getElementById('include-reasoning-toggle');
+  if (reasoningToggle) reasoningToggle.checked = params.includeReasoning;
+
+  const formatted = {
+    'temp-value': params.temperature.toFixed(2),
+    'top-p-value': params.topP.toFixed(2),
+    'frequency-value': params.frequencyPenalty.toFixed(2),
+    'presence-value': params.presencePenalty.toFixed(2),
+    'repetition-value': params.repetitionPenalty.toFixed(2)
+  };
+  Object.entries(formatted).forEach(([id, value]) => {
+    const el = document.getElementById(id);
+    if (el) el.textContent = value;
+  });
+
+  updateReasoningUI();
+  updateTokenPresetUI();
+  updateCapabilityUI();
 }
 
 // ------------------------ Themed placeholder banner ------------------------
@@ -1231,6 +1881,10 @@ function setEngine(key) {
   if (!ENGINES[key] || !ENGINES[key].available) return;
   abortInFlight();
   activeEngine = key;
+  if (currentSessionId && sessions[currentSessionId]) {
+    sessions[currentSessionId].engine = key;
+    saveSessions();
+  }
   applyEngineTheme(ENGINES[key]);
   renderEngineSelector();
   updateConfigSettings();
@@ -1276,13 +1930,14 @@ let isStreaming = false;
 let currentAbort = null;
 let storageWarned = false;
 
-const MAX_INPUT_CHARS = 500 * 1024;          // was 32K  → 500K characters (~125K tokens)
-const MAX_LOCALSTORAGE_BYTES = 4 * 1024 * 1024; // browser hard limit — can't change
-const MAX_MESSAGES_PER_SESSION = 1000;       // was 90   → 1,000 messages
-const MAX_MESSAGE_TEXT_CHARS = 200000;       // was 24K  → 200K chars per message
+const MAX_INPUT_CHARS = 1_000_000;           // up to roughly 250K tokens in one pasted message
+const MAX_LOCALSTORAGE_BYTES = 4 * 1024 * 1024; // localStorage browser limit; images remain in IndexedDB
+const MAX_MESSAGES_PER_SESSION = 1000;
+const MAX_MESSAGE_TEXT_CHARS = 1_000_000;    // do not truncate a permitted large input before it reaches the API
 const SESSION_TRIM_KEEP_HEAD = 2;
-const SESSION_TRIM_KEEP_TAIL = 500;          // was 64   → keep last 500
-const API_TEXT_BUDGET_CHARS = 1000000;       // was 180K → 1M chars (~250K tokens context)
+const SESSION_TRIM_KEEP_TAIL = 500;
+const MIN_PROMPT_ROOM_TOKENS = 4096;
+const IMAGE_TOKEN_ESTIMATE = 1800;
 
 const DB_NAME = 'thinkfox_store';
 const DB_VERSION = 1;
@@ -1307,7 +1962,7 @@ function estimateBytes(value) {
 
 function makeImageId(prefix) {
   const safePrefix = (prefix || 'img').replace(/[^a-z0-9_-]/gi, '').slice(0, 24) || 'img';
-  const rand = (crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '_' + Math.random().toString(36).slice(2));
+  const rand = window.crypto?.randomUUID ? window.crypto.randomUUID() : (Date.now() + '_' + Math.random().toString(36).slice(2));
   return `${safePrefix}_${rand}`;
 }
 
@@ -1499,34 +2154,58 @@ function cloneForStorage() {
   return clone;
 }
 
-function prepareMessagesForApi(messages) {
+function estimateTextTokens(text) {
+  return Math.max(0, Math.ceil(String(text || '').length / CHARS_PER_TOKEN_ESTIMATE));
+}
+
+function estimateStoredMessageTokens(message) {
+  return estimateTextTokens(message?.content || '')
+    + ((message?.imageIds?.length || message?.images?.length || 0) * IMAGE_TOKEN_ESTIMATE)
+    + 12;
+}
+
+function estimateApiMessageTokens(message) {
+  if (!message) return 0;
+  if (typeof message.content === 'string') return estimateTextTokens(message.content) + 12;
+  if (Array.isArray(message.content)) {
+    return message.content.reduce((sum, part) => {
+      if (part?.type === 'text') return sum + estimateTextTokens(part.text || '');
+      if (part?.type === 'image_url') return sum + IMAGE_TOKEN_ESTIMATE;
+      return sum + 32;
+    }, 12);
+  }
+  return 12;
+}
+
+function prepareMessagesForApi(messages, promptBudgetTokens = Infinity) {
+  if (!appSettings.adaptiveContext || !Number.isFinite(promptBudgetTokens)) return [...messages];
+
   const chosen = [];
   let used = 0;
   let omitted = 0;
 
   for (let i = messages.length - 1; i >= 0; i--) {
-    const m = messages[i];
-    const imageCost = (m.imageIds?.length || 0) * 12000;
-    const cost = (m.content || '').length + imageCost + 200;
-    if (used + cost > API_TEXT_BUDGET_CHARS && chosen.length >= 12) {
+    const message = messages[i];
+    const cost = estimateStoredMessageTokens(message);
+    const isLatest = i === messages.length - 1;
+    if (!isLatest && used + cost > promptBudgetTokens && chosen.length >= 4) {
       omitted++;
       continue;
     }
     used += cost;
-    chosen.unshift(m);
+    chosen.unshift(message);
   }
 
   if (omitted > 0) {
     chosen.unshift({
       role: 'system',
-      content: `[Think Fox context note: ${omitted} older message(s) were omitted from this API request to control session size. The saved conversation remains in browser storage unless separately compacted.]`
+      content: `[Think Fox context note: ${omitted} older message(s) were omitted from this API request to fit the model context. The complete conversation remains saved locally.]`
     });
   }
   return chosen;
 }
-
-async function buildApiMessagesFromSession(messages) {
-  const prepared = prepareMessagesForApi(messages);
+async function buildApiMessagesFromSession(messages, promptBudgetTokens = Infinity) {
+  const prepared = prepareMessagesForApi(messages, promptBudgetTokens);
   const out = [];
 
   for (const m of prepared) {
@@ -1568,9 +2247,20 @@ function sleep(ms, signal) {
   });
 }
 
+function retryDelayMs(response, attempt) {
+  const header = response?.headers?.get?.('retry-after');
+  if (header) {
+    const seconds = Number(header);
+    if (Number.isFinite(seconds)) return Math.min(30000, Math.max(250, seconds * 1000));
+    const date = Date.parse(header);
+    if (Number.isFinite(date)) return Math.min(30000, Math.max(250, date - Date.now()));
+  }
+  return Math.min(8000, 550 * Math.pow(2, attempt) + Math.random() * 250);
+}
+
 async function fetchWithRetry(url, options = {}, config = {}) {
-  const retries = config.retries ?? 2;
-  const timeoutMs = config.timeoutMs ?? 45000;
+  const retries = appSettings.retryTransient ? (config.retries ?? 2) : 0;
+  const timeoutMs = config.timeoutMs ?? 60000;
   const externalSignal = options.signal;
   const baseOptions = { ...options };
   delete baseOptions.signal;
@@ -1591,32 +2281,42 @@ async function fetchWithRetry(url, options = {}, config = {}) {
         controller.abort(new DOMException('Request timed out', 'TimeoutError'));
       }, timeoutMs);
 
-      const res = await fetch(url, { ...baseOptions, signal: controller.signal });
-      if (isTransientStatus(res.status) && attempt < retries) {
-        try { await res.body?.cancel(); } catch {}
-        await sleep(500 * Math.pow(2, attempt), externalSignal);
+      const response = await fetch(url, { ...baseOptions, signal: controller.signal });
+      if (isTransientStatus(response.status) && attempt < retries) {
+        const delay = retryDelayMs(response, attempt);
+        try { await response.body?.cancel(); } catch {}
+        await sleep(delay, externalSignal);
         continue;
       }
-      return res;
-    } catch (err) {
-      if (externalSignal?.aborted) throw err;
-      const transient = timedOut || err?.name === 'TimeoutError' || err?.name === 'AbortError' || err instanceof TypeError;
-      if (!transient || attempt >= retries) throw err;
-      await sleep(500 * Math.pow(2, attempt), externalSignal);
+      return response;
+    } catch (error) {
+      if (externalSignal?.aborted) throw error;
+      const transient = timedOut || error?.name === 'TimeoutError' || error?.name === 'AbortError' || error instanceof TypeError;
+      if (!transient || attempt >= retries) throw error;
+      await sleep(retryDelayMs(null, attempt), externalSignal);
     } finally {
       if (timer) clearTimeout(timer);
       if (externalSignal) externalSignal.removeEventListener('abort', abortFromExternal);
     }
   }
+  throw new Error('Request failed after retries.');
 }
-
 function enforceInputLimit(showAlert = false) {
   if (userInput.value.length <= MAX_INPUT_CHARS) return true;
   userInput.value = userInput.value.slice(0, MAX_INPUT_CHARS);
   autoResize();
   updateSendButton();
-  if (showAlert) alert(`Input capped at ${MAX_INPUT_CHARS.toLocaleString()} characters (32KB text).`);
+  if (showAlert) alert(`Input capped at ${MAX_INPUT_CHARS.toLocaleString()} characters.`);
+  updateInputCharCount();
   return false;
+}
+
+function updateInputCharCount() {
+  const el = document.getElementById('input-char-count');
+  if (!el) return;
+  const estimatedTokens = estimateTextTokens(userInput.value);
+  el.textContent = `${userInput.value.length.toLocaleString()} / ${MAX_INPUT_CHARS.toLocaleString()} chars · ≈${estimatedTokens.toLocaleString()} tokens`;
+  el.style.color = userInput.value.length > MAX_INPUT_CHARS * 0.9 ? 'var(--theme-color)' : '';
 }
 
 function startNewChat() {
@@ -1677,22 +2377,30 @@ function newSession() {
 }
 function currentMessages() { return (currentSessionId && sessions[currentSessionId]) ? sessions[currentSessionId].messages : []; }
 
-function addMessage(role, content, reasoning, images) {
-  if (!currentSessionId) newSession();
+function addMessage(role, content, reasoning, images, meta = {}) {
+  let targetSessionId = meta.sessionId || currentSessionId;
+  if (!targetSessionId) targetSessionId = newSession();
+  const targetSession = sessions[targetSessionId];
+  if (!targetSession) return null;
+
   const msg = { role, content };
+  if (role === 'assistant') msg.engine = meta.engine || activeEngine;
   if (reasoning) msg.reasoning = reasoning;
+  if (meta.finishReason) msg.finishReason = meta.finishReason;
+  if (meta.generationId) msg.generationId = meta.generationId;
 
   const imageIds = (images || []).map(getImageId).filter(Boolean);
   if (imageIds.length > 0) msg.imageIds = imageIds;
 
-  sessions[currentSessionId].messages.push(msg);
-  if (role === 'user' && sessions[currentSessionId].messages.filter(m => m.role === 'user').length === 1) {
+  targetSession.messages.push(msg);
+  if (role === 'user' && targetSession.messages.filter(m => m.role === 'user').length === 1) {
     const base = (content || '').trim() || (imageIds.length ? 'Image conversation' : 'New conversation');
     const title = base.slice(0, 50) + (base.length > 50 ? '…' : '');
-    sessions[currentSessionId].title = title;
-    setTopbarTitle(title);
+    targetSession.title = title;
+    if (targetSessionId === currentSessionId) setTopbarTitle(title);
   }
   saveSessions();
+  return msg;
 }
 function setTopbarTitle(title) {
   topbarTitle.textContent = 'Think Fox ';
@@ -1774,7 +2482,7 @@ function loadSession(id) {
   const sess = sessions[id];
   if (sess) {
     if (sess.engine && ENGINES[sess.engine] && ENGINES[sess.engine].available) setEngine(sess.engine);
-    sess.messages.forEach(m => appendMessageRow(m.role, m.content, m.reasoning, m.imageIds || m.images || []));
+    sess.messages.forEach(m => appendMessageRow(m.role, m.content, m.reasoning, m.imageIds || m.images || [], m.engine || sess.engine, m.finishReason));
     decorateMessages();
     setTopbarTitle(sess.title);
     updateUsageDisplay();
@@ -1787,12 +2495,15 @@ function clearChatArea() {
   welcomeEl.style.display = '';
 }
 
-function appendMessageRow(role, content, reasoning, images) {
+function appendMessageRow(role, content, reasoning, images, engineKey = activeEngine, finishReason = null) {
   welcomeEl.style.display = 'none';
   const row = document.createElement('div');
   row.className = 'message-row';
   row.dataset.role = role;
   if (content) row.dataset.raw = content;
+  if (engineKey) row.dataset.engine = engineKey;
+  if (finishReason) row.dataset.finishReason = finishReason;
+  const rowEngine = ENGINES[engineKey] || engine();
 
   const imageRefs = images || [];
   const imageIds = imageRefs.map(getImageId).filter(Boolean);
@@ -1801,11 +2512,17 @@ function appendMessageRow(role, content, reasoning, images) {
   const avatar = document.createElement('div');
   avatar.className = role === 'user' ? 'avatar avatar-user' : 'avatar avatar-fox';
   if (role === 'user') avatar.textContent = 'U';
-  else avatar.innerHTML = `<img src="${engine().img || 'fox_icon.png'}" alt="Think Fox" onerror="this.replaceWith(document.createTextNode('🦊'))" />`;
+  else {
+    const avatarImg = document.createElement('img');
+    avatarImg.src = rowEngine.img || 'fox_icon.png';
+    avatarImg.alt = 'Think Fox';
+    avatarImg.addEventListener('error', () => avatarImg.replaceWith(document.createTextNode('🦊')), { once: true });
+    avatar.appendChild(avatarImg);
+  }
 
   const sender = document.createElement('div');
   sender.className = `message-sender ${role === 'user' ? 'user' : 'fox'}`;
-  sender.textContent = role === 'user' ? 'You' : engine().name;
+  sender.textContent = role === 'user' ? 'You' : rowEngine.name;
 
   const body = document.createElement('div');
   body.className = 'message-body';
@@ -1839,7 +2556,7 @@ function appendMessageRow(role, content, reasoning, images) {
   contentDiv.appendChild(body);
   row.appendChild(avatar);
   row.appendChild(contentDiv);
-  chatArea.appendChild(row);
+  chatArea.insertBefore(row, document.getElementById('scroll-latest'));
   return body;
 }
 // ------------------------ Export conversation ------------------------
@@ -1861,6 +2578,9 @@ function exportSession(id, format = 'markdown') {
         role: m.role,
         content: m.content || '',
         ...(m.reasoning ? { reasoning: m.reasoning } : {}),
+        ...(m.engine ? { engine: m.engine } : {}),
+        ...(m.finishReason ? { finishReason: m.finishReason } : {}),
+        ...(m.generationId ? { generationId: m.generationId } : {}),
         ...(m.imageIds?.length ? { imageIds: m.imageIds, imageCount: m.imageIds.length } : {})
       }))
     };
@@ -1978,6 +2698,15 @@ function decorateAssistantMessages() {
     bar.appendChild(copyBtn);
 
     if (isLast && !isStreaming) {
+      if (row.dataset.finishReason === 'length') {
+        const continueBtn = document.createElement('button');
+        continueBtn.className = 'msg-action-btn';
+        continueBtn.type = 'button';
+        continueBtn.innerHTML = ICON_REFRESH + '<span>Continue</span>';
+        continueBtn.title = 'The provider stopped at its output limit';
+        continueBtn.addEventListener('click', () => sendMessage('Continue exactly where your previous answer stopped. Do not repeat earlier text.'));
+        bar.appendChild(continueBtn);
+      }
       const refBtn = document.createElement('button');
       refBtn.className = 'msg-action-btn';
       refBtn.type = 'button';
@@ -2014,13 +2743,23 @@ function decorateMessages() {
   decorateUserMessages();
 }
 
-function showThinking() {
+function showThinking(eng = engine()) {
   welcomeEl.style.display = 'none';
   const row = document.createElement('div');
   row.className = 'thinking-row';
   row.id = 'thinking-indicator';
-  row.innerHTML = `<div class="thinking-eye"><img src="${engine().img || 'fox_thinking_icon.png'}" alt="Think Fox thinking" onerror="this.replaceWith(document.createTextNode('🦊'))" /></div><div class="thinking-dots"><span></span><span></span><span></span></div>`;
-  chatArea.appendChild(row);
+  const eye = document.createElement('div');
+  eye.className = 'thinking-eye';
+  const img = document.createElement('img');
+  img.src = eng.img || 'fox_thinking_icon.png';
+  img.alt = 'Think Fox thinking';
+  img.addEventListener('error', () => img.replaceWith(document.createTextNode('🦊')), { once: true });
+  eye.appendChild(img);
+  const dots = document.createElement('div');
+  dots.className = 'thinking-dots';
+  dots.innerHTML = '<span></span><span></span><span></span>';
+  row.append(eye, dots);
+  chatArea.insertBefore(row, document.getElementById('scroll-latest'));
   scrollToBottom(true);
 }
 function removeThinking() { document.getElementById('thinking-indicator')?.remove(); }
@@ -2150,17 +2889,17 @@ function renderMarkdown(raw) {
   return html;
 }
 
-function setRowThinking(row, on) {
+function setRowThinking(row, on, eng = engine()) {
   if (!row) return;
   const av = row.querySelector('.avatar');
   const img = row.querySelector('.avatar img');
   if (!av) return;
   if (on) {
     av.classList.add('thinking');
-    if (img) img.src = engine().img || 'fox_thinking_icon.png';
+    if (img) img.src = eng.img || 'fox_thinking_icon.png';
   } else {
     av.classList.remove('thinking');
-    if (img) img.src = engine().img || 'fox_icon.png';
+    if (img) img.src = eng.img || 'fox_icon.png';
   }
 }
 
@@ -2173,13 +2912,12 @@ function renderStream(reasoning, answer) {
   return html;
 }
 
-// Reasoning effort — values map directly to OpenRouter's canonical efforts.
-const THINK_STATES = ['off', 'low', 'medium', 'high'];
-const THINK_LABELS = { off: 'Off', low: 'Low', medium: 'Medium', high: 'High' };
+// Reasoning effort — values map directly to OpenRouter's unified reasoning parameter.
+const THINK_STATES = ['off', 'minimal', 'low', 'medium', 'high', 'xhigh'];
+const THINK_LABELS = { off: 'Off', minimal: 'Minimal', low: 'Low', medium: 'Medium', high: 'High', xhigh: 'X-High' };
 function getReasoningEffort() {
-  const pill = document.getElementById('think-pill');
-  const e = pill ? pill.dataset.effort : 'off';
-  return e === 'off' ? null : e;
+  const effort = getModelParams().reasoningEffort;
+  return effort === 'off' ? null : effort;
 }
 
 function getActiveTools() { return Array.from(document.querySelectorAll('.toggle-pill.active')).map(btn => btn.dataset.tool); }
@@ -2230,7 +2968,8 @@ function renderPreviews() {
     img.className = 'preview-thumb';
     img.title = 'Click to remove';
     img.onclick = () => {
-      attachedImages.splice(idx, 1);
+      const [removed] = attachedImages.splice(idx, 1);
+      if (removed?.id) idbDeleteImage(removed.id).catch(() => {});
       renderPreviews();
       updateSendButton();
     };
@@ -2239,11 +2978,186 @@ function renderPreviews() {
   updateSendButton();
 }
 
+// ------------------------ Streaming and request helpers ------------------------
+function showToast(message, type = '') {
+  const stack = document.getElementById('toast-stack');
+  if (!stack) return;
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`.trim();
+  toast.textContent = message;
+  stack.appendChild(toast);
+  setTimeout(() => toast.remove(), 4500);
+}
+
+function applyUsageToCurrentSession(usage, sessionId = currentSessionId) {
+  if (!usage || !sessionId || !sessions[sessionId]) return;
+  const sess = sessions[sessionId];
+  if (!sess.usage) sess.usage = { prompt: 0, completion: 0, total: 0 };
+  sess.usage.prompt += Number(usage.prompt_tokens || 0);
+  sess.usage.completion += Number(usage.completion_tokens || 0);
+  sess.usage.total += Number(usage.total_tokens || 0);
+  saveSessions();
+  updateUsageDisplay();
+}
+
+function setStreamingPlain(body, reasoning, answer) {
+  if (!body) return;
+  let reasoningDetails = body.querySelector('details.reasoning');
+  let answerNode = body.querySelector('[data-stream-answer]');
+
+  if (reasoning && !reasoningDetails) {
+    reasoningDetails = document.createElement('details');
+    reasoningDetails.className = 'reasoning';
+    reasoningDetails.open = true;
+    const summary = document.createElement('summary');
+    summary.textContent = 'Reasoning';
+    const reasoningNode = document.createElement('div');
+    reasoningNode.className = 'reasoning-body stream-plain';
+    reasoningNode.dataset.streamReasoning = 'true';
+    reasoningDetails.append(summary, reasoningNode);
+    body.prepend(reasoningDetails);
+  }
+  const reasoningNode = body.querySelector('[data-stream-reasoning]');
+  if (reasoningNode) reasoningNode.textContent = reasoning || '';
+
+  if (!answerNode) {
+    answerNode = document.createElement('div');
+    answerNode.className = 'stream-plain';
+    answerNode.dataset.streamAnswer = 'true';
+    body.appendChild(answerNode);
+  }
+  answerNode.textContent = answer || '';
+}
+
+async function readWithIdleTimeout(reader, timeoutMs, signal) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new DOMException('Stream stalled', 'TimeoutError')), timeoutMs);
+  });
+  try {
+    if (signal?.aborted) throw signal.reason || new DOMException('Aborted', 'AbortError');
+    return await Promise.race([reader.read(), timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function consumeSSE(response, onEvent, signal) {
+  if (!response.body) throw new Error('Streaming response body is unavailable.');
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let dataLines = [];
+
+  const dispatch = () => {
+    if (!dataLines.length) return;
+    const data = dataLines.join('\n');
+    dataLines = [];
+    if (data === '[DONE]') return;
+    let parsed;
+    try { parsed = JSON.parse(data); }
+    catch { return; }
+    if (parsed?.error) {
+      const message = parsed.error.message || parsed.error.code || 'The provider ended the stream with an error.';
+      const error = new Error(message);
+      error.code = parsed.error.code;
+      error.midStream = true;
+      throw error;
+    }
+    onEvent(parsed);
+  };
+
+  try {
+    while (true) {
+      const { done, value } = await readWithIdleTimeout(reader, 90000, signal);
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() || '';
+      for (const line of lines) {
+        if (line === '') { dispatch(); continue; }
+        if (line.startsWith(':')) continue;
+        if (line.startsWith('data:')) dataLines.push(line.slice(5).replace(/^ /, ''));
+      }
+    }
+    buffer += decoder.decode();
+    if (buffer.startsWith('data:')) dataLines.push(buffer.slice(5).replace(/^ /, ''));
+    dispatch();
+  } catch (error) {
+    try { await reader.cancel(error); } catch {}
+    throw error;
+  }
+}
+
+function buildGenerationRequest(eng, apiMessages, params, activeTools) {
+  const supported = getSupportedParameters(eng);
+  const can = name => !supported || supported.has(name);
+  const promptTokens = apiMessages.reduce((sum, message) => sum + estimateApiMessageTokens(message), 0);
+  const contextLength = getContextLength(eng);
+  const providerMax = getProviderMaxOutput(eng) || contextLength;
+  const availableOutput = Math.max(0, contextLength - promptTokens - CONTEXT_SAFETY_TOKENS);
+  const effectiveMax = Math.floor(Math.min(params.maxTokens, providerMax, availableOutput));
+  if (effectiveMax < 256) {
+    throw new Error(`This prompt is too large for ${eng.name}'s ${contextLength.toLocaleString()}-token context window. Remove some pasted text or start a fresh conversation.`);
+  }
+
+  const body = {
+    model: eng.model,
+    messages: apiMessages,
+    stream: true,
+    usage: { include: true }
+  };
+
+  if (can('max_completion_tokens')) body.max_completion_tokens = effectiveMax;
+  else body.max_tokens = effectiveMax;
+  if (can('temperature')) body.temperature = params.temperature;
+  if (can('top_p')) body.top_p = params.topP;
+  if (params.topK > 0 && can('top_k')) body.top_k = Math.round(params.topK);
+  if (params.frequencyPenalty !== 0 && can('frequency_penalty')) body.frequency_penalty = params.frequencyPenalty;
+  if (params.presencePenalty !== 0 && can('presence_penalty')) body.presence_penalty = params.presencePenalty;
+  if (params.repetitionPenalty !== 1 && can('repetition_penalty')) body.repetition_penalty = params.repetitionPenalty;
+  if (Number.isInteger(params.seed) && can('seed')) body.seed = params.seed;
+
+  const effort = getReasoningEffort();
+  if (effort) body.reasoning = { effort, exclude: !params.includeReasoning };
+  if (activeTools.includes('search')) body.plugins = [{ id: 'web' }];
+
+  return { body, effectiveMax, promptTokens, contextLength };
+}
+
+async function postGenerationRequest(requestBody, key, signal) {
+  const send = body => fetchWithRetry(`${BACKEND_HOST}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`,
+      'HTTP-Referer': OPENROUTER_REFERER,
+      'X-Title': OPENROUTER_TITLE
+    },
+    body: JSON.stringify(body),
+    signal
+  }, { retries: 2, timeoutMs: 75000 });
+
+  let response = await send(requestBody);
+  if (response.status !== 400) return response;
+
+  let payload = null;
+  try { payload = await response.clone().json(); } catch {}
+  const message = String(payload?.error?.message || payload?.error || '');
+  if (!/(max(?:imum)?[_ ]?(?:completion[_ ]?)?tokens?|context length|context window)/i.test(message)) return response;
+
+  const fallbackBody = { ...requestBody };
+  delete fallbackBody.max_tokens;
+  delete fallbackBody.max_completion_tokens;
+  showToast('The provider rejected the requested output cap. Retrying with its automatic limit.');
+  return send(fallbackBody);
+}
+
 // ------------------------ Send / Generate / Regenerate ------------------------
 async function sendMessage(userText) {
   userText = (userText || '').trim();
   if (userText.length > MAX_INPUT_CHARS) {
-    alert(`Input capped at ${MAX_INPUT_CHARS.toLocaleString()} characters (32KB text). Shorten it or attach a file workflow later.`);
+    showToast(`Input capped at ${MAX_INPUT_CHARS.toLocaleString()} characters. Shorten the message or split it across turns.`, 'error');
     return;
   }
   if (!userText && attachedImages.length === 0) return;
@@ -2255,6 +3169,7 @@ async function sendMessage(userText) {
   userInput.value = '';
   resetInputHeight();
   updateSendButton();
+  updateInputCharCount();
 
   if (!currentSessionId) newSession();
 
@@ -2286,160 +3201,195 @@ async function regenerateLast() {
 }
 
 async function generateResponse() {
-  const eng = engine();
-  if (!eng.model) { alert('This engine is not wired yet.'); return; }
+  const requestEngineKey = activeEngine;
+  const requestSessionId = currentSessionId;
+  const eng = ENGINES[requestEngineKey];
+  if (!eng?.model) { showToast('This engine is not wired yet.', 'error'); return; }
+  const key = getApiKey();
+  if (!key) { openParameters(); showToast('Add your OpenRouter API key in Model Parameters first.', 'error'); return; }
 
   isStreaming = true;
   updateSendButton();
-  showThinking();
+  showThinking(eng);
 
   const activeTools = getActiveTools();
   let systemMsg = getSystemPrompt();
-  if (activeTools.includes('code')) systemMsg += " Provide code examples when relevant.";
+  if (activeTools.includes('code')) systemMsg += ' Provide complete, runnable code examples when relevant.';
+
+  const params = getModelParams();
+  const systemTokens = estimateTextTokens(systemMsg) + 16;
+  const desiredOutput = Math.min(params.maxTokens, params.providerMaxOutput || params.contextLength);
+  const promptBudget = Math.max(
+    MIN_PROMPT_ROOM_TOKENS,
+    params.contextLength - desiredOutput - systemTokens - CONTEXT_SAFETY_TOKENS
+  );
 
   const apiMessages = [
     { role: 'system', content: systemMsg },
-    ...(await buildApiMessagesFromSession(currentMessages()))
+    ...(await buildApiMessagesFromSession(currentMessages(), promptBudget))
   ];
 
-  const reqBody = {
-    model: eng.model,
-    messages: apiMessages,
-    temperature: getTemperature(),
-    max_tokens: eng.maxTokens || 8192,
-    stream: true,
-    usage: { include: true }   // ask OpenRouter to report token usage in the stream
-  };
-  const effort = getReasoningEffort();
-  if (effort) reqBody.reasoning = { effort };
-  if (activeTools.includes('search')) reqBody.plugins = [{ id: 'web' }];
+  let requestInfo;
+  try {
+    requestInfo = buildGenerationRequest(eng, apiMessages, params, activeTools);
+  } catch (error) {
+    removeThinking();
+    isStreaming = false;
+    updateSendButton();
+    showToast(error.message, 'error');
+    return;
+  }
 
   const myAbort = currentAbort = new AbortController();
   let streamRow = null;
   let streamBody = null;
   let fullText = '';
   let reasoningText = '';
+  let finishReason = null;
+  let requestUsage = null;
+  let generationId = null;
+  let renderTimer = null;
 
-  // Coalesce re-renders to one per animation frame — huge win on fast streams.
-  let renderScheduled = false;
   const scheduleRender = () => {
-    if (renderScheduled || !streamBody) return;
-    renderScheduled = true;
-    requestAnimationFrame(() => {
-      renderScheduled = false;
-      if (!streamBody) return;
-      streamBody.innerHTML = renderStream(reasoningText, fullText);
-      scrollToBottom();
-    });
+    if (renderTimer || !streamBody) return;
+    renderTimer = setTimeout(() => {
+      renderTimer = null;
+      const follow = autoFollow;
+      setStreamingPlain(streamBody, reasoningText, fullText);
+      if (follow) scrollToBottom(true);
+    }, 40);
   };
 
   try {
-    const response = await fetchWithRetry(`${BACKEND_HOST}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`,
-        'HTTP-Referer': OPENROUTER_REFERER,
-        'X-Title': OPENROUTER_TITLE
-      },
-      body: JSON.stringify(reqBody),
-      signal: myAbort.signal
-    }, { retries: 2, timeoutMs: 60000 });
+    const response = await postGenerationRequest(requestInfo.body, key, myAbort.signal);
 
+    generationId = response.headers.get('x-generation-id') || null;
     if (!response.ok) {
       let detail = `HTTP ${response.status}`;
-      try { const j = await response.json(); if (j.error) detail += ` — ${typeof j.error === 'string' ? j.error : j.error.message || ''}`; } catch {}
+      try {
+        const payload = await response.json();
+        const message = payload?.error?.message || payload?.error || '';
+        if (message) detail += ` — ${message}`;
+      } catch {}
       throw new Error(detail);
     }
 
     removeThinking();
-    streamBody = appendMessageRow('assistant', '');
+    streamBody = appendMessageRow('assistant', '', null, [], requestEngineKey);
     streamRow = streamBody.closest('.message-row');
-    setRowThinking(streamRow, true);
+    setRowThinking(streamRow, true, eng);
     scrollToBottom(true);
 
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6).trim();
-        if (data === '[DONE]') continue;
-        try {
-          const parsed = JSON.parse(data);
-          const delta = parsed.choices?.[0]?.delta || {};
-          if (delta.reasoning) reasoningText += delta.reasoning;
-          if (delta.content) fullText += delta.content;
-          if (parsed.usage) {
-            if (!sessions[currentSessionId].usage) sessions[currentSessionId].usage = { prompt: 0, completion: 0, total: 0 };
-            sessions[currentSessionId].usage.prompt += parsed.usage.prompt_tokens || 0;
-            sessions[currentSessionId].usage.completion += parsed.usage.completion_tokens || 0;
-            sessions[currentSessionId].usage.total += parsed.usage.total_tokens || 0;
-            saveSessions();
-            updateUsageDisplay();
-          }
-          scheduleRender();
-        } catch {}
+    await consumeSSE(response, parsed => {
+      const choice = parsed.choices?.[0] || {};
+      const delta = choice.delta || {};
+      if (delta.reasoning) reasoningText += delta.reasoning;
+      if (Array.isArray(delta.reasoning_details)) {
+        for (const detail of delta.reasoning_details) {
+          if (detail?.type === 'reasoning.text' && detail.text) reasoningText += detail.text;
+          else if (detail?.type === 'reasoning.summary' && detail.summary) reasoningText += detail.summary;
+        }
       }
-    }
-    // Final synchronous render so the last tokens are guaranteed on screen.
-    streamBody.innerHTML = renderStream(reasoningText, fullText);
-    scrollToBottom();
+      if (typeof delta.content === 'string') fullText += delta.content;
+      if (choice.finish_reason) finishReason = choice.finish_reason;
+      if (parsed.usage) requestUsage = parsed.usage;
+      scheduleRender();
+    }, myAbort.signal);
 
-    if (streamRow) streamRow.dataset.raw = fullText;
-    addMessage('assistant', fullText, reasoningText);
+    if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
+    streamBody.innerHTML = renderStream(reasoningText, fullText);
+    streamRow.dataset.raw = fullText;
+    if (finishReason) streamRow.dataset.finishReason = finishReason;
+    addMessage('assistant', fullText, reasoningText, null, {
+      engine: requestEngineKey,
+      finishReason,
+      generationId,
+      sessionId: requestSessionId
+    });
+    applyUsageToCurrentSession(requestUsage, requestSessionId);
+    if (finishReason === 'length') showToast(`Output reached the ${requestInfo.effectiveMax.toLocaleString()}-token request limit. Use Continue or raise the limit if the model allows it.`);
     renderHistoryList();
-  } catch (err) {
+  } catch (error) {
     removeThinking();
-    if (err && err.name === 'AbortError') {
-      // Save partial response if there is one
+    if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
+    if (error?.name === 'AbortError') {
       if (fullText || reasoningText) {
         if (streamBody) streamBody.innerHTML = renderStream(reasoningText, fullText);
         if (streamRow) streamRow.dataset.raw = fullText;
-        addMessage('assistant', fullText, reasoningText);
+        addMessage('assistant', fullText, reasoningText, null, { engine: requestEngineKey, finishReason: 'cancelled', generationId, sessionId: requestSessionId });
+        applyUsageToCurrentSession(requestUsage, requestSessionId);
         renderHistoryList();
-      } else if (streamRow) {
-        streamRow.remove();
+      } else if (streamRow) streamRow.remove();
+    } else if (fullText || reasoningText) {
+      if (streamBody) {
+        streamBody.innerHTML = renderStream(reasoningText, fullText)
+          + `<p style="color:#F87171;">Stream interrupted: ${escapeHtml(error.message || 'Unknown provider error')}</p>`;
       }
+      if (streamRow) streamRow.dataset.raw = fullText;
+      addMessage('assistant', fullText, reasoningText, null, { engine: requestEngineKey, finishReason: 'error', generationId, sessionId: requestSessionId });
+      applyUsageToCurrentSession(requestUsage, requestSessionId);
+      showToast(`Stream interrupted: ${error.message || 'provider error'}`, 'error');
+      renderHistoryList();
     } else {
-      const errBody = appendMessageRow('assistant', '');
-      streamRow = errBody.closest('.message-row');
-      errBody.innerHTML = `<p style="color:#F87171;">Couldn't reach the <strong>${escapeHtml(eng.name)}</strong> engine (model: <code>${escapeHtml(eng.model)}</code>).<br/>${escapeHtml(err.message || '')}<br/>Transient failures are retried automatically; this final error usually means the model ID is invalid on OpenRouter, the API key is missing/invalid, or credit/rate limits are blocking it.</p>`;
-      checkConnection();
+      const errorBody = appendMessageRow('assistant', '', null, [], requestEngineKey);
+      streamRow = errorBody.closest('.message-row');
+      errorBody.innerHTML = `<p style="color:#F87171;">Couldn't reach <strong>${escapeHtml(eng.name)}</strong> (<code>${escapeHtml(eng.model)}</code>).<br>${escapeHtml(error.message || '')}</p>`;
+      checkConnection(false);
     }
   } finally {
     isStreaming = false;
     if (currentAbort === myAbort) currentAbort = null;
-    if (streamRow) setRowThinking(streamRow, false);
+    if (streamRow) setRowThinking(streamRow, false, eng);
     updateSendButton();
     decorateMessages();
     userInput.focus();
   }
 }
-async function checkConnection() {
-  if (!API_KEY || API_KEY === "YOUR_OPENROUTER_KEY") {
-    statusDot.style.background = '#F87171';
-    statusStat.textContent = 'No key';
-    return;
+function updateConnectionState(message, type = '') {
+  const state = document.getElementById('connection-state');
+  if (state) {
+    state.textContent = message;
+    state.className = `connection-state ${type}`.trim();
   }
+}
+
+async function checkConnection(showResult = false) {
+  const key = getApiKey();
+  if (!key) {
+    statusDot.style.background = '#F87171';
+    statusStat.textContent = 'No API key';
+    updateConnectionState('Add an OpenRouter key to connect.', 'bad');
+    return false;
+  }
+  const started = performance.now();
   try {
-    const res = await fetchWithRetry(`${BACKEND_HOST}/models`, {
-      headers: { 'Authorization': `Bearer ${API_KEY}` }
-    }, { retries: 1, timeoutMs: 5000 });
-    if (res.ok) {
-      statusDot.style.background = '#4ADE80';
-      statusStat.textContent = 'Online · OpenRouter';
-    } else { throw new Error(); }
-  } catch {
+    const response = await fetchWithRetry(`${BACKEND_HOST}/models`, {
+      headers: { 'Authorization': `Bearer ${key}` }
+    }, { retries: 1, timeoutMs: 12000 });
+    if (!response.ok) {
+      let message = `HTTP ${response.status}`;
+      try { message = (await response.json())?.error?.message || message; } catch {}
+      throw new Error(message);
+    }
+    const payload = await response.json();
+    const catalogue = payload.data || [];
+    const configuredIds = new Set(Object.values(ENGINES).map(item => item.model));
+    modelCapabilities = Object.fromEntries(catalogue.filter(model => configuredIds.has(model.id)).map(model => [model.id, model]));
+    try { localStorage.setItem(MODEL_CAP_CACHE_STORAGE, JSON.stringify({ savedAt: Date.now(), models: modelCapabilities })); } catch {}
+    const latency = Math.round(performance.now() - started);
+    statusDot.style.background = '#4ADE80';
+    statusStat.textContent = `Online · ${latency} ms`;
+    const matched = Object.keys(modelCapabilities).length;
+    updateConnectionState(`Connected. ${matched}/${configuredIds.size} configured models matched the live catalogue · ${latency} ms.`, matched ? 'good' : 'bad');
+    updateConfigSettings();
+    if (showResult) showToast('OpenRouter connection successful.', 'success');
+    return true;
+  } catch (error) {
     statusDot.style.background = '#F87171';
     statusStat.textContent = 'Offline';
+    updateConnectionState(`Connection failed: ${error.message || 'unknown error'}`, 'bad');
+    if (showResult) showToast(`Connection failed: ${error.message || 'unknown error'}`, 'error');
+    return false;
   }
 }
 function updateSendButton() {
@@ -2459,8 +3409,22 @@ function updateSendButton() {
   }
 }
 
-function isNearBottom() { return chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight < 120; }
-function scrollToBottom(force) { if (force || isNearBottom()) chatArea.scrollTop = chatArea.scrollHeight; }
+let autoFollow = true;
+const scrollLatestBtn = document.getElementById('scroll-latest');
+function isNearBottom() { return chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight < 140; }
+function updateScrollFollow() {
+  autoFollow = isNearBottom();
+  scrollLatestBtn?.classList.toggle('visible', !autoFollow);
+}
+function scrollToBottom(force = false) {
+  if (force || autoFollow) {
+    chatArea.scrollTop = chatArea.scrollHeight;
+    autoFollow = true;
+    scrollLatestBtn?.classList.remove('visible');
+  }
+}
+chatArea.addEventListener('scroll', updateScrollFollow, { passive: true });
+scrollLatestBtn?.addEventListener('click', () => scrollToBottom(true));
 
 // ------------------------ Input box sizing ------------------------
 let userResizedHeight = null;
@@ -2506,21 +3470,41 @@ function endGripDrag(e) {
 inputGrip.addEventListener('pointerup', endGripDrag);
 inputGrip.addEventListener('pointercancel', endGripDrag);
 
-// Full screen engine overlay controls
+// Full-screen engine and model-parameter overlay controls
 const engineOverlay = document.getElementById('engine-overlay');
+const parametersOverlay = document.getElementById('parameters-overlay');
 const overlay = document.getElementById('overlay');
-function openConfig()  { engineOverlay.classList.add('visible'); overlay.classList.add('visible'); }
-function closeConfig() { engineOverlay.classList.remove('visible'); if (!document.getElementById('sidebar').classList.contains('open')) overlay.classList.remove('visible'); }
+function syncBackdrop() {
+  const anyOpen = engineOverlay.classList.contains('visible')
+    || parametersOverlay.classList.contains('visible')
+    || document.getElementById('sidebar').classList.contains('open');
+  overlay.classList.toggle('visible', anyOpen);
+}
+function openConfig() {
+  parametersOverlay.classList.remove('visible');
+  engineOverlay.classList.add('visible');
+  syncBackdrop();
+}
+function closeConfig() { engineOverlay.classList.remove('visible'); syncBackdrop(); }
+function openParameters() {
+  engineOverlay.classList.remove('visible');
+  updateConfigSettings();
+  parametersOverlay.classList.add('visible');
+  syncBackdrop();
+}
+function closeParameters() { parametersOverlay.classList.remove('visible'); syncBackdrop(); }
 
 // Event listeners
 document.getElementById('new-chat-btn').addEventListener('click', startNewChat);
 document.getElementById('menu-toggle').addEventListener('click', () => {
   const sidebar = document.getElementById('sidebar');
-  const open = sidebar.classList.toggle('open');
-  overlay.classList.toggle('visible', open);
+  sidebar.classList.toggle('open');
+  syncBackdrop();
 });
+document.getElementById('parameters-toggle-btn').addEventListener('click', openParameters);
 document.getElementById('config-toggle-btn').addEventListener('click', openConfig);
 document.getElementById('engine-close-btn').addEventListener('click', closeConfig);
+document.getElementById('parameters-close-btn').addEventListener('click', closeParameters);
 document.getElementById('engine-chip').addEventListener('click', openConfig);
 document.getElementById('export-btn').addEventListener('click', () => {
   if (!currentSessionId || !sessions[currentSessionId] || !sessions[currentSessionId].messages.length) {
@@ -2530,7 +3514,7 @@ document.getElementById('export-btn').addEventListener('click', () => {
   const choice = (prompt('Export format: markdown or json', 'markdown') || 'markdown').trim().toLowerCase();
   exportSession(currentSessionId, choice === 'json' ? 'json' : 'markdown');
 });
-overlay.addEventListener('click', () => { closeConfig(); closeSidebar(); });
+overlay.addEventListener('click', () => { closeConfig(); closeParameters(); closeSidebar(); });
 
 // Global keyboard shortcuts:
 //   Ctrl/Cmd+K      = new chat
@@ -2553,13 +3537,17 @@ document.addEventListener('keydown', (e) => {
   }
 
   if (e.key !== 'Escape') return;
-  if (engineOverlay.classList.contains('visible')) { closeConfig(); }
+  if (parametersOverlay.classList.contains('visible')) { closeParameters(); }
+  else if (engineOverlay.classList.contains('visible')) { closeConfig(); }
   else if (document.getElementById('sidebar').classList.contains('open')) { closeSidebar(); }
 });
 
-function closeSidebar() { document.getElementById('sidebar').classList.remove('open'); if (!engineOverlay.classList.contains('visible')) overlay.classList.remove('visible'); }
+function closeSidebar() {
+  document.getElementById('sidebar').classList.remove('open');
+  syncBackdrop();
+}
 
-userInput.addEventListener('input', () => { enforceInputLimit(false); autoResize(); updateSendButton(); });
+userInput.addEventListener('input', () => { enforceInputLimit(false); autoResize(); updateSendButton(); updateInputCharCount(); });
 userInput.addEventListener('keydown', (e) => {
   if ((e.ctrlKey || e.metaKey) && e.key === 'Enter') { e.preventDefault(); sendMessage(userInput.value); return; }
   if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(userInput.value); }
@@ -2577,6 +3565,7 @@ document.querySelectorAll('.starter-card').forEach(card => {
     enforceInputLimit(false);
     autoResize();
     updateSendButton();
+    updateInputCharCount();
     userInput.focus();
   });
 });
@@ -2585,22 +3574,53 @@ document.querySelectorAll('.toggle-pill').forEach(btn => {
 });
 
 document.getElementById('think-pill').addEventListener('click', function() {
-  const next = THINK_STATES[(THINK_STATES.indexOf(this.dataset.effort) + 1) % THINK_STATES.length];
-  this.dataset.effort = next;
-  this.textContent = '🧠 Think: ' + THINK_LABELS[next];
-  this.classList.toggle('active', next !== 'off');
+  const current = getModelParams().reasoningEffort;
+  const next = THINK_STATES[(THINK_STATES.indexOf(current) + 1) % THINK_STATES.length];
+  setModelParam('reasoningEffort', next, PARAM_DEFAULTS.reasoningEffort);
+  updateReasoningUI();
 });
 
 // History search
-document.getElementById('history-search').addEventListener('input', renderHistoryList);
+let historySearchTimer = null;
+document.getElementById('history-search').addEventListener('input', () => {
+  clearTimeout(historySearchTimer);
+  historySearchTimer = setTimeout(renderHistoryList, 120);
+});
 
-// Config settings event listeners
+// OpenRouter and reliability settings
+const apiKeyInput = document.getElementById('api-key-input');
+apiKeyInput.value = getApiKey();
+apiKeyInput.addEventListener('change', function() {
+  apiKey = this.value.trim();
+  try {
+    if (apiKey) localStorage.setItem(API_KEY_STORAGE, apiKey);
+    else localStorage.removeItem(API_KEY_STORAGE);
+  } catch {}
+  checkConnection(false);
+});
+document.getElementById('reveal-api-key-btn').addEventListener('click', function() {
+  const reveal = apiKeyInput.type === 'password';
+  apiKeyInput.type = reveal ? 'text' : 'password';
+  this.textContent = reveal ? 'Hide' : 'Show';
+});
+document.getElementById('test-connection-btn').addEventListener('click', () => checkConnection(true));
+const adaptiveToggle = document.getElementById('adaptive-context-toggle');
+adaptiveToggle.checked = appSettings.adaptiveContext !== false;
+adaptiveToggle.addEventListener('change', function() {
+  appSettings.adaptiveContext = this.checked;
+  saveAppSettings();
+});
+const retryToggle = document.getElementById('retry-transient-toggle');
+retryToggle.checked = appSettings.retryTransient !== false;
+retryToggle.addEventListener('change', function() {
+  appSettings.retryTransient = this.checked;
+  saveAppSettings();
+});
+
+// Model parameter event listeners
 document.getElementById('system-prompt-override').addEventListener('input', function() {
-  if (this.value.trim()) {
-    promptOverrides[activeEngine] = this.value;
-  } else {
-    delete promptOverrides[activeEngine];
-  }
+  if (this.value.trim()) promptOverrides[activeEngine] = this.value;
+  else delete promptOverrides[activeEngine];
   saveOverrides();
 });
 document.getElementById('reset-prompt-btn').addEventListener('click', () => {
@@ -2608,15 +3628,66 @@ document.getElementById('reset-prompt-btn').addEventListener('click', () => {
   saveOverrides();
   document.getElementById('system-prompt-override').value = '';
 });
-document.getElementById('temp-slider').addEventListener('input', function() {
-  const v = parseFloat(this.value);
-  document.getElementById('temp-value').textContent = v.toFixed(1);
-  if (v !== ENGINES[activeEngine].temp) {
-    tempOverrides[activeEngine] = v;
-  } else {
-    delete tempOverrides[activeEngine];
-  }
+
+function bindSlider(id, valueId, paramName, defaultValue, digits = 2) {
+  const slider = document.getElementById(id);
+  slider.addEventListener('input', function() {
+    const value = Number(this.value);
+    const display = document.getElementById(valueId);
+    if (display) display.textContent = value.toFixed(digits);
+    const engineDefault = paramName === 'temperature' ? (engine().temp ?? 0.7) : defaultValue;
+    setModelParam(paramName, value, engineDefault);
+  });
+}
+bindSlider('temp-slider', 'temp-value', 'temperature', 0.7);
+bindSlider('top-p-slider', 'top-p-value', 'topP', PARAM_DEFAULTS.topP);
+bindSlider('frequency-slider', 'frequency-value', 'frequencyPenalty', PARAM_DEFAULTS.frequencyPenalty);
+bindSlider('presence-slider', 'presence-value', 'presencePenalty', PARAM_DEFAULTS.presencePenalty);
+bindSlider('repetition-slider', 'repetition-value', 'repetitionPenalty', PARAM_DEFAULTS.repetitionPenalty);
+
+document.getElementById('top-k-input').addEventListener('input', function() {
+  const value = Math.max(0, Math.min(1000, Math.round(Number(this.value) || 0)));
+  this.value = String(value);
+  setModelParam('topK', value, PARAM_DEFAULTS.topK);
+});
+document.getElementById('seed-input').addEventListener('change', function() {
+  const raw = this.value.trim();
+  const value = raw === '' ? null : Math.round(Number(raw));
+  if (raw !== '' && !Number.isFinite(value)) { this.value = ''; return; }
+  setModelParam('seed', value, PARAM_DEFAULTS.seed);
+});
+
+document.querySelectorAll('[data-reasoning-effort]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    setModelParam('reasoningEffort', btn.dataset.reasoningEffort, PARAM_DEFAULTS.reasoningEffort);
+    updateReasoningUI();
+  });
+});
+document.getElementById('include-reasoning-toggle').addEventListener('change', function() {
+  setModelParam('includeReasoning', this.checked, PARAM_DEFAULTS.includeReasoning);
+});
+
+document.querySelectorAll('[data-max-tokens]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    if (btn.disabled) return;
+    const raw = btn.dataset.maxTokens;
+    if (raw === 'dynamic') setModelParam('maxTokens', null, null);
+    else setModelParam('maxTokens', Number(raw), null);
+    updateTokenPresetUI();
+  });
+});
+document.getElementById('max-tokens-input').addEventListener('change', function() {
+  const dynamicMax = getDynamicMaxTokens();
+  const value = Math.max(256, Math.min(HARD_MAX_OUTPUT_TOKENS, Math.round(Number(this.value) || dynamicMax)));
+  this.value = String(value);
+  setModelParam('maxTokens', value, null);
+  updateTokenPresetUI();
+});
+
+document.getElementById('reset-all-parameters-btn').addEventListener('click', () => {
+  delete modelParamOverrides[activeEngine];
   saveOverrides();
+  updateConfigSettings();
 });
 
 // Initialise
@@ -2625,9 +3696,11 @@ applyEngineTheme(ENGINES[activeEngine]);
 renderEngineSelector();
 renderHistoryList();
 updateConfigSettings();
-checkConnection();
-setInterval(checkConnection, 180000);
+if (Object.keys(modelCapabilities).length) updateConfigSettings();
+checkConnection(false);
+setInterval(() => { if (!document.hidden) checkConnection(false); }, 900000);
 updateSendButton();
+updateInputCharCount();
 updateUsageDisplay();
 </script>
 </body>
