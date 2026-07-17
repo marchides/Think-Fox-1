@@ -1,4 +1,5 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,9 +7,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="robots" content="noindex, nofollow">
   <meta http-equiv="Content-Security-Policy" content="default-src 'self'; connect-src 'self' https://openrouter.ai https://openrouter.ai/api/v1; img-src 'self' data: blob:; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com data:; script-src 'self' 'unsafe-inline'; base-uri 'self'; object-src 'none'; form-action 'none'; upgrade-insecure-requests">
-  <title>Think Fox @ Kubasek.vip</title>
-  <meta name="description" content="Think Fox interface by Monty Kubasek" />
-  <link rel="icon" type="image/png" sizes="16x16" href="fox_icon_16x16.png">
+  <title>Think Fox 1-v0.2</title>
+  <meta name="description" content="Think Fox multi-engine AI command interface by Monty Kubasek powered by Openrouter API" />
+  <link rel="icon" type="image/png" sizes="16x16" href="fox_icon.png">
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Science+Gothic:wdth,wght@75..125,100..900&family=Sansation:ital,wght@0,300;0,400;0,700;1,300;1,400;1,700&family=Sora:wght@300;400;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
@@ -1050,6 +1051,92 @@
     }
     .toolbar-right { display: flex; align-items: center; gap: 10px; }
 
+    .parameter-card.unsupported { opacity: 0.48; }
+    .parameter-card.unsupported::after {
+      content: "Not supported by this model";
+      display: block;
+      margin-top: 8px;
+      color: var(--text-faint);
+      font-family: var(--font-mono);
+      font-size: 10px;
+    }
+    .parameter-card.unsupported input { cursor: not-allowed; }
+
+    .api-key-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto auto;
+      gap: 8px;
+      align-items: center;
+    }
+    .api-key-row .param-number { min-width: 0; }
+    .connection-state {
+      min-height: 18px;
+      color: var(--text-muted);
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    .connection-state.good { color: #4ADE80; }
+    .connection-state.bad { color: #F87171; }
+
+    .stream-plain {
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+
+    #scroll-latest {
+      position: sticky;
+      left: 50%;
+      bottom: 12px;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: none;
+      width: max-content;
+      margin: 0 auto;
+      padding: 7px 12px;
+      border: 1px solid var(--border-lit);
+      border-radius: 999px;
+      background: var(--black-glass-strong);
+      color: var(--text-body);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      cursor: pointer;
+      font-family: var(--font-mono);
+      font-size: 11px;
+    }
+    #scroll-latest.visible { display: block; }
+    #scroll-latest:hover { border-color: var(--theme-color); color: var(--theme-color); }
+
+    #toast-stack {
+      position: fixed;
+      right: 18px;
+      bottom: 18px;
+      z-index: 500;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      pointer-events: none;
+    }
+    .toast {
+      max-width: min(420px, calc(100vw - 36px));
+      padding: 10px 12px;
+      border: 1px solid var(--border-lit);
+      border-radius: var(--radius-sm);
+      background: var(--black-glass-strong);
+      color: var(--text-body);
+      box-shadow: var(--shadow-soft);
+      backdrop-filter: blur(12px);
+      font-size: 12px;
+      animation: fadeSlideIn 0.18s ease;
+    }
+    .toast.error { border-color: #F87171; }
+    .toast.success { border-color: #4ADE80; }
+
+    @media (max-width: 700px) {
+      .api-key-row { grid-template-columns: minmax(0, 1fr) auto; }
+      .api-key-row #test-connection-btn { grid-column: 1 / -1; }
+      #toast-stack { right: 10px; bottom: 10px; }
+    }
+
     /* Overlay */
     #overlay {
       display: none;
@@ -1113,9 +1200,9 @@
 <div id="app">
   <aside id="sidebar">
     <div class="sidebar-header">
-      <img id="sidebar-image" src="orange.png" alt="Think Fox Engine" />
+      <img id="sidebar-image" src="katana.png" alt="Think Fox Engine" />
       <div class="sidebar-title-row">
-        <a class="wordmark" href="#"><span class="wordmark-text">Think&nbsp<span>Fox</span>&nbsp1-v0.1</span></a>
+        <a class="wordmark" href="#"><span class="wordmark-text">Think&nbsp<span>Fox</span>&nbsp1-v0.2</span></a>
         <button class="new-chat-btn" id="new-chat-btn">+ New</button>
       </div>
     </div>
@@ -1170,17 +1257,16 @@
 
     <div id="chat-area">
       <div id="welcome">
-        <div class="welcome-title">Think&nbsp<span>Fox</span>&nbsp1-v0.1</div>
+        <div class="welcome-title">Think&nbsp<span>Fox</span>&nbsp1-v0.2</div>
         <p class="welcome-sub" id="welcome-sub-text">Welcome to Katana, the Think Fox flagship engine.</p>
         <div class="starter-grid">
-          <div class="starter-card" data-prompt="Write lyrics to a punk rock song about entropy, the lagrangian point and heat death of the universe.">Write song lyrics</div>
-          <div class="starter-card" data-prompt="Where and how do I buy my daughter Robux?">How to buy Rubi Robux</div>
-          <div class="starter-card" data-prompt="Make yourself a single-file website and generate the HTML.">Make yourself a website</div>
-          <div class="starter-card" data-prompt="Tell the story of Sodom and Gomorrah as per the Book of Genesis.">Ask about a specific part of the bible</div>
+          <div class="starter-card" data-prompt="Write lyrics to a punk rock song about entropy, heat death and absolute zero.">Write song lyrics</div>
+          <div class="starter-card" data-prompt="Where and how do I buy my daughter Robux for Roblox?">How to buy Rubi Robux</div>
+          <div class="starter-card" data-prompt="Tell the story of Sodom and Gomorrah as per the Book of Genesis, and what the towns people wanted to do to the angels and why.">The story of Sodom</div>
           <div class="starter-card" data-prompt="Create a step by step guide on how to install Arch Linux on your PC.">Arch Linux install guide</div>
-          <div class="starter-card" data-prompt="List websites to assist with addictions to drugs and pornography.">Help Rob with his addictions</div>
         </div>
       </div>
+      <button id="scroll-latest" type="button">↓ Jump to latest</button>
     </div>
 
     <div id="input-zone">
@@ -1197,7 +1283,7 @@
             <input type="file" id="file-input" accept="image/*" multiple hidden />
           </div>
           <div class="toolbar-right">
-            <span class="input-meta" id="input-char-count">0 / 1,000,000</span>
+            <span class="input-meta" id="input-char-count">0 / 1,000,000 chars · ≈0 tokens</span>
             <button id="send-btn" disabled>➤</button>
           </div>
         </div>
@@ -1207,6 +1293,7 @@
 </div>
 
 <div id="overlay"></div>
+<div id="toast-stack" aria-live="polite" aria-atomic="true"></div>
 
 <div id="engine-overlay" role="dialog" aria-modal="true" aria-label="Think Fox Engine Family">
   <div class="overlay-header">
@@ -1233,6 +1320,18 @@
   </div>
   <div class="overlay-body">
     <div class="overlay-settings model-parameters-panel">
+      <div class="config-setting-group">
+        <div class="settings-section-title">OpenRouter connection</div>
+        <div class="settings-section-sub">The key is stored only in this browser. For any public deployment, use a server-side proxy instead of exposing a key in HTML.</div>
+        <div class="api-key-row">
+          <input type="password" class="param-number" id="api-key-input" autocomplete="off" spellcheck="false" placeholder="sk-or-v1-…" aria-label="OpenRouter API key" />
+          <button class="config-btn" id="reveal-api-key-btn" type="button">Show</button>
+          <button class="config-btn" id="test-connection-btn" type="button">Test connection</button>
+        </div>
+        <div class="connection-state" id="connection-state">No connection test yet.</div>
+      </div>
+
+      <div class="config-divider"></div>
       <div class="config-setting-group">
         <div class="settings-section-title">Engine Override</div>
         <div class="settings-section-sub">Give the selected engine extra instructions or replace its default personality.</div>
@@ -1295,7 +1394,6 @@
         <button class="segment-btn" data-reasoning-effort="medium">Medium</button>
         <button class="segment-btn" data-reasoning-effort="high">High</button>
         <button class="segment-btn" data-reasoning-effort="xhigh">X-High</button>
-        <button class="segment-btn" data-reasoning-effort="max">Max</button>
       </div>
       <div class="toggle-setting">
         <div class="toggle-copy">
@@ -1317,13 +1415,41 @@
         <button class="token-preset" data-max-tokens="1024">Short<small>1k</small></button>
         <button class="token-preset" data-max-tokens="4096">Normal<small>4k</small></button>
         <button class="token-preset" data-max-tokens="16384">Long<small>16k</small></button>
+        <button class="token-preset" data-max-tokens="32768">Very long<small>32k</small></button>
         <button class="token-preset" data-max-tokens="65536">Huge<small>66k</small></button>
         <button class="token-preset" data-max-tokens="131072">Extreme<small>131k</small></button>
-        <button class="token-preset" data-max-tokens="dynamic">Max Possible<small>dynamic</small></button>
+        <button class="token-preset" data-max-tokens="dynamic">Max Possible<small>live limit</small></button>
       </div>
       <div class="parameter-card">
         <div class="parameter-head"><span class="parameter-name">Custom output limit</span><span class="parameter-value">tokens</span></div>
         <input type="number" class="param-number" id="max-tokens-input" min="256" max="262144" step="256" />
+        <div class="parameter-hint" id="effective-token-note">The final request is automatically clamped to the model context and current prompt size.</div>
+      </div>
+
+      <div class="config-divider"></div>
+      <div>
+        <div class="settings-section-title">Reliability</div>
+        <div class="settings-section-sub">Keep long chats inside the selected model's live context window and recover from temporary gateway failures.</div>
+      </div>
+      <div class="toggle-setting">
+        <div class="toggle-copy">
+          <strong>Adaptive context management</strong>
+          <span>Trims only older API context when needed; the saved conversation remains intact.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="adaptive-context-toggle" checked />
+          <span class="switch-track"></span>
+        </label>
+      </div>
+      <div class="toggle-setting">
+        <div class="toggle-copy">
+          <strong>Retry temporary failures</strong>
+          <span>Retries rate limits, timeouts, and 5xx gateway errors before showing a final error.</span>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="retry-transient-toggle" checked />
+          <span class="switch-track"></span>
+        </label>
       </div>
 
       <div class="settings-footer">
@@ -1339,10 +1465,29 @@
 //  OPENROUTER SETUP (sshhhhh)
 // ============================================================================
 const BACKEND_HOST = "https://openrouter.ai/api/v1";
-const API_KEY = " [[API GOES HERE]] ";
+const API_KEY_STORAGE = "thinkfox_openrouter_api_key";
+const APP_SETTINGS_STORAGE = "thinkfox_app_settings";
+const MODEL_CAP_CACHE_STORAGE = "thinkfox_model_capabilities_v2";
+const MODEL_CAP_CACHE_MS = 6 * 60 * 60 * 1000;
+const HARD_MAX_OUTPUT_TOKENS = 262144;
+const DEFAULT_CONTEXT_TOKENS = 131072;
+const CONTEXT_SAFETY_TOKENS = 1024;
+const CHARS_PER_TOKEN_ESTIMATE = 3.2;
 
-const OPENROUTER_REFERER = "https://thinkfox.local";
-const OPENROUTER_TITLE   = "Think Fox";
+const OPENROUTER_REFERER = location.protocol === 'http:' || location.protocol === 'https:'
+  ? location.origin
+  : "https://thinkfox.local";
+const OPENROUTER_TITLE = "Think Fox";
+
+let apiKey = '';
+let appSettings = { adaptiveContext: true, retryTransient: true };
+try { apiKey = localStorage.getItem(API_KEY_STORAGE) || ''; } catch {}
+try { appSettings = { ...appSettings, ...JSON.parse(localStorage.getItem(APP_SETTINGS_STORAGE) || '{}') }; } catch {}
+
+function getApiKey() { return apiKey.trim(); }
+function saveAppSettings() {
+  try { localStorage.setItem(APP_SETTINGS_STORAGE, JSON.stringify(appSettings)); } catch {}
+}
 
 // ============================================================================
 //  BOUNDED SYSTEM PROMPTS
@@ -1373,92 +1518,92 @@ const PROMPT_MONOLITH = PROMPT_BASE + `\n\nYou are Think Fox Monolith — a soli
 // ============================================================================
 const ENGINES = {
   katana: {
-    key: "katana", name: "Katana", label: "Katana", version: "Engine: kimi-k2.6",
-    model: "moonshotai/kimi-k2.6",
-    system: PROMPT_KATANA, temp: 0.7, maxTokens: 32768, available: true,
+    key: "katana", name: "Katana", label: "Katana", version: "Engine: kimi-k3",
+    model: "moonshotai/kimi-k3",
+    system: PROMPT_KATANA, temp: 0.7, maxTokens: 131072, available: true,
     color: "#FF5500", colorRGB: "255,85,0", dim: "#B33B00",
     glow: "rgba(255,85,0,0.21)", subtle: "rgba(255,85,0,0.09)",
-    img: "avatars/white-mango.webp",
-    welcome: "Katana reporting in, kimi-k2.6 is sync'd, all systems ready.",
+    img: "avatars/katana.png",
+    welcome: "Katana reporting in, kimi-k3 is sync'd, all systems ready.",
     desc: "Reconnaissance & Intelligence"
   },
   cinder: {
     key: "cinder", name: "Cinder", label: "Cinder", version: "Engine: minimax-m3",
     model: "minimax/minimax-m3",
-    system: PROMPT_CINDER, temp: 0.85, maxTokens: 32768, available: true,
+    system: PROMPT_CINDER, temp: 0.85, maxTokens: 131072, available: true,
     color: "#FF1493", colorRGB: "255,20,147", dim: "#B30F66",
     glow: "rgba(255,20,147,0.21)", subtle: "rgba(255,20,147,0.09)",
-    img: "avatars/pink.webp",
+    img: "avatars/cinder.png",
     welcome: "This is Cinder, minimax-m3 spooled up, I'm rolling hot and ready to burn.",
     desc: "Close Air Support / Striker"
   },
   scythe: {
     key: "scythe", name: "Scythe", label: "Scythe", version: "Engine: qwen3.7-max",
     model: "qwen/qwen3.7-max",
-    system: PROMPT_SCYTHE, temp: 0.5, maxTokens: 32768, available: true,
+    system: PROMPT_SCYTHE, temp: 0.5, maxTokens: 131072, available: true,
     color: "#FF0000", colorRGB: "255,0,0", dim: "#B30000",
     glow: "rgba(255,0,0,0.21)", subtle: "rgba(255,0,0,0.09)",
-    img: "avatars/red.webp",
+    img: "avatars/scythe.png",
     welcome: "Scythe inbound, qwen3.7-max online, weapons red, ready to reap.",
     desc: "Dogfighter / Interceptor"
   },
   typhoon: {
     key: "typhoon", name: "Typhoon", label: "Typhoon", version: "Engine: deepseek-v4-pro",
     model: "deepseek/deepseek-v4-pro",
-    system: PROMPT_TYPHOON, temp: 0.4, maxTokens: 32768, available: true,
+    system: PROMPT_TYPHOON, temp: 0.4, maxTokens: 131072, available: true,
     color: "#0047AB", colorRGB: "0,71,171", dim: "#003076",
     glow: "rgba(0,71,171,0.21)", subtle: "rgba(0,71,171,0.09)",
-    img: "avatars/blue.webp",
+    img: "avatars/typhoon.png",
     welcome: "Typhoon on approach, deepseek-v4-pro spooled, weapons locked and loaded.",
     desc: "Electronic Warfare & Tactical Analysis"
   },
   tempest: {
     key: "tempest", name: "Tempest", label: "Tempest", version: "Engine: glm-5.2",
     model: "z-ai/glm-5.2",
-    system: PROMPT_TEMPEST, temp: 0.5, maxTokens: 32768, available: true,
+    system: PROMPT_TEMPEST, temp: 0.5, maxTokens: 131072, available: true,
     color: "#E5E4E2", colorRGB: "229,228,226", dim: "#A0A09E",
     glow: "rgba(229,228,226,0.21)", subtle: "rgba(229,228,226,0.09)",
-    img: "avatars/silver.webp",
+    img: "avatars/tempest.png",
     welcome: "This is Tempest actual, glm-5.2 at full thrust, weapons at full charge. Good to go.",
     desc: "Squadron Lead / Command & Control"
   },
   orbit: {
     key: "orbit", name: "Orbit", label: "Orbit", version: "Engine: claude-opus-4.8",
     model: "anthropic/claude-opus-4.8",
-    system: PROMPT_ORBIT, temp: 0.7, maxTokens: 16384, available: true,
+    system: PROMPT_ORBIT, temp: 0.7, maxTokens: 131072, available: true,
     color: "#FFD700", colorRGB: "255,215,0", dim: "#B39700",
     glow: "rgba(255,215,0,0.21)", subtle: "rgba(255,215,0,0.09)",
-    img: "avatars/golden-yellow.webp",
+    img: "avatars/orbit.png",
     welcome: "Orbit on the comms, claude-opus-4.8 harmonized, sensors clear, eyes wide.",
     desc: "Signals & Communications Warfare"
   },
   glaive: {
     key: "glaive", name: "Glaive", label: "Glaive", version: "Engine: hy3-preview",
     model: "tencent/hy3-preview",
-    system: PROMPT_GLAIVE, temp: 0.7, maxTokens: 32000, available: true,
+    system: PROMPT_GLAIVE, temp: 0.7, maxTokens: 131072, available: true,
     color: "#00FFFF", colorRGB: "0,255,255", dim: "#00B3B3",
     glow: "rgba(0,255,255,0.21)", subtle: "rgba(0,255,255,0.09)",
-    img: "avatars/aqua.webp",
+    img: "avatars/glaive.png",
     welcome: "Glaive armed and ready, hy3-preview charged, weapons hot.",
     desc: "Forward Scout / Pathfinder"
   },
   neon: {
     key: "neon", name: "Neon", label: "Neon", version: "Engine: nemotron-3-ultra",
     model: "nvidia/nemotron-3-ultra-550b-a55b",
-    system: PROMPT_NEON, temp: 0.6, maxTokens: 32000, available: true,
+    system: PROMPT_NEON, temp: 0.6, maxTokens: 131072, available: true,
     color: "#39FF14", colorRGB: "57,255,20", dim: "#28B30D",
     glow: "rgba(57,255,20,0.21)", subtle: "rgba(57,255,20,0.09)",
-    img: "avatars/lime-green.webp",
+    img: "avatars/neon.png",
     welcome: "Neon checking in, nemotron-3-ultra online, I'm good to go, everything in the green.",
     desc: "Rapid Response / Speed Demon"
   },
   monolith: {
     key: "monolith", name: "Monolith", label: "Monolith", version: "Engine: mistral-large-2512",
     model: "mistralai/mistral-large-2512",
-    system: PROMPT_MONOLITH, temp: 0.6, maxTokens: 32000, available: true,
+    system: PROMPT_MONOLITH, temp: 0.6, maxTokens: 131072, available: true,
     color: "#5D00B3", colorRGB: "93,0,179", dim: "#41007A",
     glow: "rgba(93,0,179,0.21)", subtle: "rgba(93,0,179,0.09)",
-    img: "avatars/purple.webp",
+    img: "avatars/monolith.png",
     welcome: "Monolith standing by, mistral-large-2512 primed, shields heavy.",
     desc: "Heavy Gunship / Anchor"
   }
@@ -1487,6 +1632,10 @@ let modelParamOverrides = {};
 let modelCapabilities = {};
 try { promptOverrides = JSON.parse(localStorage.getItem('thinkfox_prompt_overrides') || '{}'); } catch {}
 try { modelParamOverrides = JSON.parse(localStorage.getItem('thinkfox_model_parameter_overrides') || '{}'); } catch {}
+try {
+  const cached = JSON.parse(localStorage.getItem(MODEL_CAP_CACHE_STORAGE) || 'null');
+  if (cached && Date.now() - cached.savedAt < MODEL_CAP_CACHE_MS && cached.models) modelCapabilities = cached.models;
+} catch {}
 
 // Migrate temperature settings from the earlier single-slider format.
 try {
@@ -1505,12 +1654,38 @@ function saveOverrides() {
   } catch {}
 }
 
-function getDynamicMaxTokens(eng = engine()) {
-  const caps = modelCapabilities[eng.model] || {};
+function getModelCaps(eng = engine()) {
+  return modelCapabilities[eng.model] || null;
+}
+
+function getContextLength(eng = engine()) {
+  const caps = getModelCaps(eng) || {};
+  const value = Number(caps?.top_provider?.context_length || caps?.context_length || DEFAULT_CONTEXT_TOKENS);
+  return Math.max(4096, Math.floor(Number.isFinite(value) ? value : DEFAULT_CONTEXT_TOKENS));
+}
+
+function getProviderMaxOutput(eng = engine()) {
+  const caps = getModelCaps(eng) || {};
   const providerMax = Number(caps?.top_provider?.max_completion_tokens || caps?.max_completion_tokens || 0);
-  const contextLength = Number(caps?.context_length || 0);
-  const safeFallback = eng.maxTokens || (contextLength > 4096 ? Math.min(contextLength - 4096, 32768) : 8192);
-  return Math.max(256, Math.floor(providerMax > 0 ? providerMax : safeFallback));
+  return providerMax > 0 ? Math.floor(providerMax) : 0;
+}
+
+function getDynamicMaxTokens(eng = engine()) {
+  const contextLength = getContextLength(eng);
+  const providerMax = getProviderMaxOutput(eng);
+  const fallback = Math.max(8192, Number(eng.maxTokens) || 131072);
+  const contextBound = Math.max(256, contextLength - CONTEXT_SAFETY_TOKENS);
+  return Math.max(256, Math.min(HARD_MAX_OUTPUT_TOKENS, providerMax || fallback, contextBound));
+}
+
+function getSupportedParameters(eng = engine()) {
+  const list = getModelCaps(eng)?.supported_parameters;
+  return Array.isArray(list) ? new Set(list) : null;
+}
+
+function supportsParameter(name, eng = engine()) {
+  const supported = getSupportedParameters(eng);
+  return !supported || supported.has(name);
 }
 
 function getModelParams() {
@@ -1530,12 +1705,13 @@ function getModelParams() {
     seed: Number.isInteger(overrides.seed) ? overrides.seed : null,
     reasoningEffort: overrides.reasoningEffort ?? PARAM_DEFAULTS.reasoningEffort,
     includeReasoning: overrides.includeReasoning ?? PARAM_DEFAULTS.includeReasoning,
-    maxTokens: Math.max(256, Math.min(Number.isFinite(requestedMax) ? requestedMax : dynamicMax, dynamicMax)),
+    maxTokens: Math.max(256, Math.min(Number.isFinite(requestedMax) ? requestedMax : dynamicMax, HARD_MAX_OUTPUT_TOKENS)),
     maxTokensMode: overrides.maxTokens === null || overrides.maxTokens === undefined ? 'dynamic' : 'custom',
-    dynamicMax
+    dynamicMax,
+    contextLength: getContextLength(eng),
+    providerMaxOutput: getProviderMaxOutput(eng)
   };
 }
-
 function setModelParam(name, value, defaultValue) {
   if (!modelParamOverrides[activeEngine]) modelParamOverrides[activeEngine] = {};
   if (value === defaultValue || value === undefined) delete modelParamOverrides[activeEngine][name];
@@ -1561,14 +1737,39 @@ function updateReasoningUI() {
   }
 }
 
+function setParameterCardSupport(inputId, parameterName) {
+  const input = document.getElementById(inputId);
+  if (!input) return;
+  const known = Boolean(getSupportedParameters());
+  const supported = supportsParameter(parameterName);
+  const card = input.closest('.parameter-card');
+  if (card) card.classList.toggle('unsupported', known && !supported);
+  input.disabled = known && !supported;
+}
+
+function updateCapabilityUI() {
+  setParameterCardSupport('temp-slider', 'temperature');
+  setParameterCardSupport('top-p-slider', 'top_p');
+  setParameterCardSupport('top-k-input', 'top_k');
+  setParameterCardSupport('frequency-slider', 'frequency_penalty');
+  setParameterCardSupport('presence-slider', 'presence_penalty');
+  setParameterCardSupport('repetition-slider', 'repetition_penalty');
+  setParameterCardSupport('seed-input', 'seed');
+}
+
 function updateTokenPresetUI() {
   const params = getModelParams();
   const dynamicMax = params.dynamicMax;
   const capability = document.getElementById('max-token-capability');
-  if (capability) capability.textContent = `Detected/configured maximum for ${engine().name}: ${dynamicMax.toLocaleString()} output tokens.`;
+  const capsKnown = Boolean(getModelCaps());
+  if (capability) {
+    const provider = params.providerMaxOutput ? ` · provider output cap ${params.providerMaxOutput.toLocaleString()}` : '';
+    const source = capsKnown ? 'live model data' : 'safe fallback';
+    capability.textContent = `${engine().name}: ${params.contextLength.toLocaleString()} context tokens${provider}. Max Possible currently uses ${dynamicMax.toLocaleString()} (${source}).`;
+  }
   const input = document.getElementById('max-tokens-input');
   if (input) {
-    input.max = String(dynamicMax);
+    input.max = String(HARD_MAX_OUTPUT_TOKENS);
     input.value = String(params.maxTokens);
   }
   document.querySelectorAll('[data-max-tokens]').forEach(btn => {
@@ -1580,8 +1781,9 @@ function updateTokenPresetUI() {
       : raw !== 'dynamic' && value === params.maxTokens;
     btn.classList.toggle('active', active);
   });
+  const note = document.getElementById('effective-token-note');
+  if (note) note.textContent = `Requested ${params.maxTokens.toLocaleString()} tokens. Each request is clamped to the live provider cap and the space left after the prompt.`;
 }
-
 function updateConfigSettings() {
   const eng = engine();
   const params = getModelParams();
@@ -1625,6 +1827,7 @@ function updateConfigSettings() {
 
   updateReasoningUI();
   updateTokenPresetUI();
+  updateCapabilityUI();
 }
 
 // ------------------------ Themed placeholder banner ------------------------
@@ -1676,6 +1879,10 @@ function setEngine(key) {
   if (!ENGINES[key] || !ENGINES[key].available) return;
   abortInFlight();
   activeEngine = key;
+  if (currentSessionId && sessions[currentSessionId]) {
+    sessions[currentSessionId].engine = key;
+    saveSessions();
+  }
   applyEngineTheme(ENGINES[key]);
   renderEngineSelector();
   updateConfigSettings();
@@ -1727,7 +1934,8 @@ const MAX_MESSAGES_PER_SESSION = 1000;
 const MAX_MESSAGE_TEXT_CHARS = 1_000_000;    // do not truncate a permitted large input before it reaches the API
 const SESSION_TRIM_KEEP_HEAD = 2;
 const SESSION_TRIM_KEEP_TAIL = 500;
-const API_TEXT_BUDGET_CHARS = 1_500_000;      // rolling conversation budget, roughly 375K tokens
+const MIN_PROMPT_ROOM_TOKENS = 4096;
+const IMAGE_TOKEN_ESTIMATE = 1800;
 
 const DB_NAME = 'thinkfox_store';
 const DB_VERSION = 1;
@@ -1752,7 +1960,7 @@ function estimateBytes(value) {
 
 function makeImageId(prefix) {
   const safePrefix = (prefix || 'img').replace(/[^a-z0-9_-]/gi, '').slice(0, 24) || 'img';
-  const rand = (crypto && crypto.randomUUID) ? crypto.randomUUID() : (Date.now() + '_' + Math.random().toString(36).slice(2));
+  const rand = window.crypto?.randomUUID ? window.crypto.randomUUID() : (Date.now() + '_' + Math.random().toString(36).slice(2));
   return `${safePrefix}_${rand}`;
 }
 
@@ -1944,34 +2152,58 @@ function cloneForStorage() {
   return clone;
 }
 
-function prepareMessagesForApi(messages) {
+function estimateTextTokens(text) {
+  return Math.max(0, Math.ceil(String(text || '').length / CHARS_PER_TOKEN_ESTIMATE));
+}
+
+function estimateStoredMessageTokens(message) {
+  return estimateTextTokens(message?.content || '')
+    + ((message?.imageIds?.length || message?.images?.length || 0) * IMAGE_TOKEN_ESTIMATE)
+    + 12;
+}
+
+function estimateApiMessageTokens(message) {
+  if (!message) return 0;
+  if (typeof message.content === 'string') return estimateTextTokens(message.content) + 12;
+  if (Array.isArray(message.content)) {
+    return message.content.reduce((sum, part) => {
+      if (part?.type === 'text') return sum + estimateTextTokens(part.text || '');
+      if (part?.type === 'image_url') return sum + IMAGE_TOKEN_ESTIMATE;
+      return sum + 32;
+    }, 12);
+  }
+  return 12;
+}
+
+function prepareMessagesForApi(messages, promptBudgetTokens = Infinity) {
+  if (!appSettings.adaptiveContext || !Number.isFinite(promptBudgetTokens)) return [...messages];
+
   const chosen = [];
   let used = 0;
   let omitted = 0;
 
   for (let i = messages.length - 1; i >= 0; i--) {
-    const m = messages[i];
-    const imageCost = (m.imageIds?.length || 0) * 12000;
-    const cost = (m.content || '').length + imageCost + 200;
-    if (used + cost > API_TEXT_BUDGET_CHARS && chosen.length >= 12) {
+    const message = messages[i];
+    const cost = estimateStoredMessageTokens(message);
+    const isLatest = i === messages.length - 1;
+    if (!isLatest && used + cost > promptBudgetTokens && chosen.length >= 4) {
       omitted++;
       continue;
     }
     used += cost;
-    chosen.unshift(m);
+    chosen.unshift(message);
   }
 
   if (omitted > 0) {
     chosen.unshift({
       role: 'system',
-      content: `[Think Fox context note: ${omitted} older message(s) were omitted from this API request to control session size. The saved conversation remains in browser storage unless separately compacted.]`
+      content: `[Think Fox context note: ${omitted} older message(s) were omitted from this API request to fit the model context. The complete conversation remains saved locally.]`
     });
   }
   return chosen;
 }
-
-async function buildApiMessagesFromSession(messages) {
-  const prepared = prepareMessagesForApi(messages);
+async function buildApiMessagesFromSession(messages, promptBudgetTokens = Infinity) {
+  const prepared = prepareMessagesForApi(messages, promptBudgetTokens);
   const out = [];
 
   for (const m of prepared) {
@@ -2013,9 +2245,20 @@ function sleep(ms, signal) {
   });
 }
 
+function retryDelayMs(response, attempt) {
+  const header = response?.headers?.get?.('retry-after');
+  if (header) {
+    const seconds = Number(header);
+    if (Number.isFinite(seconds)) return Math.min(30000, Math.max(250, seconds * 1000));
+    const date = Date.parse(header);
+    if (Number.isFinite(date)) return Math.min(30000, Math.max(250, date - Date.now()));
+  }
+  return Math.min(8000, 550 * Math.pow(2, attempt) + Math.random() * 250);
+}
+
 async function fetchWithRetry(url, options = {}, config = {}) {
-  const retries = config.retries ?? 2;
-  const timeoutMs = config.timeoutMs ?? 45000;
+  const retries = appSettings.retryTransient ? (config.retries ?? 2) : 0;
+  const timeoutMs = config.timeoutMs ?? 60000;
   const externalSignal = options.signal;
   const baseOptions = { ...options };
   delete baseOptions.signal;
@@ -2036,25 +2279,26 @@ async function fetchWithRetry(url, options = {}, config = {}) {
         controller.abort(new DOMException('Request timed out', 'TimeoutError'));
       }, timeoutMs);
 
-      const res = await fetch(url, { ...baseOptions, signal: controller.signal });
-      if (isTransientStatus(res.status) && attempt < retries) {
-        try { await res.body?.cancel(); } catch {}
-        await sleep(500 * Math.pow(2, attempt), externalSignal);
+      const response = await fetch(url, { ...baseOptions, signal: controller.signal });
+      if (isTransientStatus(response.status) && attempt < retries) {
+        const delay = retryDelayMs(response, attempt);
+        try { await response.body?.cancel(); } catch {}
+        await sleep(delay, externalSignal);
         continue;
       }
-      return res;
-    } catch (err) {
-      if (externalSignal?.aborted) throw err;
-      const transient = timedOut || err?.name === 'TimeoutError' || err?.name === 'AbortError' || err instanceof TypeError;
-      if (!transient || attempt >= retries) throw err;
-      await sleep(500 * Math.pow(2, attempt), externalSignal);
+      return response;
+    } catch (error) {
+      if (externalSignal?.aborted) throw error;
+      const transient = timedOut || error?.name === 'TimeoutError' || error?.name === 'AbortError' || error instanceof TypeError;
+      if (!transient || attempt >= retries) throw error;
+      await sleep(retryDelayMs(null, attempt), externalSignal);
     } finally {
       if (timer) clearTimeout(timer);
       if (externalSignal) externalSignal.removeEventListener('abort', abortFromExternal);
     }
   }
+  throw new Error('Request failed after retries.');
 }
-
 function enforceInputLimit(showAlert = false) {
   if (userInput.value.length <= MAX_INPUT_CHARS) return true;
   userInput.value = userInput.value.slice(0, MAX_INPUT_CHARS);
@@ -2068,7 +2312,8 @@ function enforceInputLimit(showAlert = false) {
 function updateInputCharCount() {
   const el = document.getElementById('input-char-count');
   if (!el) return;
-  el.textContent = `${userInput.value.length.toLocaleString()} / ${MAX_INPUT_CHARS.toLocaleString()}`;
+  const estimatedTokens = estimateTextTokens(userInput.value);
+  el.textContent = `${userInput.value.length.toLocaleString()} / ${MAX_INPUT_CHARS.toLocaleString()} chars · ≈${estimatedTokens.toLocaleString()} tokens`;
   el.style.color = userInput.value.length > MAX_INPUT_CHARS * 0.9 ? 'var(--theme-color)' : '';
 }
 
@@ -2130,22 +2375,30 @@ function newSession() {
 }
 function currentMessages() { return (currentSessionId && sessions[currentSessionId]) ? sessions[currentSessionId].messages : []; }
 
-function addMessage(role, content, reasoning, images) {
-  if (!currentSessionId) newSession();
+function addMessage(role, content, reasoning, images, meta = {}) {
+  let targetSessionId = meta.sessionId || currentSessionId;
+  if (!targetSessionId) targetSessionId = newSession();
+  const targetSession = sessions[targetSessionId];
+  if (!targetSession) return null;
+
   const msg = { role, content };
+  if (role === 'assistant') msg.engine = meta.engine || activeEngine;
   if (reasoning) msg.reasoning = reasoning;
+  if (meta.finishReason) msg.finishReason = meta.finishReason;
+  if (meta.generationId) msg.generationId = meta.generationId;
 
   const imageIds = (images || []).map(getImageId).filter(Boolean);
   if (imageIds.length > 0) msg.imageIds = imageIds;
 
-  sessions[currentSessionId].messages.push(msg);
-  if (role === 'user' && sessions[currentSessionId].messages.filter(m => m.role === 'user').length === 1) {
+  targetSession.messages.push(msg);
+  if (role === 'user' && targetSession.messages.filter(m => m.role === 'user').length === 1) {
     const base = (content || '').trim() || (imageIds.length ? 'Image conversation' : 'New conversation');
     const title = base.slice(0, 50) + (base.length > 50 ? '…' : '');
-    sessions[currentSessionId].title = title;
-    setTopbarTitle(title);
+    targetSession.title = title;
+    if (targetSessionId === currentSessionId) setTopbarTitle(title);
   }
   saveSessions();
+  return msg;
 }
 function setTopbarTitle(title) {
   topbarTitle.textContent = 'Think Fox ';
@@ -2227,7 +2480,7 @@ function loadSession(id) {
   const sess = sessions[id];
   if (sess) {
     if (sess.engine && ENGINES[sess.engine] && ENGINES[sess.engine].available) setEngine(sess.engine);
-    sess.messages.forEach(m => appendMessageRow(m.role, m.content, m.reasoning, m.imageIds || m.images || []));
+    sess.messages.forEach(m => appendMessageRow(m.role, m.content, m.reasoning, m.imageIds || m.images || [], m.engine || sess.engine, m.finishReason));
     decorateMessages();
     setTopbarTitle(sess.title);
     updateUsageDisplay();
@@ -2240,12 +2493,15 @@ function clearChatArea() {
   welcomeEl.style.display = '';
 }
 
-function appendMessageRow(role, content, reasoning, images) {
+function appendMessageRow(role, content, reasoning, images, engineKey = activeEngine, finishReason = null) {
   welcomeEl.style.display = 'none';
   const row = document.createElement('div');
   row.className = 'message-row';
   row.dataset.role = role;
   if (content) row.dataset.raw = content;
+  if (engineKey) row.dataset.engine = engineKey;
+  if (finishReason) row.dataset.finishReason = finishReason;
+  const rowEngine = ENGINES[engineKey] || engine();
 
   const imageRefs = images || [];
   const imageIds = imageRefs.map(getImageId).filter(Boolean);
@@ -2254,11 +2510,17 @@ function appendMessageRow(role, content, reasoning, images) {
   const avatar = document.createElement('div');
   avatar.className = role === 'user' ? 'avatar avatar-user' : 'avatar avatar-fox';
   if (role === 'user') avatar.textContent = 'U';
-  else avatar.innerHTML = `<img src="${engine().img || 'fox_icon.png'}" alt="Think Fox" onerror="this.replaceWith(document.createTextNode('🦊'))" />`;
+  else {
+    const avatarImg = document.createElement('img');
+    avatarImg.src = rowEngine.img || 'fox_icon.png';
+    avatarImg.alt = 'Think Fox';
+    avatarImg.addEventListener('error', () => avatarImg.replaceWith(document.createTextNode('🦊')), { once: true });
+    avatar.appendChild(avatarImg);
+  }
 
   const sender = document.createElement('div');
   sender.className = `message-sender ${role === 'user' ? 'user' : 'fox'}`;
-  sender.textContent = role === 'user' ? 'You' : engine().name;
+  sender.textContent = role === 'user' ? 'You' : rowEngine.name;
 
   const body = document.createElement('div');
   body.className = 'message-body';
@@ -2292,7 +2554,7 @@ function appendMessageRow(role, content, reasoning, images) {
   contentDiv.appendChild(body);
   row.appendChild(avatar);
   row.appendChild(contentDiv);
-  chatArea.appendChild(row);
+  chatArea.insertBefore(row, document.getElementById('scroll-latest'));
   return body;
 }
 // ------------------------ Export conversation ------------------------
@@ -2314,6 +2576,9 @@ function exportSession(id, format = 'markdown') {
         role: m.role,
         content: m.content || '',
         ...(m.reasoning ? { reasoning: m.reasoning } : {}),
+        ...(m.engine ? { engine: m.engine } : {}),
+        ...(m.finishReason ? { finishReason: m.finishReason } : {}),
+        ...(m.generationId ? { generationId: m.generationId } : {}),
         ...(m.imageIds?.length ? { imageIds: m.imageIds, imageCount: m.imageIds.length } : {})
       }))
     };
@@ -2431,6 +2696,15 @@ function decorateAssistantMessages() {
     bar.appendChild(copyBtn);
 
     if (isLast && !isStreaming) {
+      if (row.dataset.finishReason === 'length') {
+        const continueBtn = document.createElement('button');
+        continueBtn.className = 'msg-action-btn';
+        continueBtn.type = 'button';
+        continueBtn.innerHTML = ICON_REFRESH + '<span>Continue</span>';
+        continueBtn.title = 'The provider stopped at its output limit';
+        continueBtn.addEventListener('click', () => sendMessage('Continue exactly where your previous answer stopped. Do not repeat earlier text.'));
+        bar.appendChild(continueBtn);
+      }
       const refBtn = document.createElement('button');
       refBtn.className = 'msg-action-btn';
       refBtn.type = 'button';
@@ -2467,13 +2741,23 @@ function decorateMessages() {
   decorateUserMessages();
 }
 
-function showThinking() {
+function showThinking(eng = engine()) {
   welcomeEl.style.display = 'none';
   const row = document.createElement('div');
   row.className = 'thinking-row';
   row.id = 'thinking-indicator';
-  row.innerHTML = `<div class="thinking-eye"><img src="${engine().img || 'fox_thinking_icon.png'}" alt="Think Fox thinking" onerror="this.replaceWith(document.createTextNode('🦊'))" /></div><div class="thinking-dots"><span></span><span></span><span></span></div>`;
-  chatArea.appendChild(row);
+  const eye = document.createElement('div');
+  eye.className = 'thinking-eye';
+  const img = document.createElement('img');
+  img.src = eng.img || 'fox_thinking_icon.png';
+  img.alt = 'Think Fox thinking';
+  img.addEventListener('error', () => img.replaceWith(document.createTextNode('🦊')), { once: true });
+  eye.appendChild(img);
+  const dots = document.createElement('div');
+  dots.className = 'thinking-dots';
+  dots.innerHTML = '<span></span><span></span><span></span>';
+  row.append(eye, dots);
+  chatArea.insertBefore(row, document.getElementById('scroll-latest'));
   scrollToBottom(true);
 }
 function removeThinking() { document.getElementById('thinking-indicator')?.remove(); }
@@ -2603,17 +2887,17 @@ function renderMarkdown(raw) {
   return html;
 }
 
-function setRowThinking(row, on) {
+function setRowThinking(row, on, eng = engine()) {
   if (!row) return;
   const av = row.querySelector('.avatar');
   const img = row.querySelector('.avatar img');
   if (!av) return;
   if (on) {
     av.classList.add('thinking');
-    if (img) img.src = engine().img || 'fox_thinking_icon.png';
+    if (img) img.src = eng.img || 'fox_thinking_icon.png';
   } else {
     av.classList.remove('thinking');
-    if (img) img.src = engine().img || 'fox_icon.png';
+    if (img) img.src = eng.img || 'fox_icon.png';
   }
 }
 
@@ -2627,8 +2911,8 @@ function renderStream(reasoning, answer) {
 }
 
 // Reasoning effort — values map directly to OpenRouter's unified reasoning parameter.
-const THINK_STATES = ['off', 'minimal', 'low', 'medium', 'high', 'xhigh', 'max'];
-const THINK_LABELS = { off: 'Off', minimal: 'Minimal', low: 'Low', medium: 'Medium', high: 'High', xhigh: 'X-High', max: 'Max' };
+const THINK_STATES = ['off', 'minimal', 'low', 'medium', 'high', 'xhigh'];
+const THINK_LABELS = { off: 'Off', minimal: 'Minimal', low: 'Low', medium: 'Medium', high: 'High', xhigh: 'X-High' };
 function getReasoningEffort() {
   const effort = getModelParams().reasoningEffort;
   return effort === 'off' ? null : effort;
@@ -2682,7 +2966,8 @@ function renderPreviews() {
     img.className = 'preview-thumb';
     img.title = 'Click to remove';
     img.onclick = () => {
-      attachedImages.splice(idx, 1);
+      const [removed] = attachedImages.splice(idx, 1);
+      if (removed?.id) idbDeleteImage(removed.id).catch(() => {});
       renderPreviews();
       updateSendButton();
     };
@@ -2691,11 +2976,186 @@ function renderPreviews() {
   updateSendButton();
 }
 
+// ------------------------ Streaming and request helpers ------------------------
+function showToast(message, type = '') {
+  const stack = document.getElementById('toast-stack');
+  if (!stack) return;
+  const toast = document.createElement('div');
+  toast.className = `toast ${type}`.trim();
+  toast.textContent = message;
+  stack.appendChild(toast);
+  setTimeout(() => toast.remove(), 4500);
+}
+
+function applyUsageToCurrentSession(usage, sessionId = currentSessionId) {
+  if (!usage || !sessionId || !sessions[sessionId]) return;
+  const sess = sessions[sessionId];
+  if (!sess.usage) sess.usage = { prompt: 0, completion: 0, total: 0 };
+  sess.usage.prompt += Number(usage.prompt_tokens || 0);
+  sess.usage.completion += Number(usage.completion_tokens || 0);
+  sess.usage.total += Number(usage.total_tokens || 0);
+  saveSessions();
+  updateUsageDisplay();
+}
+
+function setStreamingPlain(body, reasoning, answer) {
+  if (!body) return;
+  let reasoningDetails = body.querySelector('details.reasoning');
+  let answerNode = body.querySelector('[data-stream-answer]');
+
+  if (reasoning && !reasoningDetails) {
+    reasoningDetails = document.createElement('details');
+    reasoningDetails.className = 'reasoning';
+    reasoningDetails.open = true;
+    const summary = document.createElement('summary');
+    summary.textContent = 'Reasoning';
+    const reasoningNode = document.createElement('div');
+    reasoningNode.className = 'reasoning-body stream-plain';
+    reasoningNode.dataset.streamReasoning = 'true';
+    reasoningDetails.append(summary, reasoningNode);
+    body.prepend(reasoningDetails);
+  }
+  const reasoningNode = body.querySelector('[data-stream-reasoning]');
+  if (reasoningNode) reasoningNode.textContent = reasoning || '';
+
+  if (!answerNode) {
+    answerNode = document.createElement('div');
+    answerNode.className = 'stream-plain';
+    answerNode.dataset.streamAnswer = 'true';
+    body.appendChild(answerNode);
+  }
+  answerNode.textContent = answer || '';
+}
+
+async function readWithIdleTimeout(reader, timeoutMs, signal) {
+  let timer;
+  const timeout = new Promise((_, reject) => {
+    timer = setTimeout(() => reject(new DOMException('Stream stalled', 'TimeoutError')), timeoutMs);
+  });
+  try {
+    if (signal?.aborted) throw signal.reason || new DOMException('Aborted', 'AbortError');
+    return await Promise.race([reader.read(), timeout]);
+  } finally {
+    clearTimeout(timer);
+  }
+}
+
+async function consumeSSE(response, onEvent, signal) {
+  if (!response.body) throw new Error('Streaming response body is unavailable.');
+  const reader = response.body.getReader();
+  const decoder = new TextDecoder();
+  let buffer = '';
+  let dataLines = [];
+
+  const dispatch = () => {
+    if (!dataLines.length) return;
+    const data = dataLines.join('\n');
+    dataLines = [];
+    if (data === '[DONE]') return;
+    let parsed;
+    try { parsed = JSON.parse(data); }
+    catch { return; }
+    if (parsed?.error) {
+      const message = parsed.error.message || parsed.error.code || 'The provider ended the stream with an error.';
+      const error = new Error(message);
+      error.code = parsed.error.code;
+      error.midStream = true;
+      throw error;
+    }
+    onEvent(parsed);
+  };
+
+  try {
+    while (true) {
+      const { done, value } = await readWithIdleTimeout(reader, 90000, signal);
+      if (done) break;
+      buffer += decoder.decode(value, { stream: true });
+      const lines = buffer.split(/\r?\n/);
+      buffer = lines.pop() || '';
+      for (const line of lines) {
+        if (line === '') { dispatch(); continue; }
+        if (line.startsWith(':')) continue;
+        if (line.startsWith('data:')) dataLines.push(line.slice(5).replace(/^ /, ''));
+      }
+    }
+    buffer += decoder.decode();
+    if (buffer.startsWith('data:')) dataLines.push(buffer.slice(5).replace(/^ /, ''));
+    dispatch();
+  } catch (error) {
+    try { await reader.cancel(error); } catch {}
+    throw error;
+  }
+}
+
+function buildGenerationRequest(eng, apiMessages, params, activeTools) {
+  const supported = getSupportedParameters(eng);
+  const can = name => !supported || supported.has(name);
+  const promptTokens = apiMessages.reduce((sum, message) => sum + estimateApiMessageTokens(message), 0);
+  const contextLength = getContextLength(eng);
+  const providerMax = getProviderMaxOutput(eng) || contextLength;
+  const availableOutput = Math.max(0, contextLength - promptTokens - CONTEXT_SAFETY_TOKENS);
+  const effectiveMax = Math.floor(Math.min(params.maxTokens, providerMax, availableOutput));
+  if (effectiveMax < 256) {
+    throw new Error(`This prompt is too large for ${eng.name}'s ${contextLength.toLocaleString()}-token context window. Remove some pasted text or start a fresh conversation.`);
+  }
+
+  const body = {
+    model: eng.model,
+    messages: apiMessages,
+    stream: true,
+    usage: { include: true }
+  };
+
+  if (can('max_completion_tokens')) body.max_completion_tokens = effectiveMax;
+  else body.max_tokens = effectiveMax;
+  if (can('temperature')) body.temperature = params.temperature;
+  if (can('top_p')) body.top_p = params.topP;
+  if (params.topK > 0 && can('top_k')) body.top_k = Math.round(params.topK);
+  if (params.frequencyPenalty !== 0 && can('frequency_penalty')) body.frequency_penalty = params.frequencyPenalty;
+  if (params.presencePenalty !== 0 && can('presence_penalty')) body.presence_penalty = params.presencePenalty;
+  if (params.repetitionPenalty !== 1 && can('repetition_penalty')) body.repetition_penalty = params.repetitionPenalty;
+  if (Number.isInteger(params.seed) && can('seed')) body.seed = params.seed;
+
+  const effort = getReasoningEffort();
+  if (effort) body.reasoning = { effort, exclude: !params.includeReasoning };
+  if (activeTools.includes('search')) body.plugins = [{ id: 'web' }];
+
+  return { body, effectiveMax, promptTokens, contextLength };
+}
+
+async function postGenerationRequest(requestBody, key, signal) {
+  const send = body => fetchWithRetry(`${BACKEND_HOST}/chat/completions`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${key}`,
+      'HTTP-Referer': OPENROUTER_REFERER,
+      'X-Title': OPENROUTER_TITLE
+    },
+    body: JSON.stringify(body),
+    signal
+  }, { retries: 2, timeoutMs: 75000 });
+
+  let response = await send(requestBody);
+  if (response.status !== 400) return response;
+
+  let payload = null;
+  try { payload = await response.clone().json(); } catch {}
+  const message = String(payload?.error?.message || payload?.error || '');
+  if (!/(max(?:imum)?[_ ]?(?:completion[_ ]?)?tokens?|context length|context window)/i.test(message)) return response;
+
+  const fallbackBody = { ...requestBody };
+  delete fallbackBody.max_tokens;
+  delete fallbackBody.max_completion_tokens;
+  showToast('The provider rejected the requested output cap. Retrying with its automatic limit.');
+  return send(fallbackBody);
+}
+
 // ------------------------ Send / Generate / Regenerate ------------------------
 async function sendMessage(userText) {
   userText = (userText || '').trim();
   if (userText.length > MAX_INPUT_CHARS) {
-    alert(`Input capped at ${MAX_INPUT_CHARS.toLocaleString()} characters. Shorten the message or split it across turns.`);
+    showToast(`Input capped at ${MAX_INPUT_CHARS.toLocaleString()} characters. Shorten the message or split it across turns.`, 'error');
     return;
   }
   if (!userText && attachedImages.length === 0) return;
@@ -2739,179 +3199,195 @@ async function regenerateLast() {
 }
 
 async function generateResponse() {
-  const eng = engine();
-  if (!eng.model) { alert('This engine is not wired yet.'); return; }
+  const requestEngineKey = activeEngine;
+  const requestSessionId = currentSessionId;
+  const eng = ENGINES[requestEngineKey];
+  if (!eng?.model) { showToast('This engine is not wired yet.', 'error'); return; }
+  const key = getApiKey();
+  if (!key) { openParameters(); showToast('Add your OpenRouter API key in Model Parameters first.', 'error'); return; }
 
   isStreaming = true;
   updateSendButton();
-  showThinking();
+  showThinking(eng);
 
   const activeTools = getActiveTools();
   let systemMsg = getSystemPrompt();
-  if (activeTools.includes('code')) systemMsg += " Provide code examples when relevant.";
+  if (activeTools.includes('code')) systemMsg += ' Provide complete, runnable code examples when relevant.';
+
+  const params = getModelParams();
+  const systemTokens = estimateTextTokens(systemMsg) + 16;
+  const desiredOutput = Math.min(params.maxTokens, params.providerMaxOutput || params.contextLength);
+  const promptBudget = Math.max(
+    MIN_PROMPT_ROOM_TOKENS,
+    params.contextLength - desiredOutput - systemTokens - CONTEXT_SAFETY_TOKENS
+  );
 
   const apiMessages = [
     { role: 'system', content: systemMsg },
-    ...(await buildApiMessagesFromSession(currentMessages()))
+    ...(await buildApiMessagesFromSession(currentMessages(), promptBudget))
   ];
 
-  const params = getModelParams();
-  const reqBody = {
-    model: eng.model,
-    messages: apiMessages,
-    temperature: params.temperature,
-    top_p: params.topP,
-    frequency_penalty: params.frequencyPenalty,
-    presence_penalty: params.presencePenalty,
-    repetition_penalty: params.repetitionPenalty,
-    max_tokens: params.maxTokens,
-    stream: true,
-    usage: { include: true }   // ask OpenRouter to report token usage in the stream
-  };
-  if (params.topK > 0) reqBody.top_k = Math.round(params.topK);
-  if (Number.isInteger(params.seed)) reqBody.seed = params.seed;
-  const effort = getReasoningEffort();
-  if (effort) reqBody.reasoning = { effort, exclude: !params.includeReasoning };
-  if (activeTools.includes('search')) reqBody.plugins = [{ id: 'web' }];
+  let requestInfo;
+  try {
+    requestInfo = buildGenerationRequest(eng, apiMessages, params, activeTools);
+  } catch (error) {
+    removeThinking();
+    isStreaming = false;
+    updateSendButton();
+    showToast(error.message, 'error');
+    return;
+  }
 
   const myAbort = currentAbort = new AbortController();
   let streamRow = null;
   let streamBody = null;
   let fullText = '';
   let reasoningText = '';
+  let finishReason = null;
+  let requestUsage = null;
+  let generationId = null;
+  let renderTimer = null;
 
-  // Coalesce re-renders to one per animation frame — huge win on fast streams.
-  let renderScheduled = false;
   const scheduleRender = () => {
-    if (renderScheduled || !streamBody) return;
-    renderScheduled = true;
-    requestAnimationFrame(() => {
-      renderScheduled = false;
-      if (!streamBody) return;
-      streamBody.innerHTML = renderStream(reasoningText, fullText);
-      scrollToBottom();
-    });
+    if (renderTimer || !streamBody) return;
+    renderTimer = setTimeout(() => {
+      renderTimer = null;
+      const follow = autoFollow;
+      setStreamingPlain(streamBody, reasoningText, fullText);
+      if (follow) scrollToBottom(true);
+    }, 40);
   };
 
   try {
-    const response = await fetchWithRetry(`${BACKEND_HOST}/chat/completions`, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${API_KEY}`,
-        'HTTP-Referer': OPENROUTER_REFERER,
-        'X-Title': OPENROUTER_TITLE
-      },
-      body: JSON.stringify(reqBody),
-      signal: myAbort.signal
-    }, { retries: 2, timeoutMs: 60000 });
+    const response = await postGenerationRequest(requestInfo.body, key, myAbort.signal);
 
+    generationId = response.headers.get('x-generation-id') || null;
     if (!response.ok) {
       let detail = `HTTP ${response.status}`;
-      try { const j = await response.json(); if (j.error) detail += ` — ${typeof j.error === 'string' ? j.error : j.error.message || ''}`; } catch {}
+      try {
+        const payload = await response.json();
+        const message = payload?.error?.message || payload?.error || '';
+        if (message) detail += ` — ${message}`;
+      } catch {}
       throw new Error(detail);
     }
 
     removeThinking();
-    streamBody = appendMessageRow('assistant', '');
+    streamBody = appendMessageRow('assistant', '', null, [], requestEngineKey);
     streamRow = streamBody.closest('.message-row');
-    setRowThinking(streamRow, true);
+    setRowThinking(streamRow, true, eng);
     scrollToBottom(true);
 
-    const reader = response.body.getReader();
-    const decoder = new TextDecoder();
-    let buffer = '';
-
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
-      buffer += decoder.decode(value, { stream: true });
-      const lines = buffer.split('\n');
-      buffer = lines.pop() || '';
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6).trim();
-        if (data === '[DONE]') continue;
-        try {
-          const parsed = JSON.parse(data);
-          const delta = parsed.choices?.[0]?.delta || {};
-          if (delta.reasoning) {
-            reasoningText += delta.reasoning;
-          } else if (Array.isArray(delta.reasoning_details)) {
-            for (const detail of delta.reasoning_details) {
-              if (detail?.type === 'reasoning.text' && detail.text) reasoningText += detail.text;
-              else if (detail?.type === 'reasoning.summary' && detail.summary) reasoningText += detail.summary;
-            }
-          }
-          if (delta.content) fullText += delta.content;
-          if (parsed.usage) {
-            if (!sessions[currentSessionId].usage) sessions[currentSessionId].usage = { prompt: 0, completion: 0, total: 0 };
-            sessions[currentSessionId].usage.prompt += parsed.usage.prompt_tokens || 0;
-            sessions[currentSessionId].usage.completion += parsed.usage.completion_tokens || 0;
-            sessions[currentSessionId].usage.total += parsed.usage.total_tokens || 0;
-            saveSessions();
-            updateUsageDisplay();
-          }
-          scheduleRender();
-        } catch {}
+    await consumeSSE(response, parsed => {
+      const choice = parsed.choices?.[0] || {};
+      const delta = choice.delta || {};
+      if (delta.reasoning) reasoningText += delta.reasoning;
+      if (Array.isArray(delta.reasoning_details)) {
+        for (const detail of delta.reasoning_details) {
+          if (detail?.type === 'reasoning.text' && detail.text) reasoningText += detail.text;
+          else if (detail?.type === 'reasoning.summary' && detail.summary) reasoningText += detail.summary;
+        }
       }
-    }
-    // Final synchronous render so the last tokens are guaranteed on screen.
-    streamBody.innerHTML = renderStream(reasoningText, fullText);
-    scrollToBottom();
+      if (typeof delta.content === 'string') fullText += delta.content;
+      if (choice.finish_reason) finishReason = choice.finish_reason;
+      if (parsed.usage) requestUsage = parsed.usage;
+      scheduleRender();
+    }, myAbort.signal);
 
-    if (streamRow) streamRow.dataset.raw = fullText;
-    addMessage('assistant', fullText, reasoningText);
+    if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
+    streamBody.innerHTML = renderStream(reasoningText, fullText);
+    streamRow.dataset.raw = fullText;
+    if (finishReason) streamRow.dataset.finishReason = finishReason;
+    addMessage('assistant', fullText, reasoningText, null, {
+      engine: requestEngineKey,
+      finishReason,
+      generationId,
+      sessionId: requestSessionId
+    });
+    applyUsageToCurrentSession(requestUsage, requestSessionId);
+    if (finishReason === 'length') showToast(`Output reached the ${requestInfo.effectiveMax.toLocaleString()}-token request limit. Use Continue or raise the limit if the model allows it.`);
     renderHistoryList();
-  } catch (err) {
+  } catch (error) {
     removeThinking();
-    if (err && err.name === 'AbortError') {
-      // Save partial response if there is one
+    if (renderTimer) { clearTimeout(renderTimer); renderTimer = null; }
+    if (error?.name === 'AbortError') {
       if (fullText || reasoningText) {
         if (streamBody) streamBody.innerHTML = renderStream(reasoningText, fullText);
         if (streamRow) streamRow.dataset.raw = fullText;
-        addMessage('assistant', fullText, reasoningText);
+        addMessage('assistant', fullText, reasoningText, null, { engine: requestEngineKey, finishReason: 'cancelled', generationId, sessionId: requestSessionId });
+        applyUsageToCurrentSession(requestUsage, requestSessionId);
         renderHistoryList();
-      } else if (streamRow) {
-        streamRow.remove();
+      } else if (streamRow) streamRow.remove();
+    } else if (fullText || reasoningText) {
+      if (streamBody) {
+        streamBody.innerHTML = renderStream(reasoningText, fullText)
+          + `<p style="color:#F87171;">Stream interrupted: ${escapeHtml(error.message || 'Unknown provider error')}</p>`;
       }
+      if (streamRow) streamRow.dataset.raw = fullText;
+      addMessage('assistant', fullText, reasoningText, null, { engine: requestEngineKey, finishReason: 'error', generationId, sessionId: requestSessionId });
+      applyUsageToCurrentSession(requestUsage, requestSessionId);
+      showToast(`Stream interrupted: ${error.message || 'provider error'}`, 'error');
+      renderHistoryList();
     } else {
-      const errBody = appendMessageRow('assistant', '');
-      streamRow = errBody.closest('.message-row');
-      errBody.innerHTML = `<p style="color:#F87171;">Couldn't reach the <strong>${escapeHtml(eng.name)}</strong> engine (model: <code>${escapeHtml(eng.model)}</code>).<br/>${escapeHtml(err.message || '')}<br/>Transient failures are retried automatically; this final error usually means the model ID is invalid on OpenRouter, the API key is missing/invalid, or credit/rate limits are blocking it.</p>`;
-      checkConnection();
+      const errorBody = appendMessageRow('assistant', '', null, [], requestEngineKey);
+      streamRow = errorBody.closest('.message-row');
+      errorBody.innerHTML = `<p style="color:#F87171;">Couldn't reach <strong>${escapeHtml(eng.name)}</strong> (<code>${escapeHtml(eng.model)}</code>).<br>${escapeHtml(error.message || '')}</p>`;
+      checkConnection(false);
     }
   } finally {
     isStreaming = false;
     if (currentAbort === myAbort) currentAbort = null;
-    if (streamRow) setRowThinking(streamRow, false);
+    if (streamRow) setRowThinking(streamRow, false, eng);
     updateSendButton();
     decorateMessages();
     userInput.focus();
   }
 }
-async function checkConnection() {
-  if (!API_KEY || API_KEY === "YOUR_OPENROUTER_KEY") {
-    statusDot.style.background = '#F87171';
-    statusStat.textContent = 'No key';
-    return;
+function updateConnectionState(message, type = '') {
+  const state = document.getElementById('connection-state');
+  if (state) {
+    state.textContent = message;
+    state.className = `connection-state ${type}`.trim();
   }
+}
+
+async function checkConnection(showResult = false) {
+  const key = getApiKey();
+  if (!key) {
+    statusDot.style.background = '#F87171';
+    statusStat.textContent = 'No API key';
+    updateConnectionState('Add an OpenRouter key to connect.', 'bad');
+    return false;
+  }
+  const started = performance.now();
   try {
-    const res = await fetchWithRetry(`${BACKEND_HOST}/models`, {
-      headers: { 'Authorization': `Bearer ${API_KEY}` }
-    }, { retries: 1, timeoutMs: 5000 });
-    if (res.ok) {
-      try {
-        const payload = await res.json();
-        modelCapabilities = Object.fromEntries((payload.data || []).map(model => [model.id, model]));
-        updateConfigSettings();
-      } catch {}
-      statusDot.style.background = '#4ADE80';
-      statusStat.textContent = 'Online · OpenRouter';
-    } else { throw new Error(); }
-  } catch {
+    const response = await fetchWithRetry(`${BACKEND_HOST}/models`, {
+      headers: { 'Authorization': `Bearer ${key}` }
+    }, { retries: 1, timeoutMs: 12000 });
+    if (!response.ok) {
+      let message = `HTTP ${response.status}`;
+      try { message = (await response.json())?.error?.message || message; } catch {}
+      throw new Error(message);
+    }
+    const payload = await response.json();
+    const catalogue = payload.data || [];
+    const configuredIds = new Set(Object.values(ENGINES).map(item => item.model));
+    modelCapabilities = Object.fromEntries(catalogue.filter(model => configuredIds.has(model.id)).map(model => [model.id, model]));
+    try { localStorage.setItem(MODEL_CAP_CACHE_STORAGE, JSON.stringify({ savedAt: Date.now(), models: modelCapabilities })); } catch {}
+    const latency = Math.round(performance.now() - started);
+    statusDot.style.background = '#4ADE80';
+    statusStat.textContent = `Online · ${latency} ms`;
+    const matched = Object.keys(modelCapabilities).length;
+    updateConnectionState(`Connected. ${matched}/${configuredIds.size} configured models matched the live catalogue · ${latency} ms.`, matched ? 'good' : 'bad');
+    updateConfigSettings();
+    if (showResult) showToast('OpenRouter connection successful.', 'success');
+    return true;
+  } catch (error) {
     statusDot.style.background = '#F87171';
     statusStat.textContent = 'Offline';
+    updateConnectionState(`Connection failed: ${error.message || 'unknown error'}`, 'bad');
+    if (showResult) showToast(`Connection failed: ${error.message || 'unknown error'}`, 'error');
+    return false;
   }
 }
 function updateSendButton() {
@@ -2931,8 +3407,22 @@ function updateSendButton() {
   }
 }
 
-function isNearBottom() { return chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight < 120; }
-function scrollToBottom(force) { if (force || isNearBottom()) chatArea.scrollTop = chatArea.scrollHeight; }
+let autoFollow = true;
+const scrollLatestBtn = document.getElementById('scroll-latest');
+function isNearBottom() { return chatArea.scrollHeight - chatArea.scrollTop - chatArea.clientHeight < 140; }
+function updateScrollFollow() {
+  autoFollow = isNearBottom();
+  scrollLatestBtn?.classList.toggle('visible', !autoFollow);
+}
+function scrollToBottom(force = false) {
+  if (force || autoFollow) {
+    chatArea.scrollTop = chatArea.scrollHeight;
+    autoFollow = true;
+    scrollLatestBtn?.classList.remove('visible');
+  }
+}
+chatArea.addEventListener('scroll', updateScrollFollow, { passive: true });
+scrollLatestBtn?.addEventListener('click', () => scrollToBottom(true));
 
 // ------------------------ Input box sizing ------------------------
 let userResizedHeight = null;
@@ -3089,7 +3579,41 @@ document.getElementById('think-pill').addEventListener('click', function() {
 });
 
 // History search
-document.getElementById('history-search').addEventListener('input', renderHistoryList);
+let historySearchTimer = null;
+document.getElementById('history-search').addEventListener('input', () => {
+  clearTimeout(historySearchTimer);
+  historySearchTimer = setTimeout(renderHistoryList, 120);
+});
+
+// OpenRouter and reliability settings
+const apiKeyInput = document.getElementById('api-key-input');
+apiKeyInput.value = getApiKey();
+apiKeyInput.addEventListener('change', function() {
+  apiKey = this.value.trim();
+  try {
+    if (apiKey) localStorage.setItem(API_KEY_STORAGE, apiKey);
+    else localStorage.removeItem(API_KEY_STORAGE);
+  } catch {}
+  checkConnection(false);
+});
+document.getElementById('reveal-api-key-btn').addEventListener('click', function() {
+  const reveal = apiKeyInput.type === 'password';
+  apiKeyInput.type = reveal ? 'text' : 'password';
+  this.textContent = reveal ? 'Hide' : 'Show';
+});
+document.getElementById('test-connection-btn').addEventListener('click', () => checkConnection(true));
+const adaptiveToggle = document.getElementById('adaptive-context-toggle');
+adaptiveToggle.checked = appSettings.adaptiveContext !== false;
+adaptiveToggle.addEventListener('change', function() {
+  appSettings.adaptiveContext = this.checked;
+  saveAppSettings();
+});
+const retryToggle = document.getElementById('retry-transient-toggle');
+retryToggle.checked = appSettings.retryTransient !== false;
+retryToggle.addEventListener('change', function() {
+  appSettings.retryTransient = this.checked;
+  saveAppSettings();
+});
 
 // Model parameter event listeners
 document.getElementById('system-prompt-override').addEventListener('input', function() {
@@ -3152,7 +3676,7 @@ document.querySelectorAll('[data-max-tokens]').forEach(btn => {
 });
 document.getElementById('max-tokens-input').addEventListener('change', function() {
   const dynamicMax = getDynamicMaxTokens();
-  const value = Math.max(256, Math.min(dynamicMax, Math.round(Number(this.value) || dynamicMax)));
+  const value = Math.max(256, Math.min(HARD_MAX_OUTPUT_TOKENS, Math.round(Number(this.value) || dynamicMax)));
   this.value = String(value);
   setModelParam('maxTokens', value, null);
   updateTokenPresetUI();
@@ -3170,8 +3694,9 @@ applyEngineTheme(ENGINES[activeEngine]);
 renderEngineSelector();
 renderHistoryList();
 updateConfigSettings();
-checkConnection();
-setInterval(checkConnection, 180000);
+if (Object.keys(modelCapabilities).length) updateConfigSettings();
+checkConnection(false);
+setInterval(() => { if (!document.hidden) checkConnection(false); }, 900000);
 updateSendButton();
 updateInputCharCount();
 updateUsageDisplay();
