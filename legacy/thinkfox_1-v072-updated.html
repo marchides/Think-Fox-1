@@ -1358,6 +1358,89 @@ async function postGenerationRequest(requestBody, key, signal, providerId = getA
   return send(fallbackBody);
 }
 
+
+async function sendMessage(userText) {
+  userText = (userText || '').trim();
+  if (userText.length > MAX_INPUT_CHARS) {
+    showToast(`Input capped at ${MAX_INPUT_CHARS.toLocaleString()} characters.`, 'error');
+    return;
+  }
+  if (!userText && attachedImages.length === 0) return;
+  if (isStreaming) return;
+
+  const providerId = getActiveProviderId();
+  const provider = getActiveProvider();
+  const eng = engine();
+
+  if (!isEngineCompatibleWithProvider(activeEngine, providerId) || !getEngineModelId(activeEngine, providerId)) {
+    openConfig();
+    showToast(`${eng?.name || 'This engine'} is unavailable through ${provider.name}.`, 'error');
+    return;
+  }
+
+  if (!getApiKey(providerId)) {
+    openParameters();
+    showToast(`Add your ${provider.name} API key in Model Parameters first.`, 'error');
+    return;
+  }
+
+  stopAllTts();
+  userInput.value = '';
+  resetInputHeight();
+  updateSendButton();
+  updateInputCharCount();
+
+  if (!currentSessionId) newSession();
+  const sess = sessions[currentSessionId];
+  let parentId;
+  let isBranching = false;
+
+  if (pendingBranchFromId !== null) {
+    parentId = pendingBranchFromId;
+    pendingBranchFromId = null;
+    isBranching = true;
+  } else {
+    const activeMsgs = getActiveBranchMessages(sess);
+    parentId = activeMsgs.length ? activeMsgs[activeMsgs.length - 1].id : null;
+  }
+
+  const currentImageIds = attachedImages.map(img => img.id).filter(Boolean);
+  const currentPreviewRefs = attachedImages.map(img => ({ id: img.id, dataUrl: img.dataUrl }));
+  const userMessage = addMessage('user', userText, null, currentImageIds, { parentId });
+
+  if (isBranching && parentId) {
+    const parent = sess.messages.find(message => message.id === parentId);
+    if (parent) {
+      const siblings = sess.messages.filter(message => message.parentId === parentId);
+      parent.activeChildIndex = siblings.length - 1;
+      saveSessions();
+    }
+
+    clearChatArea();
+    const activeMessages = getActiveBranchMessages(sess);
+    activeMessages.forEach(message => appendMessageRow(
+      message.role,
+      message.content,
+      message.reasoning,
+      message.imageIds || message.images || [],
+      message.engine || sess.engine,
+      message.finishReason,
+      message.id,
+      message.starred,
+      message.citations
+    ));
+    decorateMessages();
+    decorateBranchNavigation();
+  } else {
+    appendMessageRow('user', userText, null, currentPreviewRefs, activeEngine, null, userMessage?.id);
+  }
+
+  attachedImages = [];
+  renderPreviews();
+  scrollToBottom(true);
+  await generateResponse();
+}
+
 async function regenerateLast() { if (isStreaming) return; stopAllTts(); const sess = sessions[currentSessionId]; if (!sess) return; const activeMsgs = getActiveBranchMessages(sess); if (activeMsgs.length && activeMsgs[activeMsgs.length - 1].role === 'assistant') { const lastMsg = activeMsgs[activeMsgs.length - 1]; sess.messages = sess.messages.filter(m => m.id !== lastMsg.id); saveSessions(); } const rows = chatArea.querySelectorAll('.message-row[data-role="assistant"]'); if (rows.length) rows[rows.length - 1].remove(); await generateResponse(); }
 
 async function generateResponse() {

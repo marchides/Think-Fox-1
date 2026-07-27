@@ -1,50 +1,62 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Think Fox — AI by Monty Kubasek</title>
-<meta name="description" content="Think Fox: AI Assistant and Organiser. 9 Intelligence Layer System. Made by Monty Kubasek." />
+<meta name="robots" content="index, follow" />
+<title>Think Fox — Multi-Engine AI Command Interface by Monty Kubasek</title>
+<meta name="description" content="Think Fox is a browser-based command interface for 16 AI engines, with OpenRouter and direct-provider APIs, documents, web search, image generation, multi-provider text-to-speech, memories, prompts, and conversation forks." />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Offside&family=Sora:wght@300;400;600;700;800&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-<link href="https://fonts.googleapis.com/css2?family=Oswald:wght@200..700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500;600&family=Poppins:wght@400;500;600;700;800&family=Sansation:ital,wght@0,300;0,400;0,700;1,400&family=Science+Gothic:wdth,wght@75..125,100..900&family=Sora:wght@300;400;600;700;800&display=swap" rel="stylesheet" />
+<link href="https://fonts.googleapis.com/css2?family=Overpass:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
 <style>
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-  :root{
-    --bg-void:    #0A0A0E;
-    --bg-surface: #14141C;
-    --bg-raised:  #1C1C28;
-    --border:     #2A2A38;
-    --border-lit: #a7a7a7;
-    --text-primary: #F4F1EC;
-    --text-body:    #C4C8D4;
-    --text-muted:   #82869A;
-    --text-faint:   #6d6c6c;
-    --text-hot:     #ff6a00;
 
-    /* Engine spectrum — 9 engines */
-    --c-katana:   #f25209;
-    --c-cinder:   #e41788;
-    --c-scythe:   #ff0000;
-    --c-typhoon:  #0d40da;
-    --c-tempest:  #bcbbbc;
-    --c-orbit:    #e1bd08;
-    --c-glaive:   #05d1d3;
-    --c-neon:     #3be319;
-    --c-monolith: #6706c1;
+  :root {
+    --bg-void: #09090d;
+    --bg-surface: #14141c;
+    --bg-raised: #1d1d29;
+    --border: #2a2a38;
+    --border-lit: #444458;
+    --text-primary: #f4f1ec;
+    --text-body: #c4c8d4;
+    --text-muted: #85899b;
+    --text-faint: #555766;
+    --accent: #ff5500;
+    --accent-dim: #b33b00;
+
+    --c-tempest: #ffffff;
+    --c-scythe: #ff0000;
+    --c-typhoon: #0047ab;
+    --c-katana: #ff5500;
+    --c-shuriken: #ffb347;
+    --c-orbit: #ffd700;
+    --c-ancestral: #228b22;
+    --c-citadel: #4b4f54;
+    --c-gargoyle: #6f4a38;
+    --c-eightball: #c4a484;
+    --c-monolith: #5d00b3;
+    --c-cinder: #ff1493;
+    --c-neon: #39ff14;
+    --c-glaive: #00ffff;
+    --c-harlequin: #d4afe1;
+    --c-dagger: #808080;
 
     --font-display: 'Sora', sans-serif;
-    --font-body:    'Offside', sans-serif;
-    --font-mono:    'JetBrains Mono', monospace;
-    --font-button: 'Oswald', sans-serif;
-    --radius-sm: 6px;
+    --font-body: 'Sansation', sans-serif;
+    --font-ui: 'Poppins', sans-serif;
+    --font-mono: 'JetBrains Mono', monospace;
+    --font-geo: 'Science Gothic', sans-serif;
+    --font-model: 'Overpass', sans-serif;
+    --radius-sm: 7px;
     --radius-md: 14px;
     --radius-lg: 24px;
   }
+
   html { scroll-behavior: smooth; }
-  body{
+
+  body {
     background: var(--bg-void);
     color: var(--text-body);
     font-family: var(--font-body);
@@ -54,625 +66,721 @@
     overflow-x: hidden;
   }
 
-  /* ── Spectrum bar — 9 stops ───────────────────── */
-  .spectrum-bar{
-    height: 3px;
+  .spectrum-bar {
     width: 100%;
+    height: 3px;
     background: linear-gradient(90deg,
-      var(--c-katana) 0%, var(--c-katana) 11.11%,
-      var(--c-cinder) 11.11%, var(--c-cinder) 22.22%,
-      var(--c-scythe) 22.22%, var(--c-scythe) 33.33%,
-      var(--c-typhoon) 33.33%, var(--c-typhoon) 44.44%,
-      var(--c-tempest) 44.44%, var(--c-tempest) 55.55%,
-      var(--c-orbit) 55.55%, var(--c-orbit) 66.66%,
-      var(--c-glaive) 66.66%, var(--c-glaive) 77.77%,
-      var(--c-neon) 77.77%, var(--c-neon) 88.88%,
-      var(--c-monolith) 88.88%, var(--c-monolith) 100%);
+      var(--c-tempest) 0%, var(--c-tempest) 6.25%,
+      var(--c-scythe) 6.25%, var(--c-scythe) 12.5%,
+      var(--c-typhoon) 12.5%, var(--c-typhoon) 18.75%,
+      var(--c-katana) 18.75%, var(--c-katana) 25%,
+      var(--c-shuriken) 25%, var(--c-shuriken) 31.25%,
+      var(--c-orbit) 31.25%, var(--c-orbit) 37.5%,
+      var(--c-ancestral) 37.5%, var(--c-ancestral) 43.75%,
+      var(--c-citadel) 43.75%, var(--c-citadel) 50%,
+      var(--c-gargoyle) 50%, var(--c-gargoyle) 56.25%,
+      var(--c-eightball) 56.25%, var(--c-eightball) 62.5%,
+      var(--c-monolith) 62.5%, var(--c-monolith) 68.75%,
+      var(--c-cinder) 68.75%, var(--c-cinder) 75%,
+      var(--c-neon) 75%, var(--c-neon) 81.25%,
+      var(--c-glaive) 81.25%, var(--c-glaive) 87.5%,
+      var(--c-harlequin) 87.5%, var(--c-harlequin) 93.75%,
+      var(--c-dagger) 93.75%, var(--c-dagger) 100%);
   }
 
-  /* ── Nav ─────────────────────────────────────────────────────────── */
-  header{
+  header {
     position: sticky;
     top: 0;
     z-index: 50;
-    background: rgba(10,10,14,0.78);
-    backdrop-filter: blur(14px);
+    background: rgba(9, 9, 13, 0.82);
+    backdrop-filter: blur(16px) saturate(120%);
     border-bottom: 1px solid var(--border);
   }
-  nav{
-    max-width: 1200px;
+
+  nav {
+    max-width: 1240px;
     margin: 0 auto;
-    padding: 18px 32px;
+    padding: 16px 30px;
     display: flex;
     align-items: center;
     justify-content: space-between;
+    gap: 28px;
   }
-  .nav-mark{
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 20px;
+
+  .nav-mark {
+    font: 800 20px var(--font-display);
     letter-spacing: -0.5px;
     color: var(--text-primary);
+    white-space: nowrap;
   }
-  .nav-mark span{ color: var(--c-katana); }
-  .nav-links{
+
+  .nav-mark span { color: var(--accent); }
+
+  .nav-links {
     display: flex;
-    gap: 36px;
     align-items: center;
+    gap: 30px;
   }
-  .nav-links a{
+
+  .nav-links a {
     color: var(--text-muted);
     text-decoration: none;
-    font-size: 18px;
+    font: 500 14px var(--font-ui);
     transition: color .15s ease;
   }
-  .nav-links a:hover{ color: var(--text-primary); }
-  .nav-cta{
-    font-family: var(--font-button);
-    font-weight: 500;
-    font-size: 15px;
-    letter-spacing: 0.6px;
-    color: var(--bg-void);
-    background: var(--c-katana);
-    border: none;
-    padding: 10px 20px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    transition: filter .15s ease, transform .15s ease;
-    text-decoration: none;
-  }
-  .nav-cta:hover{ filter: brightness(1.12); transform: translateY(-1px); }
 
-  @media (max-width: 800px){
-    .nav-links{ display: none; }
-  }
+  .nav-links a:hover { color: var(--text-primary); }
 
-  /* ── Hero ────────────────────────────────────────────────────────── */
-  .hero{
-    position: relative;
-    min-height: 92vh;
-    display: flex;
-    flex-direction: column;
+  .nav-cta,
+  .btn-primary,
+  .btn-secondary {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
+    gap: 8px;
+    border-radius: var(--radius-sm);
+    text-decoration: none;
+    cursor: pointer;
+    font-family: var(--font-ui);
+    font-weight: 600;
+    transition: filter .15s ease, transform .15s ease, background .15s ease, border-color .15s ease;
+  }
+
+  .nav-cta {
+    padding: 9px 17px;
+    background: var(--accent);
+    color: #09090d;
+    font-size: 13px;
+    letter-spacing: .25px;
+  }
+
+  .nav-cta:hover,
+  .btn-primary:hover { filter: brightness(1.1); transform: translateY(-1px); }
+
+  .hero {
+    position: relative;
+    min-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 90px 24px 70px;
     text-align: center;
-    padding: 80px 24px 60px;
     overflow: hidden;
   }
-  .hero::before{
+
+  .hero::before {
     content: "";
     position: absolute;
     inset: 0;
     background:
-      linear-gradient(180deg, rgba(10,10,14,0.4) 0%, rgba(10,10,14,0.85) 100%),
+      linear-gradient(180deg, rgba(9,9,13,.32), rgba(9,9,13,.94)),
       url("thinkfox-wall3.png") center/cover no-repeat;
     z-index: 0;
   }
-  .hero::after{
+
+  .hero::after {
     content: "";
     position: absolute;
     inset: 0;
     background-image:
-      linear-gradient(rgba(255,255,255,0.022) 1px, transparent 1px),
-      linear-gradient(90deg, rgba(255,255,255,0.022) 1px, transparent 1px);
+      linear-gradient(rgba(255,255,255,.024) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.024) 1px, transparent 1px);
     background-size: 64px 64px;
-    -webkit-mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 75%);
-    mask-image: radial-gradient(ellipse 70% 60% at 50% 30%, black 0%, transparent 75%);
+    -webkit-mask-image: radial-gradient(ellipse 72% 62% at 50% 35%, black 0%, transparent 76%);
+    mask-image: radial-gradient(ellipse 72% 62% at 50% 35%, black 0%, transparent 76%);
     z-index: 0;
   }
-  .hero-content{ position: relative; z-index: 2; max-width: 780px; }
-  .hero-eyebrow{
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 3px;
+
+  .hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 850px;
+  }
+
+  .hero-eyebrow,
+  .eyebrow {
+    font: 500 11px var(--font-mono);
+    letter-spacing: 2.7px;
     text-transform: uppercase;
-    color: var(--text-hot);
-    margin-bottom: 22px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
   }
-  .hero-eyebrow .dot{
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--c-katana);
-    box-shadow: 0 0 10px var(--c-katana);
-    animation: pulse 2.4s ease-in-out infinite;
+
+  .hero-eyebrow {
+    color: var(--accent);
+    margin-bottom: 20px;
   }
-  @keyframes pulse{
-    0%,100%{ opacity: .5; transform: scale(0.85); }
-    50%{ opacity: 1; transform: scale(1.15); }
-  }
-  .hero h1{
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(3.2rem, 9vw, 6.4rem);
-    letter-spacing: -3px;
-    line-height: 1.0;
+
+  .hero h1 {
     color: var(--text-primary);
-    margin-bottom: 22px;
+    font: 800 clamp(3.4rem, 9vw, 6.8rem)/.98 var(--font-display);
+    letter-spacing: -3.6px;
+    margin-bottom: 24px;
   }
-  .hero h1 .fox{
-    background: linear-gradient(100deg, var(--c-katana) 0%, #ffb37a 50%, var(--c-katana) 100%);
+
+  .hero h1 .fox {
+    background: linear-gradient(100deg, var(--accent), #ffb27d 48%, var(--accent));
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
   }
-  .hero-sub{
-    font-family: var(--font-body);
-    font-size: 22px;
-    color: var(--text-body);
-    max-width: 560px;
+
+  .hero-sub {
+    max-width: 680px;
     margin: 0 auto 38px;
-    line-height: 1.65;
+    color: var(--text-body);
+    font-size: clamp(18px, 2.4vw, 23px);
+    line-height: 1.55;
   }
-  .hero-sub strong{ color: var(--text-primary); font-weight: 400; }
-  .hero-actions{
+
+  .hero-sub strong { color: var(--text-primary); font-weight: 700; }
+
+  .hero-actions {
     display: flex;
-    gap: 14px;
     justify-content: center;
     flex-wrap: wrap;
-    margin-bottom: 56px;
+    gap: 13px;
   }
-  .btn-primary, .btn-secondary{
-    font-family: var(--font-button);
-    font-weight: 500;
-    font-size: 17px;
-    letter-spacing: 0.4px;
-    padding: 14px 30px;
-    border-radius: var(--radius-sm);
-    cursor: pointer;
-    text-decoration: none;
-    display: inline-flex;
-    align-items: center;
-    gap: 8px;
-    transition: filter .15s ease, transform .15s ease, background .15s ease, border-color .15s ease;
+
+  .btn-primary,
+  .btn-secondary {
+    padding: 13px 26px;
+    font-size: 15px;
   }
-  .btn-primary{
-    background: var(--c-katana);
-    color: #0A0A0E;
-    border: 1px solid var(--c-katana);
+
+  .btn-primary {
+    color: #09090d;
+    background: var(--accent);
+    border: 1px solid var(--accent);
   }
-  .btn-primary:hover{ filter: brightness(1.1); transform: translateY(-2px); }
-  .btn-secondary{
-    background: transparent;
+
+  .btn-secondary {
     color: var(--text-primary);
+    background: rgba(20,20,28,.64);
     border: 1px solid var(--border-lit);
+    backdrop-filter: blur(10px);
   }
-  .btn-secondary:hover{ background: var(--bg-raised); border-color: var(--text-muted); }
 
-  /* ── Section shell ───────────────────────────────────────────────── */
-  section{ padding: 110px 24px; position: relative; }
-  .section-inner{ max-width: 1160px; margin: 0 auto; }
-  .eyebrow{
-    font-family: var(--font-mono);
-    font-size: 12px;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    margin-bottom: 14px;
+  .btn-secondary:hover {
+    background: var(--bg-raised);
+    border-color: var(--text-muted);
+    transform: translateY(-1px);
   }
-  .section-title{
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2rem, 4.5vw, 3.2rem);
-    letter-spacing: -1.2px;
+
+  section { position: relative; padding: 100px 24px; }
+  .section-inner { max-width: 1180px; margin: 0 auto; }
+  .eyebrow { color: var(--text-faint); margin-bottom: 12px; }
+
+  .section-title {
+    max-width: 790px;
     color: var(--text-primary);
+    font: 800 clamp(2rem, 4.7vw, 3.3rem)/1.12 var(--font-display);
+    letter-spacing: -1.4px;
     margin-bottom: 18px;
-    max-width: 700px;
-  }
-  .section-lede{
-    font-size: 19px;
-    color: var(--text-muted);
-    max-width: 620px;
-    line-height: 1.7;
   }
 
-  /* ── How it works ────────────────────────────────────────────────── */
-  .how{
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 28px;
-    margin-top: 60px;
+  .section-lede {
+    max-width: 760px;
+    color: var(--text-muted);
+    font-size: 19px;
+    line-height: 1.68;
   }
-  .how-card{
-    background: var(--bg-surface);
+
+  .feature-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px;
+    margin-top: 54px;
+  }
+
+  .feature-card {
+    min-height: 228px;
+    padding: 26px;
+    background: linear-gradient(145deg, rgba(255,255,255,.025), transparent 58%), var(--bg-surface);
     border: 1px solid var(--border);
     border-radius: var(--radius-md);
-    padding: 30px 28px;
-  }
-  .how-card .glyph{
-    width: 40px; height: 40px;
-    border-radius: 10px;
-    display: flex; align-items: center; justify-content: center;
-    margin-bottom: 22px;
-    border: 1px solid var(--border-lit);
-    background: var(--bg-raised);
-  }
-  .how-card h3{
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 19px;
-    color: var(--text-primary);
-    margin-bottom: 10px;
-    letter-spacing: -0.3px;
-  }
-  .how-card p{ color: var(--text-muted); font-size: 16px; line-height: 1.65; }
-  @media (max-width: 880px){
-    .how{ grid-template-columns: 1fr; }
   }
 
-  /* ── Intelligence Layer (engine tiers) ──────────────────────────── */
-  .layer-section{
+  .feature-icon {
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    color: var(--accent);
+    background: var(--bg-raised);
+    border: 1px solid var(--border-lit);
+    border-radius: 10px;
+    font: 600 13px var(--font-mono);
+  }
+
+  .feature-card h3 {
+    color: var(--text-primary);
+    font: 700 18px var(--font-display);
+    letter-spacing: -.25px;
+    margin-bottom: 10px;
+  }
+
+  .feature-card p {
+    color: var(--text-muted);
+    font-size: 15px;
+    line-height: 1.62;
+  }
+
+  .engines-section {
     background: var(--bg-surface);
     border-top: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
   }
-  .tier-grid{
+
+  .squadron-stack {
     display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    gap: 0;
-    margin-top: 64px;
+    gap: 34px;
+    margin-top: 60px;
+  }
+
+  .squadron {
+    background: rgba(9,9,13,.54);
     border: 1px solid var(--border);
-    border-radius: var(--radius-md);
+    border-radius: var(--radius-lg);
     overflow: hidden;
   }
-  .tier{
-    --tc: var(--c-katana);
+
+  .squadron-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 18px;
+    padding: 18px 22px;
+    background: linear-gradient(90deg, rgba(255,85,0,.08), transparent 56%);
+    border-bottom: 1px solid var(--border);
+  }
+
+  .squadron-head h3 {
+    color: var(--text-primary);
+    font: 700 19px var(--font-display);
+  }
+
+  .squadron-head span {
+    color: var(--text-faint);
+    font: 500 10px var(--font-mono);
+    letter-spacing: 1.2px;
+    text-transform: uppercase;
+  }
+
+  .engine-list { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); }
+
+  .engine {
+    --ec: var(--accent);
     position: relative;
-    padding: 32px 22px 28px;
+    display: grid;
+    grid-template-columns: 52px minmax(0, 1fr);
+    gap: 15px;
+    padding: 22px;
+    min-height: 158px;
     border-right: 1px solid var(--border);
     border-bottom: 1px solid var(--border);
-    background: var(--bg-void);
-    transition: background .25s ease, transform .25s ease;
-    cursor: default;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--ec) 5%, transparent), transparent 52%);
   }
-  .tier:nth-child(3n) { border-right: none; }
-  .tier:nth-last-child(-n+3) { border-bottom: none; }
 
-  .tier::before{
-    content: "";
-    position: absolute;
-    top: 0; left: 0; right: 0;
-    height: 3px;
-    background: var(--tc);
-    opacity: 0.55;
-    transition: opacity .25s ease, height .25s ease;
+  .engine:nth-child(2n) { border-right: 0; }
+  .engine:nth-last-child(-n+2) { border-bottom: 0; }
+  .engine-list.single-tail .engine:last-child { grid-column: 1 / -1; border-right: 0; border-bottom: 0; }
+
+  .engine-logo {
+    width: 52px;
+    height: 52px;
+    object-fit: contain;
+    filter: drop-shadow(0 5px 12px rgba(0,0,0,.35));
   }
-  .tier:hover{
-    background: linear-gradient(180deg, color-mix(in srgb, var(--tc) 10%, var(--bg-void)) 0%, var(--bg-void) 70%);
-    transform: translateY(-4px);
-  }
-  .tier:hover::before{ opacity: 1; height: 4px; }
 
-  .tier[data-tier="katana"]   { --tc: var(--c-katana); }
-  .tier[data-tier="cinder"]   { --tc: var(--c-cinder); }
-  .tier[data-tier="scythe"]   { --tc: var(--c-scythe); }
-  .tier[data-tier="typhoon"]  { --tc: var(--c-typhoon); }
-  .tier[data-tier="tempest"]  { --tc: var(--c-tempest); }
-  .tier[data-tier="orbit"]    { --tc: var(--c-orbit); }
-  .tier[data-tier="glaive"]   { --tc: var(--c-glaive); }
-  .tier[data-tier="neon"]     { --tc: var(--c-neon); }
-  .tier[data-tier="monolith"] { --tc: var(--c-monolith); }
-
-  .tier-status{
-    font-family: var(--font-mono);
-    font-size: 10px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-faint);
-    margin-bottom: 18px;
+  .engine-status {
     display: flex;
     align-items: center;
     gap: 6px;
+    color: var(--text-faint);
+    font: 500 9px var(--font-mono);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 5px;
   }
-  .tier-status .led{
-    width: 6px; height: 6px; border-radius: 50%;
-    background: var(--tc);
-    box-shadow: 0 0 8px var(--tc);
+
+  .engine-status::before {
+    content: "";
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--ec);
+    box-shadow: 0 0 8px var(--ec);
   }
-  .tier-status.live .led{ animation: pulse 2.4s ease-in-out infinite; }
-  .tier h3{
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: 22px;
-    letter-spacing: -0.5px;
+
+  .engine h4 {
     color: var(--text-primary);
-    margin-bottom: 4px;
+    font: 700 19px var(--font-display);
+    margin-bottom: 1px;
   }
-  .tier .tier-version{
-    font-family: var(--font-mono);
-    font-size: 11px;
-    color: var(--tc);
-    margin-bottom: 18px;
+
+  .engine-model {
     display: block;
+    color: var(--ec);
+    font: 700 14px var(--font-model);
+    font-variant: small-caps;
+    overflow-wrap: anywhere;
+    margin-bottom: 8px;
   }
-  .tier p{
-    font-size: 15px;
+
+  .engine p {
     color: var(--text-muted);
-    line-height: 1.6;
+    font-size: 14px;
+    line-height: 1.52;
   }
 
-  @media (max-width: 1100px){
-    .tier-grid{ grid-template-columns: repeat(3, 1fr); }
-  }
-  @media (max-width: 768px){
-    .tier-grid{ grid-template-columns: repeat(2, 1fr); }
-    .tier:nth-child(3n) { border-right: 1px solid var(--border); }
-    .tier:nth-child(2n) { border-right: none; }
-    .tier:nth-last-child(-n+3) { border-bottom: 1px solid var(--border); }
-    .tier:nth-last-child(-n+2) { border-bottom: none; }
-  }
-  @media (max-width: 560px){
-    .tier-grid{ grid-template-columns: 1fr; }
-    .tier{ border-right: none; }
-    .tier:nth-child(2n) { border-right: none; }
-    .tier:last-child { border-bottom: none; }
+  .engine[data-engine="tempest"] { --ec: var(--c-tempest); }
+  .engine[data-engine="scythe"] { --ec: var(--c-scythe); }
+  .engine[data-engine="typhoon"] { --ec: var(--c-typhoon); }
+  .engine[data-engine="katana"] { --ec: var(--c-katana); }
+  .engine[data-engine="shuriken"] { --ec: var(--c-shuriken); }
+  .engine[data-engine="orbit"] { --ec: var(--c-orbit); }
+  .engine[data-engine="ancestral"] { --ec: var(--c-ancestral); }
+  .engine[data-engine="citadel"] { --ec: var(--c-citadel); }
+  .engine[data-engine="gargoyle"] { --ec: var(--c-gargoyle); }
+  .engine[data-engine="eightball"] { --ec: var(--c-eightball); }
+  .engine[data-engine="monolith"] { --ec: var(--c-monolith); }
+  .engine[data-engine="cinder"] { --ec: var(--c-cinder); }
+  .engine[data-engine="neon"] { --ec: var(--c-neon); }
+  .engine[data-engine="glaive"] { --ec: var(--c-glaive); }
+  .engine[data-engine="harlequin"] { --ec: var(--c-harlequin); }
+  .engine[data-engine="dagger"] { --ec: var(--c-dagger); }
+
+  .architecture {
+    display: grid;
+    grid-template-columns: 1.05fr .95fr;
+    gap: 54px;
+    align-items: center;
   }
 
-  /* ── Quote / philosophy band ─────────────────────────────────────── */
-  .philosophy{
+  .architecture-copy p {
+    max-width: 630px;
+    color: var(--text-muted);
+    font-size: 17px;
+    margin-top: 18px;
+  }
+
+  .route-panel {
+    display: grid;
+    gap: 10px;
+    padding: 18px;
+    background: var(--bg-surface);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-lg);
+    box-shadow: 0 22px 60px rgba(0,0,0,.28);
+  }
+
+  .route-row {
+    display: grid;
+    grid-template-columns: 128px minmax(0, 1fr);
+    gap: 16px;
+    align-items: center;
+    padding: 14px;
+    background: var(--bg-raised);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+  }
+
+  .route-row strong {
+    color: var(--text-primary);
+    font: 600 12px var(--font-ui);
+  }
+
+  .route-row span {
+    color: var(--text-muted);
+    font: 500 11px var(--font-mono);
+    line-height: 1.45;
+  }
+
+  .philosophy {
     text-align: center;
-    padding: 50px 24px;
+    padding: 76px 24px;
   }
 
-  .engine-roll{
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 36px;
-    margin-bottom: 70px;
+  .engine-roll {
+    max-width: 920px;
+    margin: 0 auto 56px;
+    display: grid;
+    grid-template-columns: repeat(8, minmax(0, 1fr));
+    gap: 20px 16px;
   }
-  .engine-item{
+
+  .engine-item {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 12px;
-  }
-  .engine-item img{
-    width: 48px;
-    height: 48px;
-    object-fit: contain;
-  }
-  .engine-item span{
-    font-family: var(--font-mono);
-    font-size: 11px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-muted);
+    gap: 8px;
   }
 
-  .philosophy blockquote{
-    font-family: var(--font-display);
-    font-weight: 700;
-    font-size: clamp(1.7rem, 4vw, 2.8rem);
-    letter-spacing: -0.8px;
+  .engine-item img { width: 42px; height: 42px; object-fit: contain; }
+  .engine-item span { color: var(--text-faint); font: 500 9px var(--font-mono); text-transform: uppercase; letter-spacing: .8px; }
+
+  .philosophy blockquote {
+    max-width: 860px;
+    margin: 0 auto 18px;
     color: var(--text-primary);
-    max-width: 820px;
-    margin: 0 auto 24px;
-    line-height: 1.35;
-  }
-  .philosophy blockquote span{ color: var(--c-katana); }
-  .philosophy cite{
-    font-family: var(--font-mono);
-    font-style: normal;
-    font-size: 13px;
-    letter-spacing: 1.5px;
-    text-transform: uppercase;
-    color: var(--text-faint);
+    font: 700 clamp(1.65rem, 4vw, 2.75rem)/1.35 var(--font-display);
+    letter-spacing: -.8px;
   }
 
-  /* ── Final CTA ───────────────────────────────────────────────────── */
-  .final-cta{
+  .philosophy blockquote span { color: var(--accent); }
+  .philosophy cite { color: var(--text-faint); font: 500 11px var(--font-mono); font-style: normal; text-transform: uppercase; letter-spacing: 1.35px; }
+
+  .final-cta {
+    text-align: center;
     background: var(--bg-surface);
     border-top: 1px solid var(--border);
-    text-align: center;
-  }
-  .final-cta h2{
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: clamp(2.2rem, 5vw, 3.6rem);
-    letter-spacing: -1.5px;
-    color: var(--text-primary);
-    margin-bottom: 20px;
-  }
-  .final-cta h2 span{ color: var(--c-katana); }
-  .final-cta p{
-    color: var(--text-muted);
-    font-size: 19px;
-    max-width: 480px;
-    margin: 0 auto 40px;
   }
 
-  /* ── Footer ──────────────────────────────────────────────────────── */
-  footer{
-    padding: 40px 24px;
-    border-top: 1px solid var(--border);
+  .final-cta h2 {
+    color: var(--text-primary);
+    font: 800 clamp(2.2rem, 5vw, 3.7rem)/1.08 var(--font-display);
+    letter-spacing: -1.7px;
+    margin-bottom: 18px;
   }
-  .footer-inner{
-    max-width: 1160px;
+
+  .final-cta h2 span { color: var(--accent); }
+
+  .final-cta p {
+    max-width: 660px;
+    margin: 0 auto 34px;
+    color: var(--text-muted);
+    font-size: 18px;
+  }
+
+  footer { padding: 34px 24px; border-top: 1px solid var(--border); }
+
+  .footer-inner {
+    max-width: 1180px;
     margin: 0 auto;
     display: flex;
     align-items: center;
     justify-content: space-between;
     flex-wrap: wrap;
-    gap: 16px;
-  }
-  .footer-mark{
-    font-family: var(--font-display);
-    font-weight: 800;
-    font-size: 16px;
-    color: var(--text-primary);
-  }
-  .footer-mark span{ color: var(--c-katana); }
-  .footer-meta{
-    font-family: var(--font-mono);
-    font-size: 12px;
-    color: var(--text-faint);
-    letter-spacing: 0.5px;
+    gap: 14px;
   }
 
-  @media (prefers-reduced-motion: reduce){
-    *{ animation: none !important; transition: none !important; }
-    html{ scroll-behavior: auto; }
+  .footer-mark { color: var(--text-primary); font: 800 16px var(--font-display); }
+  .footer-mark span { color: var(--accent); }
+  .footer-meta { color: var(--text-faint); font: 500 10px var(--font-mono); letter-spacing: .6px; }
+
+  @media (max-width: 980px) {
+    .feature-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .architecture { grid-template-columns: 1fr; }
+    .engine-roll { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+  }
+
+  @media (max-width: 760px) {
+    .nav-links { display: none; }
+    nav { padding: 14px 18px; }
+    .hero { min-height: 84vh; }
+    .hero h1 { letter-spacing: -2.4px; }
+    section { padding: 78px 18px; }
+    .feature-grid { grid-template-columns: 1fr; }
+    .engine-list { grid-template-columns: 1fr; }
+    .engine { border-right: 0; border-bottom: 1px solid var(--border) !important; }
+    .engine:last-child { grid-column: auto; border-bottom: 0 !important; }
+    .squadron-head { align-items: flex-start; flex-direction: column; gap: 3px; }
+    .route-row { grid-template-columns: 1fr; gap: 5px; }
+  }
+
+  @media (max-width: 460px) {
+    .nav-cta { padding: 8px 11px; font-size: 11px; }
+    .engine-roll { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .engine { grid-template-columns: 44px minmax(0, 1fr); padding: 18px; }
+    .engine-logo { width: 44px; height: 44px; }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    * { animation: none !important; transition: none !important; }
+    html { scroll-behavior: auto; }
   }
 </style>
 </head>
 <body>
-
 <header>
   <div class="spectrum-bar"></div>
   <nav>
     <div class="nav-mark">Think<span>Fox</span></div>
     <div class="nav-links">
-      <a href="#layers">Intelligence Layer</a>
-      <a href="#how">How it works</a>
-      <a href="#philosophy">Philosophy</a>
+      <a href="#features">Capabilities</a>
+      <a href="#engines">Engines</a>
+      <a href="#architecture">API routing</a>
     </div>
-    <a href="thinkfox.html" class="nav-cta">ACCESS INTERFACE →</a>
+    <a href="thinkfox.html" class="nav-cta">LAUNCH THINK FOX →</a>
   </nav>
 </header>
 
-<section class="hero">
-  <div class="hero-content">
-    <h1>Think<span class="fox">Fox</span></h1>
-    <div class="hero-eyebrow"><strong>by Monty Kubasek</strong> </div>
-    <p class="hero-sub">Nine colours, nine engines, one <strong>Think Fox</strong>. A fully featured AI interface ready for you to use. Think Fox puts you in command of 9 hand picked Large Language Models we call Engines.</p>
-    <div class="hero-actions">
-      <a href="#layers" class="btn-primary">The Nine Engines</a>
-      <a href="#how" class="btn-secondary">About Interface</a>
-    </div>
-  </div>
-</section>
-
-<section id="how">
-  <div class="section-inner">
-    <div class="eyebrow">Under the hood</div>
-    <h2 class="section-title">Built for clear thinking, not just fast answers.</h2>
-    <p class="section-lede">Each engine carries its own tone, depth, specialism and colour! Match the colour to the problem you're solving.</p>
-    <div class="how">
-      <div class="how-card">
-        <div class="glyph">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#f25209" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 3h4v4M10 14L21 3M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/></svg>
-        </div>
-        <h3>Switch engines mid-thought</h3>
-        <p>Pick the tier that fits — a brainstorm, a board memo, a deep technical breakdown — and switch any time without losing the thread of your conversation.</p>
+<main>
+  <section class="hero">
+    <div class="hero-content">
+      <div class="hero-eyebrow">Think Fox 1-v0.7.3.5 · AI by Monty Kubasek</div>
+      <h1>Think<span class="fox">Fox</span></h1>
+      <p class="hero-sub"><strong>Sixteen AI engines. One command interface.</strong> Route work through OpenRouter or supported source-company APIs, keep projects organised locally, switch models without rebuilding your workflow, and listen to responses through your choice of professional text-to-speech provider.</p>
+      <div class="hero-actions">
+        <a href="thinkfox.html" class="btn-primary">Launch interface</a>
+        <a href="#engines" class="btn-secondary">Explore the engines</a>
       </div>
-      <div class="how-card">
-        <div class="glyph">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#0d40da" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"/><path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/></svg>
-        </div>
-        <h3>Callsigns and a bikini</h3>
-        <p>Think Fox can do all through the 9 engines of intelligence. The new gimmick involves callsigns, not bikinis. Very sad to see the bikinis go, but callsigns are cool too. And as you can see above, there is still one bikini left.</p>
-      </div>
-      <div class="how-card">
-        <div class="glyph">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#6706c1" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
-        </div>
-        <h3>The New Squadron</h3>
-        <p>Think Fox is the controller in a bikini. The engines are the pilots with callsigns. Designed to run on openrouter infrastructure, but soon you will be able to bring your API anywhere, or run locally from your home.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="layers" class="layer-section">
-  <div class="section-inner">
-    <div class="eyebrow">The Intelligence Layer</div>
-    <h2 class="section-title">Nine engines. One assistant.</h2>
-    <p class="section-lede">Each tier remains colour-coded across the Think Fox system, so you always know which mind you are in controlling.</p>
-
-    <div class="tier-grid">
-      <div class="tier" data-tier="katana">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Katana</h3>
-        <span class="tier-version">Kimi K3</span>
-        <p>High-criticality reasoning and versatile execution for complex, multi-step workflows. The definitive starting point for heavy cognitive lifting.</p>
-      </div>
-      <div class="tier" data-tier="cinder">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Cinder</h3>
-        <span class="tier-version">MiniMax M3</span>
-        <p>Optimized for high-throughput multimodal processing and rapid context synthesis. Excels at parsing dense, multi-format data streams.</p>
-      </div>
-      <div class="tier" data-tier="scythe">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Scythe</h3>
-        <span class="tier-version">Qwen 3.7 Max</span>
-        <p>Bottom-line-up-front executive summaries, sharp business framing, and zero wasted words. Built for the boardroom and high-stakes corporate strategy.</p>
-      </div>
-      <div class="tier" data-tier="typhoon">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Typhoon</h3>
-        <span class="tier-version">DeepSeek V4 Pro</span>
-        <p>Rigorous analytical frameworks, deep technical breakdowns, and full coding fluency. Deploy when absolute precision and structural logic are required.</p>
-      </div>
-      <div class="tier" data-tier="tempest">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Tempest</h3>
-        <span class="tier-version">GLM 5.2</span>
-        <p>Extended thinking and maximum criticality for the hardest, most abstract problems. Reserved for deep-dive research and complex systemic analysis.</p>
-      </div>
-      <div class="tier" data-tier="orbit">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Orbit</h3>
-        <span class="tier-version">Opus 4.8</span>
-        <p>Nuanced, long-horizon agentic planning with superior instruction following and safety alignment. Ideal for sustained, multi-phase project orchestration.</p>
-      </div>
-      <div class="tier" data-tier="glaive">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Glaive</h3>
-        <span class="tier-version">HY3</span>
-        <p>High-efficiency mixture-of-experts routing designed for low-latency agentic tool execution. Fast, lightweight, and highly responsive for real-time tasks.</p>
-      </div>
-      <div class="tier" data-tier="neon">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Neon</h3>
-        <span class="tier-version">Nemotron 3 Ultra</span>
-        <p>Graphics-accelerated architecture optimized for high-throughput orchestration and custom domains. Handles heavy computational routing with ease.</p>
-      </div>
-      <div class="tier" data-tier="monolith">
-        <div class="tier-status live"><span class="led"></span> ONLINE</div>
-        <h3>Monolith</h3>
-        <span class="tier-version">Mistral Large 3</span>
-        <p>Creative brainstorming, structural ideation, and dynamic roleplaying capabilities. The premier engine for shaping raw concepts into polished narratives.</p>
-      </div>
-    </div>
-  </div>
-</section>
-
-<section id="philosophy" class="philosophy">
-  <div class="engine-roll">
-    <div class="engine-item"><img src="avatars/logo-kat-small.png" alt="Katana"><span>Katana</span></div>
-    <div class="engine-item"><img src="avatars/logo-cin-small.png" alt="Cinder"><span>Cinder</span></div>
-    <div class="engine-item"><img src="avatars/logo-scy-small.png" alt="Scythe"><span>Scythe</span></div>
-    <div class="engine-item"><img src="avatars/logo-typ-small.png" alt="Typhoon"><span>Typhoon</span></div>
-    <div class="engine-item"><img src="avatars/logo-tem-small.png" alt="Tempest"><span>Tempest</span></div>
-    <div class="engine-item"><img src="avatars/logo-orb-small.png" alt="Orbit"><span>Orbit</span></div>
-    <div class="engine-item"><img src="avatars/logo-gla-small.png" alt="Glaive"><span>Glaive</span></div>
-    <div class="engine-item"><img src="avatars/logo-neo-small.png" alt="Neon"><span>Neon</span></div>
-    <div class="engine-item"><img src="avatars/logo-mon-small.png" alt="Monolith"><span>Monolith</span></div>
-  </div>
-  <blockquote>"The right answer depends on the right kind of <span>thinking</span> — so we built nine."</blockquote>
-  <cite>— Marketing shit made up by Think Fox</cite>
-</section>
-<section id="access">
-  <section class="final-cta">
-    <div class="section-inner">
-      <h2>Think<span>Fox</span> interface is live</h2>
-      <p>Security hardening is complete. The API is stored locally in your browser. The public chat interface is ready for use. You must supply your own Openrouter API.</p>
-      <a href="thinkfox.html" class="btn-primary">ACCESS INTERFACE →</a>
     </div>
   </section>
-</section>
+
+  <section id="features">
+    <div class="section-inner">
+      <div class="eyebrow">Current project</div>
+      <h2 class="section-title">A working AI command centre, not a model picker with decoration.</h2>
+      <p class="section-lede">Think Fox combines multiple providers with persistent conversations, reusable context, direct search, document handling, image generation, multi-provider text-to-speech, and branching workflows inside one browser-based interface.</p>
+
+      <div class="feature-grid">
+        <article class="feature-card">
+          <div class="feature-icon">API</div>
+          <h3>OpenRouter or direct providers</h3>
+          <p>Use one OpenRouter key across the full engine deck, or connect supported source-company APIs. Engines unavailable under the selected provider are clearly locked rather than failing silently.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">DOC</div>
+          <h3>Text and PDF context</h3>
+          <p>Upload text, code, data files, or PDFs. Think Fox extracts readable content locally in the browser and attaches it to the relevant message without requiring a document server.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">WEB</div>
+          <h3>Direct web search</h3>
+          <p>Use OpenRouter search or query Tavily, Brave Search, or a configured SearXNG instance. Results are added as labelled reference context before the engine responds.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">IMG</div>
+          <h3>Image generation</h3>
+          <p>Switch into image mode on supported OpenAI and Google routes. Generated images are rendered inline and stored with the conversation in the local Think Fox library.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">TTS</div>
+          <h3>Multi-provider text-to-speech</h3>
+          <p>Play assistant responses aloud using Deepgram, OpenAI, ElevenLabs, or MiniMax. Choose the provider, voice, model, speed, and output settings that suit the task, then control playback directly from each response.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">MEM</div>
+          <h3>Memory, prompts and bookshelf</h3>
+          <p>Keep a user profile, pinned memories, reusable prompt templates, and reference documents. Context can be searched, categorised, backed up, and injected only when useful.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">FORK</div>
+          <h3>Persistent conversation forks</h3>
+          <p>Edit a message without destroying what followed. Think Fox preserves the original path, creates a new branch, and lets you move through the conversation tree.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section id="engines" class="engines-section">
+    <div class="section-inner">
+      <div class="eyebrow">Engine deck</div>
+      <h2 class="section-title">Sixteen engines organised into four squadrons.</h2>
+      <p class="section-lede">Each engine keeps its own callsign, colour, model mapping, capabilities, default parameters, and concise system prompt. Switch engines within the same conversation whenever the work changes.</p>
+
+      <div class="squadron-stack">
+        <section class="squadron">
+          <div class="squadron-head"><h3>Anvil</h3><span>Primary reasoning and production engines</span></div>
+          <div class="engine-list single-tail">
+            <article class="engine" data-engine="tempest"><img class="engine-logo" src="callsign/logo-tem-small.png" alt="Tempest logo"><div><div class="engine-status">Configured</div><h4>Tempest</h4><span class="engine-model">Z.ai GLM 5.2</span><p>Deep reasoning, coding, and tool-assisted work for difficult multi-step problems.</p></div></article>
+            <article class="engine" data-engine="scythe"><img class="engine-logo" src="callsign/logo-scy-small.png" alt="Scythe logo"><div><div class="engine-status">Configured</div><h4>Scythe</h4><span class="engine-model">Qwen 3.7 Max</span><p>Executive analysis, structured writing, coding, and agent workflows.</p></div></article>
+            <article class="engine" data-engine="typhoon"><img class="engine-logo" src="callsign/logo-typ-small.png" alt="Typhoon logo"><div><div class="engine-status">Configured</div><h4>Typhoon</h4><span class="engine-model">Deepseek V4 Pro</span><p>Rigorous technical reasoning, precise analysis, coding, and agents.</p></div></article>
+            <article class="engine" data-engine="katana"><img class="engine-logo" src="callsign/logo-kat-small.png" alt="Katana logo"><div><div class="engine-status">Configured</div><h4>Katana</h4><span class="engine-model">MoonshotAI Kimi K3</span><p>Large-context general work with preserved reasoning, vision, and tools.</p></div></article>
+            <article class="engine" data-engine="shuriken"><img class="engine-logo" src="callsign/logo-shu-small.png" alt="Shuriken logo"><div><div class="engine-status">Configured</div><h4>Shuriken</h4><span class="engine-model">MoonshotAI Kimi K2.6</span><p>Fast general reasoning, coding, drafting, and everyday tasks.</p></div></article>
+          </div>
+        </section>
+
+        <section class="squadron">
+          <div class="squadron-head"><h3>Banshee</h3><span>Frontier proprietary and multimodal engines</span></div>
+          <div class="engine-list single-tail">
+            <article class="engine" data-engine="orbit"><img class="engine-logo" src="callsign/logo-orb-small.png" alt="Orbit logo"><div><div class="engine-status">Configured</div><h4>Orbit</h4><span class="engine-model">Anthropic Claude Opus 4.8</span><p>Nuanced reasoning, long-form writing, coding, images, and files.</p></div></article>
+            <article class="engine" data-engine="ancestral"><img class="engine-logo" src="callsign/logo-anc-small.png" alt="Ancestral logo"><div><div class="engine-status">Configured</div><h4>Ancestral</h4><span class="engine-model">Anthropic Claude Fable 5</span><p>Natural writing, precise analysis, coding, images, and files.</p></div></article>
+            <article class="engine" data-engine="citadel"><img class="engine-logo" src="callsign/logo-cit-small.png" alt="Citadel logo"><div><div class="engine-status">Configured</div><h4>Citadel</h4><span class="engine-model">OpenAI GPT 5.3 Chat</span><p>General reasoning, coding, tools, vision, and supported image generation.</p></div></article>
+            <article class="engine" data-engine="gargoyle"><img class="engine-logo" src="callsign/logo-gar-small.png" alt="Gargoyle logo"><div><div class="engine-status">Configured</div><h4>Gargoyle</h4><span class="engine-model">Google Gemini Pro</span><p>Multimodal reasoning, image understanding, and supported image generation.</p></div></article>
+            <article class="engine" data-engine="eightball"><img class="engine-logo" src="callsign/logo-eig-small.png" alt="Eight Ball logo"><div><div class="engine-status">Configured</div><h4>Eight Ball</h4><span class="engine-model">xAI Grok</span><p>Creative and unconventional reasoning with vision and tool support.</p></div></article>
+          </div>
+        </section>
+
+        <section class="squadron">
+          <div class="squadron-head"><h3>Cobalt</h3><span>Specialist and high-efficiency engines</span></div>
+          <div class="engine-list">
+            <article class="engine" data-engine="monolith"><img class="engine-logo" src="callsign/logo-mon-small.png" alt="Monolith logo"><div><div class="engine-status">Configured</div><h4>Monolith</h4><span class="engine-model">Mistral Large</span><p>Multilingual reasoning, vision, coding, and tools.</p></div></article>
+            <article class="engine" data-engine="cinder"><img class="engine-logo" src="callsign/logo-cin-small.png" alt="Cinder logo"><div><div class="engine-status">Configured</div><h4>Cinder</h4><span class="engine-model">Minimax M3</span><p>Large-context reasoning, coding, tools, and multimodal input.</p></div></article>
+            <article class="engine" data-engine="neon"><img class="engine-logo" src="callsign/logo-neo-small.png" alt="Neon logo"><div><div class="engine-status">Configured</div><h4>Neon</h4><span class="engine-model">Nvidia Nemotron 3 Ultra</span><p>Heavy reasoning, planning, and agent orchestration.</p></div></article>
+            <article class="engine" data-engine="glaive"><img class="engine-logo" src="callsign/logo-gla-small.png" alt="Glaive logo"><div><div class="engine-status">Configured</div><h4>Glaive</h4><span class="engine-model">Tencent Hy3</span><p>Efficient reasoning, coding, multilingual work, and tool calling.</p></div></article>
+          </div>
+        </section>
+
+        <section class="squadron">
+          <div class="squadron-head"><h3>Dire</h3><span>Open-model engines · OpenRouter only</span></div>
+          <div class="engine-list">
+            <article class="engine" data-engine="harlequin"><img class="engine-logo" src="callsign/logo-har-small.png" alt="Harlequin logo"><div><div class="engine-status">OpenRouter only</div><h4>Harlequin</h4><span class="engine-model">Nousresearch Hermes Llama 3.1</span><p>High-capacity open-model reasoning, creative work, and flexible voice.</p></div></article>
+            <article class="engine" data-engine="dagger"><img class="engine-logo" src="callsign/logo-dag-small.png" alt="Dagger logo"><div><div class="engine-status">OpenRouter only</div><h4>Dagger</h4><span class="engine-model">CognitiveComputations Dolphin Mistral 24b Venice Edition</span><p>Direct, creative open-model work with a compact general-purpose footprint.</p></div></article>
+          </div>
+        </section>
+      </div>
+    </div>
+  </section>
+
+  <section id="architecture">
+    <div class="section-inner architecture">
+      <div class="architecture-copy">
+        <div class="eyebrow">Provider-aware routing</div>
+        <h2 class="section-title">Use the route you actually pay for.</h2>
+        <p>OpenRouter mode exposes the complete engine deck through one account. Direct-provider mode uses the selected source-company API and automatically locks incompatible engines. Dagger and Harlequin remain OpenRouter-only.</p>
+        <p>Each provider adapter handles its own endpoint, authentication, request format, streaming events, usage data, and supported capabilities. Think Fox keeps the interface consistent while the routing layer deals with the differences underneath.</p>
+      </div>
+      <div class="route-panel" aria-label="Think Fox routing overview">
+        <div class="route-row"><strong>OpenRouter</strong><span>Full sixteen-engine deck, unified model catalogue, pricing and routing.</span></div>
+        <div class="route-row"><strong>Direct APIs</strong><span>OpenAI, Anthropic, Google, xAI, Moonshot, Alibaba, DeepSeek, Z.AI, MiniMax, Mistral, NVIDIA and Tencent.</span></div>
+        <div class="route-row"><strong>Search</strong><span>OpenRouter plugin, Tavily, Brave Search or configurable SearXNG.</span></div>
+        <div class="route-row"><strong>Text-to-speech</strong><span>Deepgram, OpenAI, ElevenLabs and MiniMax voice routes with provider, voice, model and playback controls.</span></div>
+        <div class="route-row"><strong>Local data</strong><span>Conversations, branches, memories, documents and generated images remain in browser storage.</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="philosophy">
+    <div class="engine-roll" aria-label="Think Fox engine logos">
+      <div class="engine-item"><img src="callsign/logo-tem-small.png" alt="Tempest"><span>Tempest</span></div>
+      <div class="engine-item"><img src="callsign/logo-scy-small.png" alt="Scythe"><span>Scythe</span></div>
+      <div class="engine-item"><img src="callsign/logo-typ-small.png" alt="Typhoon"><span>Typhoon</span></div>
+      <div class="engine-item"><img src="callsign/logo-kat-small.png" alt="Katana"><span>Katana</span></div>
+      <div class="engine-item"><img src="callsign/logo-shu-small.png" alt="Shuriken"><span>Shuriken</span></div>
+      <div class="engine-item"><img src="callsign/logo-orb-small.png" alt="Orbit"><span>Orbit</span></div>
+      <div class="engine-item"><img src="callsign/logo-anc-small.png" alt="Ancestral"><span>Ancestral</span></div>
+      <div class="engine-item"><img src="callsign/logo-cit-small.png" alt="Citadel"><span>Citadel</span></div>
+      <div class="engine-item"><img src="callsign/logo-gar-small.png" alt="Gargoyle"><span>Gargoyle</span></div>
+      <div class="engine-item"><img src="callsign/logo-eig-small.png" alt="Eight Ball"><span>Eight Ball</span></div>
+      <div class="engine-item"><img src="callsign/logo-mon-small.png" alt="Monolith"><span>Monolith</span></div>
+      <div class="engine-item"><img src="callsign/logo-cin-small.png" alt="Cinder"><span>Cinder</span></div>
+      <div class="engine-item"><img src="callsign/logo-neo-small.png" alt="Neon"><span>Neon</span></div>
+      <div class="engine-item"><img src="callsign/logo-gla-small.png" alt="Glaive"><span>Glaive</span></div>
+      <div class="engine-item"><img src="callsign/logo-har-small.png" alt="Harlequin"><span>Harlequin</span></div>
+      <div class="engine-item"><img src="callsign/logo-dag-small.png" alt="Dagger"><span>Dagger</span></div>
+    </div>
+    <blockquote>Different models are good at different work. Think Fox makes switching <span>deliberate</span>, visible, and useful.</blockquote>
+    <cite>One interface · sixteen engines · your API routes</cite>
+  </section>
+
+  <section class="final-cta">
+    <div class="section-inner">
+      <h2>Think<span>Fox</span> is ready to launch.</h2>
+      <p>Bring an OpenRouter key for the complete engine deck, or connect supported direct-provider and text-to-speech accounts. Generate images, search the web, work with documents, and listen to responses aloud—all from the same interface. Keys and project data are stored locally in your browser, so use Think Fox on a trusted device.</p>
+      <a href="thinkfox.html" class="btn-primary">Launch Think Fox →</a>
+    </div>
+  </section>
+</main>
 
 <footer>
-  <div class="spectrum-bar" style="margin-bottom:32px;"></div>
+  <div class="spectrum-bar" style="margin-bottom:30px;"></div>
   <div class="footer-inner">
     <div class="footer-mark">Think<span>Fox</span></div>
-    <div class="footer-meta">THINK FOX · INTELLIGENCE IN A BIKINI · MONTY@MIDDLEROAD.AU</div>
+    <div class="footer-meta">THINK FOX 1-v0.7.3.5 · SIXTEEN ENGINE AI COMMAND INTERFACE · MONTY@MIDDLEROAD.AU</div>
   </div>
 </footer>
-
 </body>
 </html>
