@@ -4,7 +4,7 @@
 
 Think Fox is a complete AI chat client that runs entirely in your browser from one HTML file. No build step, no server, no account, no telemetry. Connect with your own API keys — via OpenRouter for the full engine deck, or directly to any of 12 source-company APIs — and everything (conversations, memories, books, images, settings) stays in your browser.
 
-> **Version:** v0.7.4 (with updates) · **Author:** Montaigne Kubasek
+**Current Version:** v0.7.4 (with updates) · **Author:** Montaigne Kubasek
 
 ---
 
