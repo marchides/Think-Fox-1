@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="index, follow" />
 <title>Think Fox 1 — Multi-Engine AI Command Interface by Monty Kubasek</title>
-<meta name="description" content="Think Fox 1 is a browser-based command interface for 21 AI engines, with OpenRouter and direct-provider APIs, documents, web search, image generation, multi-provider text-to-speech, memories, prompts, and conversation forks." />
+<meta name="description" content="Think Fox 1 is a browser-based command interface for 21 AI engines, with OpenRouter and direct-provider APIs, Projects, GitHub repo access, project context retrieval, documents, web search, image generation, multi-provider text-to-speech, memories, prompts, and conversation forks." />
 <link rel="icon" type="image/png" sizes="16x16" href="fox_icon_hoodie_16x16.png">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -556,9 +556,9 @@
 <main>
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-eyebrow">Think Fox 1-v0.7.6.7(b) · AI by Monty Kubasek</div>
+      <div class="hero-eyebrow">Think Fox 1-v0.7.7.6 · AI by Monty Kubasek</div>
       <h1>Think <span class="fox">Fox</span> 1</h1>
-      <p class="hero-sub"><strong>Twenty-one AI engines. One command interface.</strong> Route work through OpenRouter or supported source-company APIs, keep projects organised locally, switch models without rebuilding your workflow, and listen to responses through your choice of professional text-to-speech provider.</p>
+      <p class="hero-sub"><strong>Twenty-one AI engines. One command interface.</strong> Route work through OpenRouter or supported source-company APIs, organise conversations into Projects with searchable context retrieval, connect GitHub repositories directly, switch models without rebuilding your workflow, and listen to responses through your choice of professional text-to-speech provider.</p>
       <div class="hero-actions">
         <a href="thinkfox.html" class="btn-primary">Launch interface</a>
         <a href="#engines" class="btn-secondary">Explore the engines</a>
@@ -569,12 +569,27 @@
     <div class="section-inner">
       <div class="eyebrow">Current project</div>
       <h2 class="section-title">A working AI command centre, not a model picker with decoration.</h2>
-      <p class="section-lede">Think Fox combines multiple providers with persistent conversations, reusable context, direct search, document handling, image generation, multi-provider text-to-speech, and branching workflows inside one browser-based interface.</p>
+      <p class="section-lede">Think Fox combines multiple providers with persistent conversations, Projects, GitHub repo access, project context retrieval, reusable memory, direct search, document handling, image generation, multi-provider text-to-speech, and branching workflows inside one browser-based interface.</p>
       <div class="feature-grid">
         <article class="feature-card">
           <div class="feature-icon">API</div>
           <h3>OpenRouter or direct providers</h3>
           <p>Use one OpenRouter key across the full engine deck, or connect supported source-company APIs. Engines unavailable under the selected provider are clearly locked rather than failing silently.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">PRJ</div>
+          <h3>Projects and Workplaces</h3>
+          <p>Organise conversations into Projects inside Workplaces. Assign, move, filter, and archive. Each Project holds its own memories, context index, retrieval mode, and optional GitHub connection.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">GH</div>
+          <h3>GitHub repo access</h3>
+          <p>Connect a Project to a GitHub repository using a fine-grained PAT. Browse the tree, sync files into project context, generate patches, and commit updates with SHA-guarded diff confirmation. Tokens never leave your browser.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">CTX</div>
+          <h3>Project context retrieval</h3>
+          <p>Index conversations into searchable chunks. On each message, Think Fox scores and retrieves relevant context from other Project conversations, memories, and synced GitHub files — within a strict token budget.</p>
         </article>
         <article class="feature-card">
           <div class="feature-icon">DOC</div>
@@ -594,17 +609,27 @@
         <article class="feature-card">
           <div class="feature-icon">TTS</div>
           <h3>Multi-provider text-to-speech</h3>
-          <p>Play assistant responses aloud using Deepgram, OpenAI, ElevenLabs, or MiniMax. Choose the provider, voice, model, speed, and output settings that suit the task, then control playback directly from each response.</p>
+          <p>Play assistant responses aloud using Deepgram, OpenAI, ElevenLabs, or MiniMax. Choose the provider, voice, model, speed, and output settings that suit the task.</p>
         </article>
         <article class="feature-card">
           <div class="feature-icon">MEM</div>
           <h3>Memory, prompts and bookshelf</h3>
-          <p>Keep a user profile, pinned memories, reusable prompt templates, and reference documents. Context can be searched, categorised, backed up, and injected only when useful.</p>
+          <p>Keep a user profile, pinned memories, Project memories, reusable prompt templates, and reference documents. Context can be searched, categorised, backed up, and injected only when useful.</p>
         </article>
         <article class="feature-card">
           <div class="feature-icon">FORK</div>
           <h3>Persistent conversation forks</h3>
           <p>Edit a message without destroying what followed. Think Fox preserves the original path, creates a new branch, and lets you move through the conversation tree.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">DX</div>
+          <h3>Diagnostics and repair</h3>
+          <p>Built-in diagnostics panel shows system state, storage estimates, stale items, and orphan records. One-click repair tools fix broken references and export emergency backups.</p>
+        </article>
+        <article class="feature-card">
+          <div class="feature-icon">EXP</div>
+          <h3>Workplace export and import</h3>
+          <p>Export entire Workplaces — conversations, Projects, memories, context index, canvas, attachments, and settings — as a single JSON file. Import into any browser. GitHub tokens are never exported.</p>
         </article>
       </div>
     </div>
@@ -612,43 +637,53 @@
   <section id="engines" class="engines-section">
     <div class="section-inner">
       <div class="eyebrow">Engine deck</div>
-      <h2 class="section-title">Twenty-one engines organised into three squadrons.</h2>
+      <h2 class="section-title">Twenty-one engines organised into five divisions.</h2>
       <p class="section-lede">Each engine keeps its own callsign, colour, model mapping, capabilities, default parameters, and concise system prompt. Switch engines within the same conversation whenever the work changes.</p>
       <div class="squadron-stack">
         <section class="squadron">
-          <div class="squadron-head"><h3>Anvil</h3><span>Primary reasoning, production, and technical engines</span></div>
+          <div class="squadron-head"><h3>Command Core</h3><span>Fast response, general reasoning, and everyday command engines</span></div>
           <div class="engine-list">
             <article class="engine" data-engine="shuriken"><img class="engine-logo" src="callsign/logo-shu-small.png" alt="Shuriken logo"><div><div class="engine-status">Configured</div><h4>Shuriken</h4><span class="engine-model">MoonshotAI Kimi K2.6</span><p>Fast general reasoning, coding, drafting, image input, and everyday tasks.</p></div></article>
             <article class="engine" data-engine="katana"><img class="engine-logo" src="callsign/logo-kat-small.png" alt="Katana logo"><div><div class="engine-status">Default</div><h4>Katana</h4><span class="engine-model">MoonshotAI Kimi K3</span><p>Large-context general work with preserved reasoning, vision, and tools.</p></div></article>
             <article class="engine" data-engine="tempest"><img class="engine-logo" src="callsign/logo-tem-small.png" alt="Tempest logo"><div><div class="engine-status">Configured</div><h4>Tempest</h4><span class="engine-model">Z.ai GLM 5.2</span><p>Deep reasoning, coding, and tool-assisted work for difficult multi-step problems.</p></div></article>
+            <article class="engine" data-engine="cinder"><img class="engine-logo" src="callsign/logo-cin-small.png" alt="Cinder logo"><div><div class="engine-status">Configured</div><h4>Cinder</h4><span class="engine-model">MiniMax M3</span><p>Large-context reasoning, coding, tools, and multimodal input.</p></div></article>
+          </div>
+        </section>
+        <section class="squadron">
+          <div class="squadron-head"><h3>Vector Wing</h3><span>Technical precision, coding, and structured analysis engines</span></div>
+          <div class="engine-list single-tail">
             <article class="engine" data-engine="scythe"><img class="engine-logo" src="callsign/logo-scy-small.png" alt="Scythe logo"><div><div class="engine-status">Configured</div><h4>Scythe</h4><span class="engine-model">Qwen 3.7 Max</span><p>Executive analysis, structured writing, coding, and agent workflows.</p></div></article>
             <article class="engine" data-engine="hellblade"><img class="engine-logo" src="callsign/logo-hel-small.png" alt="Hellblade logo"><div><div class="engine-status">Configured</div><h4>Hellblade</h4><span class="engine-model">Qwen 3.8 Max</span><p>Sharp technical analysis, coding, agents, and multimodal input.</p></div></article>
             <article class="engine" data-engine="typhoon"><img class="engine-logo" src="callsign/logo-typ-small.png" alt="Typhoon logo"><div><div class="engine-status">Configured</div><h4>Typhoon</h4><span class="engine-model">DeepSeek V4 Pro 0813</span><p>Rigorous technical reasoning, precise analysis, coding, and agents.</p></div></article>
-            <article class="engine" data-engine="cinder"><img class="engine-logo" src="callsign/logo-cin-small.png" alt="Cinder logo"><div><div class="engine-status">Configured</div><h4>Cinder</h4><span class="engine-model">MiniMax M3</span><p>Large-context reasoning, coding, tools, and multimodal input.</p></div></article>
+            <article class="engine" data-engine="trident"><img class="engine-logo" src="callsign/logo-tri-small.png" alt="Trident logo"><div><div class="engine-status">Configured</div><h4>Trident</h4><span class="engine-model">Poolside Laguna S 2.1</span><p>Specialist code generation, technical problem solving, and long-context engineering work.</p></div></article>
             <article class="engine" data-engine="glaive"><img class="engine-logo" src="callsign/logo-gla-small.png" alt="Glaive logo"><div><div class="engine-status">Configured</div><h4>Glaive</h4><span class="engine-model">Tencent HY3</span><p>Efficient reasoning, coding, multilingual work, and tool calling.</p></div></article>
           </div>
         </section>
         <section class="squadron">
-          <div class="squadron-head"><h3>Banshee</h3><span>Frontier proprietary, multimodal, and creative engines</span></div>
+          <div class="squadron-head"><h3>Strike Squadron</h3><span>Frontier proprietary reasoning, multimodal, and heavy-lift engines</span></div>
           <div class="engine-list single-tail">
-            <article class="engine" data-engine="citadel"><img class="engine-logo" src="callsign/logo-cit-small.png" alt="Citadel logo"><div><div class="engine-status">Configured</div><h4>Citadel</h4><span class="engine-model">OpenAI GPT 5.6 Terra Pro</span><p>General reasoning, coding, tools, vision, files, and supported image generation.</p></div></article>
-            <article class="engine" data-engine="stronghold"><img class="engine-logo" src="callsign/logo-str-small.png" alt="Stronghold logo"><div><div class="engine-status">Configured</div><h4>Stronghold</h4><span class="engine-model">OpenAI GPT 5.6 Sol Pro</span><p>High-end OpenAI reasoning, coding, multimodal work, files, and tool use.</p></div></article>
-            <article class="engine" data-engine="gargoyle"><img class="engine-logo" src="callsign/logo-gar-small.png" alt="Gargoyle logo"><div><div class="engine-status">Configured</div><h4>Gargoyle</h4><span class="engine-model">Google Gemini 3.1 Pro Preview</span><p>Large-context multimodal reasoning, image understanding, files, audio, video, and supported image generation.</p></div></article>
             <article class="engine" data-engine="orbit"><img class="engine-logo" src="callsign/logo-orb-small.png" alt="Orbit logo"><div><div class="engine-status">Configured</div><h4>Orbit</h4><span class="engine-model">Anthropic Claude Opus 4.8</span><p>Nuanced reasoning, long-form writing, coding, images, and files.</p></div></article>
             <article class="engine" data-engine="rocketship"><img class="engine-logo" src="callsign/logo-roc-small.png" alt="Rocketship logo"><div><div class="engine-status">Configured</div><h4>Rocketship</h4><span class="engine-model">Anthropic Claude Opus 5</span><p>Advanced reasoning, knowledge work, coding, images, and files.</p></div></article>
             <article class="engine" data-engine="ancestral"><img class="engine-logo" src="callsign/logo-anc-small.png" alt="Ancestral logo"><div><div class="engine-status">Configured</div><h4>Ancestral</h4><span class="engine-model">Anthropic Claude Fable 5</span><p>Natural writing, precise analysis, coding, images, and files.</p></div></article>
-            <article class="engine" data-engine="mudcake"><img class="engine-logo" src="callsign/logo-mud-small.png" alt="Mudcake logo"><div><div class="engine-status">Configured</div><h4>Mudcake</h4><span class="engine-model">Meta Muse Spark 1.2</span><p>Deep multimodal reasoning, huge context, mixed media, and dense analysis.</p></div></article>
-            <article class="engine" data-engine="eightball"><img class="engine-logo" src="callsign/logo-eig-small.png" alt="Eight Ball logo"><div><div class="engine-status">Configured</div><h4>Eight Ball</h4><span class="engine-model">xAI Grok 4.6</span><p>Creative and unconventional reasoning with vision, files, and tool support.</p></div></article>
-            <article class="engine" data-engine="neon"><img class="engine-logo" src="callsign/logo-neo-small.png" alt="Neon logo"><div><div class="engine-status">Configured</div><h4>Neon</h4><span class="engine-model">NVIDIA Nemotron 3 Ultra 550B A55B</span><p>Heavy reasoning, planning, and agent orchestration.</p></div></article>
-            <article class="engine" data-engine="harlequin"><img class="engine-logo" src="callsign/logo-har-small.png" alt="Harlequin logo"><div><div class="engine-status">OpenRouter only</div><h4>Harlequin</h4><span class="engine-model">NousResearch Hermes 3 Llama 3.1 405B</span><p>High-capacity open-model reasoning, creative work, and flexible voice.</p></div></article>
-            <article class="engine" data-engine="dagger"><img class="engine-logo" src="callsign/logo-dag-small.png" alt="Dagger logo"><div><div class="engine-status">OpenRouter only</div><h4>Dagger</h4><span class="engine-model">CognitiveComputations Dolphin Mistral 24B Venice Edition</span><p>Direct, creative open-model work with a compact general-purpose footprint.</p></div></article>
+            <article class="engine" data-engine="citadel"><img class="engine-logo" src="callsign/logo-cit-small.png" alt="Citadel logo"><div><div class="engine-status">Configured</div><h4>Citadel</h4><span class="engine-model">OpenAI GPT 5.6 Terra Pro</span><p>General reasoning, coding, tools, vision, files, and supported image generation.</p></div></article>
+            <article class="engine" data-engine="stronghold"><img class="engine-logo" src="callsign/logo-str-small.png" alt="Stronghold logo"><div><div class="engine-status">Configured</div><h4>Stronghold</h4><span class="engine-model">OpenAI GPT 5.6 Sol Pro</span><p>High-end OpenAI reasoning, coding, multimodal work, files, and tool use.</p></div></article>
           </div>
         </section>
         <section class="squadron">
-          <div class="squadron-head"><h3>Cobalt</h3><span>Specialist European and code-first architectures</span></div>
+          <div class="squadron-head"><h3>Oracle Wing</h3><span>Deep knowledge, multimodal, and creative reasoning engines</span></div>
           <div class="engine-list">
+            <article class="engine" data-engine="mudcake"><img class="engine-logo" src="callsign/logo-mud-small.png" alt="Mudcake logo"><div><div class="engine-status">Configured</div><h4>Mudcake</h4><span class="engine-model">Meta Muse Spark 1.2</span><p>Deep multimodal reasoning, huge context, mixed media, and dense analysis.</p></div></article>
+            <article class="engine" data-engine="gargoyle"><img class="engine-logo" src="callsign/logo-gar-small.png" alt="Gargoyle logo"><div><div class="engine-status">Configured</div><h4>Gargoyle</h4><span class="engine-model">Google Gemini 3.1 Pro Preview</span><p>Large-context multimodal reasoning, image understanding, files, audio, video, and supported image generation.</p></div></article>
+            <article class="engine" data-engine="eightball"><img class="engine-logo" src="callsign/logo-eig-small.png" alt="Eight Ball logo"><div><div class="engine-status">Configured</div><h4>Eight Ball</h4><span class="engine-model">xAI Grok 4.6</span><p>Creative and unconventional reasoning with vision, files, and tool support.</p></div></article>
+            <article class="engine" data-engine="neon"><img class="engine-logo" src="callsign/logo-neo-small.png" alt="Neon logo"><div><div class="engine-status">Configured</div><h4>Neon</h4><span class="engine-model">NVIDIA Nemotron 3 Ultra 550B A55B</span><p>Heavy reasoning, planning, and agent orchestration.</p></div></article>
+          </div>
+        </section>
+        <section class="squadron">
+          <div class="squadron-head"><h3>Hammer Division</h3><span>Specialist, multilingual, and open-model engines</span></div>
+          <div class="engine-list single-tail">
             <article class="engine" data-engine="monolith"><img class="engine-logo" src="callsign/logo-mon-small.png" alt="Monolith logo"><div><div class="engine-status">Configured</div><h4>Monolith</h4><span class="engine-model">Mistral Large 2512</span><p>Multilingual reasoning, vision, files, coding, and tools.</p></div></article>
-            <article class="engine" data-engine="trident"><img class="engine-logo" src="callsign/logo-tri-small.png" alt="Trident logo"><div><div class="engine-status">Configured</div><h4>Trident</h4><span class="engine-model">Poolside Laguna S 2.1</span><p>Specialist code generation, technical problem solving, and long-context engineering work.</p></div></article>
+            <article class="engine" data-engine="dagger"><img class="engine-logo" src="callsign/logo-dag-small.png" alt="Dagger logo"><div><div class="engine-status">OpenRouter only</div><h4>Dagger</h4><span class="engine-model">CognitiveComputations Dolphin Mistral 24B Venice Edition</span><p>Direct, creative open-model work with a compact general-purpose footprint.</p></div></article>
+            <article class="engine" data-engine="harlequin"><img class="engine-logo" src="callsign/logo-har-small.png" alt="Harlequin logo"><div><div class="engine-status">OpenRouter only</div><h4>Harlequin</h4><span class="engine-model">NousResearch Hermes 3 Llama 3.1 405B</span><p>High-capacity open-model reasoning, creative work, and flexible voice.</p></div></article>
           </div>
         </section>
       </div>
@@ -665,9 +700,10 @@
       <div class="route-panel" aria-label="Think Fox routing overview">
         <div class="route-row"><strong>OpenRouter</strong><span>Full twenty-one-engine deck, unified model catalogue, pricing and routing.</span></div>
         <div class="route-row"><strong>Direct APIs</strong><span>OpenAI, Anthropic, Google, xAI, Moonshot, Alibaba, DeepSeek, Z.AI, MiniMax, Mistral, NVIDIA and Tencent.</span></div>
+        <div class="route-row"><strong>GitHub</strong><span>Fine-grained PAT connection, repo tree browsing, file sync, SHA-guarded writes. Token stays local.</span></div>
         <div class="route-row"><strong>Search</strong><span>OpenRouter plugin, Tavily, Brave Search or configurable SearXNG.</span></div>
         <div class="route-row"><strong>Text-to-speech</strong><span>Deepgram, OpenAI, ElevenLabs and MiniMax voice routes with provider, voice, model and playback controls.</span></div>
-        <div class="route-row"><strong>Local data</strong><span>Conversations, branches, memories, documents and generated images remain in browser storage.</span></div>
+        <div class="route-row"><strong>Local data</strong><span>Conversations, Projects, context index, memories, documents, GitHub files and generated images remain in browser storage.</span></div>
       </div>
     </div>
   </section>
@@ -676,32 +712,32 @@
       <div class="engine-item"><img src="callsign/logo-shu-small.png" alt="Shuriken"><span>Shuriken</span></div>
       <div class="engine-item"><img src="callsign/logo-kat-small.png" alt="Katana"><span>Katana</span></div>
       <div class="engine-item"><img src="callsign/logo-tem-small.png" alt="Tempest"><span>Tempest</span></div>
+      <div class="engine-item"><img src="callsign/logo-cin-small.png" alt="Cinder"><span>Cinder</span></div>
       <div class="engine-item"><img src="callsign/logo-scy-small.png" alt="Scythe"><span>Scythe</span></div>
       <div class="engine-item"><img src="callsign/logo-hel-small.png" alt="Hellblade"><span>Hellblade</span></div>
       <div class="engine-item"><img src="callsign/logo-typ-small.png" alt="Typhoon"><span>Typhoon</span></div>
-      <div class="engine-item"><img src="callsign/logo-cin-small.png" alt="Cinder"><span>Cinder</span></div>
+      <div class="engine-item"><img src="callsign/logo-tri-small.png" alt="Trident"><span>Trident</span></div>
       <div class="engine-item"><img src="callsign/logo-gla-small.png" alt="Glaive"><span>Glaive</span></div>
-      <div class="engine-item"><img src="callsign/logo-cit-small.png" alt="Citadel"><span>Citadel</span></div>
-      <div class="engine-item"><img src="callsign/logo-str-small.png" alt="Stronghold"><span>Stronghold</span></div>
-      <div class="engine-item"><img src="callsign/logo-gar-small.png" alt="Gargoyle"><span>Gargoyle</span></div>
       <div class="engine-item"><img src="callsign/logo-orb-small.png" alt="Orbit"><span>Orbit</span></div>
       <div class="engine-item"><img src="callsign/logo-roc-small.png" alt="Rocketship"><span>Rocketship</span></div>
       <div class="engine-item"><img src="callsign/logo-anc-small.png" alt="Ancestral"><span>Ancestral</span></div>
+      <div class="engine-item"><img src="callsign/logo-cit-small.png" alt="Citadel"><span>Citadel</span></div>
+      <div class="engine-item"><img src="callsign/logo-str-small.png" alt="Stronghold"><span>Stronghold</span></div>
       <div class="engine-item"><img src="callsign/logo-mud-small.png" alt="Mudcake"><span>Mudcake</span></div>
+      <div class="engine-item"><img src="callsign/logo-gar-small.png" alt="Gargoyle"><span>Gargoyle</span></div>
       <div class="engine-item"><img src="callsign/logo-eig-small.png" alt="Eight Ball"><span>Eight Ball</span></div>
       <div class="engine-item"><img src="callsign/logo-neo-small.png" alt="Neon"><span>Neon</span></div>
-      <div class="engine-item"><img src="callsign/logo-har-small.png" alt="Harlequin"><span>Harlequin</span></div>
-      <div class="engine-item"><img src="callsign/logo-dag-small.png" alt="Dagger"><span>Dagger</span></div>
       <div class="engine-item"><img src="callsign/logo-mon-small.png" alt="Monolith"><span>Monolith</span></div>
-      <div class="engine-item"><img src="callsign/logo-tri-small.png" alt="Trident"><span>Trident</span></div>
+      <div class="engine-item"><img src="callsign/logo-dag-small.png" alt="Dagger"><span>Dagger</span></div>
+      <div class="engine-item"><img src="callsign/logo-har-small.png" alt="Harlequin"><span>Harlequin</span></div>
     </div>
     <blockquote>Different models are good at different work. Think Fox makes switching <span>deliberate</span>, visible, and useful.</blockquote>
-    <cite>One interface · twenty-one engines · your API routes</cite>
+    <cite>One interface · twenty-one engines · five divisions · your API routes</cite>
   </section>
   <section class="final-cta">
     <div class="section-inner">
       <h2>Think <span>Fox</span> 1 is ready to launch.</h2>
-      <p>Bring an OpenRouter key for the complete twenty-one-engine deck, or connect supported direct-provider and text-to-speech accounts. Generate images, search the web, work with documents, and listen to responses aloud—all from the same interface. Keys and project data are stored locally in your browser, so use Think Fox on a trusted device.</p>
+      <p>Bring an OpenRouter key for the complete twenty-one-engine deck, or connect supported direct-provider and text-to-speech accounts. Organise work into Projects, connect GitHub repositories, retrieve context from past conversations, generate images, search the web, work with documents, and listen to responses aloud—all from the same interface. Keys, tokens, and project data are stored locally in your browser, so use Think Fox on a trusted device.</p>
       <a href="thinkfox.html" class="btn-primary">Launch Think Fox →</a>
     </div>
   </section>
@@ -709,8 +745,8 @@
 <footer>
   <div class="spectrum-bar" style="margin-bottom:30px;"></div>
   <div class="footer-inner">
-    <div class="footer-mark">Think <span>Fox</span> 1 (v0.7.6.7b)</div>
-    <div class="footer-meta">© 2026 Montaigne Kubasek. Think Fox 1. All rights reserved · monty@middleroad.au</div>
+    <div class="footer-mark">Think <span>Fox</span> 1 (v0.7.7.6)</div>
+    <div class="footer-meta">Think Fox 1 is an AI interface created by Monty Kubasek · monty@middleroad.au</div>
   </div>
 </footer>
 </body>
