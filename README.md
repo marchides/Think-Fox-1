@@ -133,11 +133,11 @@ The **Search** pill can use the OpenRouter web plugin or call Tavily, Brave Sear
 
 | Engine selection | Model parameters | Conversation branches |
 | --- | --- | --- |
-| ![Engine selector](selectengine.png) | ![Model parameters](modelparameters.png) | ![Conversation branch tree](branches.png) |
+| ![Engine selector](icons/tf-engine-select.svg) | ![Model parameters](icons/tf-engine-parameters.svg) | ![Conversation branch tree](icons/tf-conversation-branches.svg) |
 
 | Bookshelf | Memories | Prompt templates |
 | --- | --- | --- |
-| ![Bookshelf](bookshelf.png) | ![Memories](memories.png) | ![Prompt templates](prompttemplate.png) |
+| ![Bookshelf](icons/tf-book-shelf.svg) | ![Memories](icons/tf-memories.svg) | ![Prompt templates](icons/tf-prompt-library.svg) |
 
 ## Data and privacy
 
@@ -165,13 +165,24 @@ External libraries—including KaTeX, highlight.js, Mermaid, PDF.js, Mammoth, an
 
 ```text
 .
-├── index.html                  # Project landing page
-├── thinkfox_1-v0776.html      # Current single-file application
-├── icons/                     # Topbar SVG icon set
-├── avatar/                    # Full-size engine artwork
-├── callsign/                  # Engine logos and compact artwork
-├── legacy/                    # Previous application releases
-└── *.png                      # README and landing-page assets
+├── index.html # Project landing page
+├── thinkfox_1-v0776.html # Current single-file application
+├── icons/ # Topbar SVG icon set
+│ ├── tf-engine-select.svg
+│ ├── tf-engine-parameters.svg
+│ ├── tf-memories.svg
+│ ├── tf-prompt-library.svg
+│ ├── tf-book-shelf.svg
+│ ├── tf-workplaces.svg
+│ ├── tf-canvas.svg
+│ ├── tf-artifacts.svg
+│ ├── tf-starred-messages.svg
+│ ├── tf-conversation-branches.svg
+│ └── tf-export-conversation.svg
+├── avatar/ # Full-size engine artwork
+├── callsign/ # Engine logos and compact artwork
+├── legacy/ # Previous application releases
+└── *.png # README and landing-page assets
 ```
 
 When releasing a new version, keep the version shown in the application, landing page, filename, and this README aligned. Retain older builds under `legacy/` when historical releases are needed.
