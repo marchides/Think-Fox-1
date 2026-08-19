@@ -5,7 +5,7 @@
 </p>
 
 <p align="center">
-  <strong>Twenty-one AI engines. One browser-native command interface.</strong>
+  <strong>Twenty-two AI engines. One browser-native command interface.</strong>
 </p>
 
 <p align="center">
@@ -14,12 +14,12 @@
 
 Think Fox is a multi-provider AI workspace delivered as a single HTML application. Bring your own API keys, switch between curated models, organise work into Projects with searchable context retrieval, connect GitHub repositories, search the web, work with documents, generate images, listen with text-to-speech, and preserve branching conversations—without running an application backend.
 
-**Current release:** v0.7.7.6<br>
+**Current release:** v0.7.7.7<br>
 **Author:** Monty Kubasek
 
 ## Highlights
 
-- **21 curated engines** across Command Core, Vector Wing, Strike Squadron, Oracle Wing, and Hammer Division
+- **22 curated engines** across Command Core, Vector Wing, Strike Squadron, Oracle Wing, and Hammer Division
 - **OpenRouter or direct APIs** from OpenAI, Anthropic, Google, xAI, Moonshot, Alibaba, DeepSeek, Z.AI, MiniMax, Mistral, NVIDIA, and Tencent
 - **Projects and Workplaces** for organising conversations, memories, and context per workstream
 - **GitHub repo access** with fine-grained PAT, tree browsing, file sync, SHA-guarded writes, and patch export
@@ -46,12 +46,12 @@ No package manager or build step is required.
    python3 -m http.server 8000
    ```
 
-3. Open the current application at [http://localhost:8000/thinkfox_1-v0776.html](http://localhost:8000/thinkfox_1-v0776.html).
+3. Open the current application at [http://localhost:8000/thinkfox_1-v0777.html](http://localhost:8000/thinkfox_1-v0777.html).
 4. Open **Model Parameters → AI API source**.
 5. Select a provider, enter your API key, and use **Test connection**.
 6. Choose an engine and start a conversation.
 
-You can also open `thinkfox_1-v0776.html` directly in a modern browser. A local server is recommended because browser security rules can restrict API, file, and clipboard features on `file://` pages.
+You can also open `thinkfox_1-v0777.html` directly in a modern browser. A local server is recommended because browser security rules can restrict API, file, and clipboard features on `file://` pages.
 
 > `index.html` is the project landing page. Its launch buttons target `thinkfox.html`; when deploying the site, copy or rename the current versioned application to `thinkfox.html`.
 
@@ -61,13 +61,22 @@ Each engine combines a model mapping, callsign, colour theme, capability profile
 
 | Division | Engines |
 | --- | --- |
-| **Command Core** | Shuriken, Katana, Tempest, Cinder |
+| **Command Core** | Shuriken, Katana, Tempest, Supercell, Cinder |
 | **Vector Wing** | Scythe, Hellblade, Typhoon, Trident, Glaive |
 | **Strike Squadron** | Orbit, Rocketship, Ancestral, Citadel, Stronghold |
 | **Oracle Wing** | Mudcake, Gargoyle, Eight Ball, Neon |
 | **Hammer Division** | Monolith, Dagger, Harlequin |
 
-OpenRouter exposes the complete deck with one key. Direct-provider mode enables only compatible engines and explains why other engines are locked. Harlequin and Dagger are OpenRouter-only.
+OpenRouter exposes the complete 22-engine deck with one key. Direct-provider mode enables only compatible engines and explains why other engines are locked. Harlequin and Dagger are OpenRouter-only.
+
+Latest engine colour/artwork updates:
+
+| Engine | Colour | Asset paths |
+| --- | --- | --- |
+| **Supercell** | Pure white `#FFFFFF` | `avatar/supercell.png`, `callsign/logo-sup-small.png`, `callsign/supercell.png` |
+| **Tempest** | Pearl silver `#D9DDE3` | `avatar/tempest.png`, `callsign/logo-tem-small.png`, `callsign/tempest.png` |
+| **Dagger** | Medium silver `#9CA3AB` | `avatar/dagger.png`, `callsign/logo-dag-small.png`, `callsign/dagger.png` |
+| **Citadel** | Gunmetal grey `#646A73` | `avatar/citadel.png`, `callsign/logo-cit-small.png`, `callsign/citadel.png` |
 
 ## Core capabilities
 
@@ -166,7 +175,7 @@ External libraries—including KaTeX, highlight.js, Mermaid, PDF.js, Mammoth, an
 ```text
 .
 ├── index.html # Project landing page
-├── thinkfox_1-v0776.html # Current single-file application
+├── thinkfox_1-v0777.html # Current single-file application
 ├── icons/ # Topbar SVG icon set
 │ ├── tf-engine-select.svg
 │ ├── tf-engine-parameters.svg
@@ -197,6 +206,7 @@ When releasing a new version, keep the version shown in the application, landing
 | v0.7.7.4 | Project Retrieval — scored search, budget-limited injection, used-context inspector |
 | v0.7.7.5 | GitHub Repo Access — PAT connection, tree browsing, file sync, SHA-guarded writes |
 | v0.7.7.6 | Polish, Hardening, Release Candidate — schema freeze, migration, diagnostics, repair |
+| v0.7.7.7 | Supercell update — added Z.ai GLM 5.3, own Supercell artwork paths, and revised Tempest/Dagger/Citadel colours |
 
 ## Browser support
 

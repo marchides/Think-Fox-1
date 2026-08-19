@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 <meta name="robots" content="index, follow" />
 <title>Think Fox 1 — Multi-Engine AI Command Interface by Monty Kubasek</title>
-<meta name="description" content="Think Fox 1 is a browser-based command interface for 21 AI engines, with OpenRouter and direct-provider APIs, Projects, GitHub repo access, project context retrieval, documents, web search, image generation, multi-provider text-to-speech, memories, prompts, and conversation forks." />
+<meta name="description" content="Think Fox 1 is a browser-based command interface for 22 AI engines, with OpenRouter and direct-provider APIs, Projects, GitHub repo access, project context retrieval, documents, web search, image generation, multi-provider text-to-speech, memories, prompts, and conversation forks." />
 <link rel="icon" type="image/png" sizes="16x16" href="fox_icon_hoodie_16x16.png">
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -27,13 +27,14 @@
     --accent-dim: #b33b00;
     --c-shuriken: #ffb347;
     --c-katana: #ff5500;
-    --c-tempest: #ffffff;
+    --c-tempest: #d9dde3;
+    --c-supercell: #ffffff;
     --c-scythe: #ff0000;
     --c-hellblade: #dc143c;
     --c-typhoon: #0047ab;
     --c-cinder: #ff1493;
     --c-glaive: #00ffff;
-    --c-citadel: #4b4f54;
+    --c-citadel: #646a73;
     --c-stronghold: #44547f;
     --c-gargoyle: #3b241a;
     --c-orbit: #ffd700;
@@ -43,7 +44,7 @@
     --c-eightball: #c4a484;
     --c-neon: #39ff14;
     --c-harlequin: #d4afe1;
-    --c-dagger: #808080;
+    --c-dagger: #9ca3ab;
     --c-monolith: #5d00b3;
     --c-trident: #2c9dff;
     --font-display: 'Sora', sans-serif;
@@ -73,6 +74,7 @@
       var(--c-shuriken),
       var(--c-katana),
       var(--c-tempest),
+      var(--c-supercell),
       var(--c-scythe),
       var(--c-hellblade),
       var(--c-typhoon),
@@ -393,6 +395,7 @@
   .engine[data-engine="shuriken"] { --ec: var(--c-shuriken); }
   .engine[data-engine="katana"] { --ec: var(--c-katana); }
   .engine[data-engine="tempest"] { --ec: var(--c-tempest); }
+  .engine[data-engine="supercell"] { --ec: var(--c-supercell); }
   .engine[data-engine="scythe"] { --ec: var(--c-scythe); }
   .engine[data-engine="hellblade"] { --ec: var(--c-hellblade); }
   .engine[data-engine="typhoon"] { --ec: var(--c-typhoon); }
@@ -556,9 +559,9 @@
 <main>
   <section class="hero">
     <div class="hero-content">
-      <div class="hero-eyebrow">Think Fox 1-v0.7.7.6 · AI by Monty Kubasek</div>
+      <div class="hero-eyebrow">Think Fox 1-v0.7.7.7 · AI by Monty Kubasek</div>
       <h1>Think <span class="fox">Fox</span> 1</h1>
-      <p class="hero-sub"><strong>Twenty-one AI engines. One command interface.</strong> Route work through OpenRouter or supported source-company APIs, organise conversations into Projects with searchable context retrieval, connect GitHub repositories directly, switch models without rebuilding your workflow, and listen to responses through your choice of professional text-to-speech provider.</p>
+      <p class="hero-sub"><strong>Twenty-two AI engines. One command interface.</strong> Route work through OpenRouter or supported source-company APIs, organise conversations into Projects with searchable context retrieval, connect GitHub repositories directly, switch models without rebuilding your workflow, and listen to responses through your choice of professional text-to-speech provider.</p>
       <div class="hero-actions">
         <a href="thinkfox.html" class="btn-primary">Launch interface</a>
         <a href="#engines" class="btn-secondary">Explore the engines</a>
@@ -637,15 +640,16 @@
   <section id="engines" class="engines-section">
     <div class="section-inner">
       <div class="eyebrow">Engine deck</div>
-      <h2 class="section-title">Twenty-one engines organised into five divisions.</h2>
-      <p class="section-lede">Each engine keeps its own callsign, colour, model mapping, capabilities, default parameters, and concise system prompt. Switch engines within the same conversation whenever the work changes.</p>
+      <h2 class="section-title">Twenty-two engines organised into five divisions.</h2>
+      <p class="section-lede">Each engine keeps its own callsign, colour, model mapping, capabilities, default parameters, and concise system prompt. v0.7.7.7 adds Supercell for Z.ai GLM 5.3, keeps Supercell pure white, and updates Tempest to pearl silver, Dagger to medium silver, and Citadel to gunmetal grey.</p>
       <div class="squadron-stack">
         <section class="squadron">
-          <div class="squadron-head"><h3>Command Core</h3><span>Fast response, general reasoning, and everyday command engines</span></div>
-          <div class="engine-list">
+          <div class="squadron-head"><h3>Command Core</h3><span>Fast response, general reasoning, Z.ai GLM, and everyday command engines</span></div>
+          <div class="engine-list single-tail">
             <article class="engine" data-engine="shuriken"><img class="engine-logo" src="callsign/logo-shu-small.png" alt="Shuriken logo"><div><div class="engine-status">Configured</div><h4>Shuriken</h4><span class="engine-model">MoonshotAI Kimi K2.6</span><p>Fast general reasoning, coding, drafting, image input, and everyday tasks.</p></div></article>
             <article class="engine" data-engine="katana"><img class="engine-logo" src="callsign/logo-kat-small.png" alt="Katana logo"><div><div class="engine-status">Default</div><h4>Katana</h4><span class="engine-model">MoonshotAI Kimi K3</span><p>Large-context general work with preserved reasoning, vision, and tools.</p></div></article>
             <article class="engine" data-engine="tempest"><img class="engine-logo" src="callsign/logo-tem-small.png" alt="Tempest logo"><div><div class="engine-status">Configured</div><h4>Tempest</h4><span class="engine-model">Z.ai GLM 5.2</span><p>Deep reasoning, coding, and tool-assisted work for difficult multi-step problems.</p></div></article>
+            <article class="engine" data-engine="supercell"><img class="engine-logo" src="callsign/logo-sup-small.png" alt="Supercell logo"><div><div class="engine-status">Configured</div><h4>Supercell</h4><span class="engine-model">Z.ai GLM 5.3</span><p>Pure-white Command Core engine for GLM 5.3, long-context reasoning, coding, project planning, and agentic workflows.</p></div></article>
             <article class="engine" data-engine="cinder"><img class="engine-logo" src="callsign/logo-cin-small.png" alt="Cinder logo"><div><div class="engine-status">Configured</div><h4>Cinder</h4><span class="engine-model">MiniMax M3</span><p>Large-context reasoning, coding, tools, and multimodal input.</p></div></article>
           </div>
         </section>
@@ -694,11 +698,11 @@
       <div class="architecture-copy">
         <div class="eyebrow">Provider-aware routing</div>
         <h2 class="section-title">Use the route you actually pay for.</h2>
-        <p>OpenRouter mode exposes the complete twenty-one-engine deck through one account. Direct-provider mode uses the selected source-company API and automatically locks incompatible engines. Dagger and Harlequin remain OpenRouter-only.</p>
+        <p>OpenRouter mode exposes the complete twenty-two-engine deck through one account. Direct-provider mode uses the selected source-company API and automatically locks incompatible engines. Dagger and Harlequin remain OpenRouter-only.</p>
         <p>Each provider adapter handles its own endpoint, authentication, request format, streaming events, usage data, and supported capabilities. Think Fox keeps the interface consistent while the routing layer deals with the differences underneath.</p>
       </div>
       <div class="route-panel" aria-label="Think Fox routing overview">
-        <div class="route-row"><strong>OpenRouter</strong><span>Full twenty-one-engine deck, unified model catalogue, pricing and routing.</span></div>
+        <div class="route-row"><strong>OpenRouter</strong><span>Full twenty-two-engine deck, unified model catalogue, pricing and routing.</span></div>
         <div class="route-row"><strong>Direct APIs</strong><span>OpenAI, Anthropic, Google, xAI, Moonshot, Alibaba, DeepSeek, Z.AI, MiniMax, Mistral, NVIDIA and Tencent.</span></div>
         <div class="route-row"><strong>GitHub</strong><span>Fine-grained PAT connection, repo tree browsing, file sync, SHA-guarded writes. Token stays local.</span></div>
         <div class="route-row"><strong>Search</strong><span>OpenRouter plugin, Tavily, Brave Search or configurable SearXNG.</span></div>
@@ -712,6 +716,7 @@
       <div class="engine-item"><img src="callsign/logo-shu-small.png" alt="Shuriken"><span>Shuriken</span></div>
       <div class="engine-item"><img src="callsign/logo-kat-small.png" alt="Katana"><span>Katana</span></div>
       <div class="engine-item"><img src="callsign/logo-tem-small.png" alt="Tempest"><span>Tempest</span></div>
+      <div class="engine-item"><img src="callsign/logo-sup-small.png" alt="Supercell"><span>Supercell</span></div>
       <div class="engine-item"><img src="callsign/logo-cin-small.png" alt="Cinder"><span>Cinder</span></div>
       <div class="engine-item"><img src="callsign/logo-scy-small.png" alt="Scythe"><span>Scythe</span></div>
       <div class="engine-item"><img src="callsign/logo-hel-small.png" alt="Hellblade"><span>Hellblade</span></div>
@@ -732,12 +737,12 @@
       <div class="engine-item"><img src="callsign/logo-har-small.png" alt="Harlequin"><span>Harlequin</span></div>
     </div>
     <blockquote>Different models are good at different work. Think Fox makes switching <span>deliberate</span>, visible, and useful.</blockquote>
-    <cite>One interface · twenty-one engines · five divisions · your API routes</cite>
+    <cite>One interface · twenty-two engines · five divisions · your API routes</cite>
   </section>
   <section class="final-cta">
     <div class="section-inner">
       <h2>Think <span>Fox</span> 1 is ready to launch.</h2>
-      <p>Bring an OpenRouter key for the complete twenty-one-engine deck, or connect supported direct-provider and text-to-speech accounts. Organise work into Projects, connect GitHub repositories, retrieve context from past conversations, generate images, search the web, work with documents, and listen to responses aloud—all from the same interface. Keys, tokens, and project data are stored locally in your browser, so use Think Fox on a trusted device.</p>
+      <p>Bring an OpenRouter key for the complete twenty-two-engine deck, or connect supported direct-provider and text-to-speech accounts. Organise work into Projects, connect GitHub repositories, retrieve context from past conversations, generate images, search the web, work with documents, and listen to responses aloud—all from the same interface. Keys, tokens, and project data are stored locally in your browser, so use Think Fox on a trusted device.</p>
       <a href="thinkfox.html" class="btn-primary">Launch Think Fox →</a>
     </div>
   </section>
@@ -745,7 +750,7 @@
 <footer>
   <div class="spectrum-bar" style="margin-bottom:30px;"></div>
   <div class="footer-inner">
-    <div class="footer-mark">Think <span>Fox</span> 1 (v0.7.7.6)</div>
+    <div class="footer-mark">Think <span>Fox</span> 1 (v0.7.7.7)</div>
     <div class="footer-meta">Think Fox 1 is an AI interface created by Monty Kubasek · monty@middleroad.au</div>
   </div>
 </footer>
