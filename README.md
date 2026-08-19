@@ -19,7 +19,8 @@ Think Fox is a multi-provider AI workspace delivered as a single HTML applicatio
 
 ## Highlights
 
-- **22 curated engines** across Command Core, Vector Wing, Strike Squadron, Oracle Wing, and Hammer Division
+- **22 AI models (named engines)** with custom naming (callsigns) and avatars
+- **Engines are grouped into 5 Squadrons** Command Core, Vector Wing, Strike Squadron, Oracle Wing, and Hammer Division
 - **OpenRouter or direct APIs** from OpenAI, Anthropic, Google, xAI, Moonshot, Alibaba, DeepSeek, Z.AI, MiniMax, Mistral, NVIDIA, and Tencent
 - **Projects and Workplaces** for organising conversations, memories, and context per workstream
 - **GitHub repo access** with fine-grained PAT, tree browsing, file sync, SHA-guarded writes, and patch export
@@ -69,14 +70,33 @@ Each engine combines a model mapping, callsign, colour theme, capability profile
 
 OpenRouter exposes the complete 22-engine deck with one key. Direct-provider mode enables only compatible engines and explains why other engines are locked. Harlequin and Dagger are OpenRouter-only.
 
-Latest engine colour/artwork updates:
+Latest engine list:
 
-| Engine | Colour | Asset paths |
-| --- | --- | --- |
-| **Supercell** | Pure white `#FFFFFF` | `avatar/supercell.png`, `callsign/logo-sup-small.png`, `callsign/supercell.png` |
-| **Tempest** | Pearl silver `#D9DDE3` | `avatar/tempest.png`, `callsign/logo-tem-small.png`, `callsign/tempest.png` |
-| **Dagger** | Medium silver `#9CA3AB` | `avatar/dagger.png`, `callsign/logo-dag-small.png`, `callsign/dagger.png` |
-| **Citadel** | Gunmetal grey `#646A73` | `avatar/citadel.png`, `callsign/logo-cit-small.png`, `callsign/citadel.png` |
+| OpenRouter Model                                           | Engine Callsign |    Colour | Logo                        |
+| ---------------------------------------------------------- | --------------- | --------: | ------------------------------------------ |
+| `moonshotai/kimi-k2.6`                                     | Shuriken        | `#FFB347` | ![Shuriken](callsign/logo-shu-small.png)   |
+| `moonshotai/kimi-k3`                                       | Katana          | `#FF5500` | ![Katana](callsign/logo-kat-small.png)     |
+| `z-ai/glm-5.2`                                             | Tempest         | `#D9DDE3` | ![Tempest](callsign/logo-tem-small.png)    |
+| `z-ai/glm-5.3`                                             | Supercell       | `#FFFFFF` | ![Supercell](callsign/logo-sup-small.png)  |
+| `minimax/minimax-m3`                                       | Cinder          | `#FF1493` | ![Cinder](callsign/logo-cin-small.png)     |
+| `qwen/qwen3.7-max`                                         | Scythe          | `#FF0000` | ![Scythe](callsign/logo-scy-small.png)     |
+| `qwen/qwen3.8-max`                                         | Hellblade       | `#DC143C` | ![Hellblade](callsign/logo-hel-small.png)  |
+| `deepseek/deepseek-v4-pro-0813`                            | Typhoon         | `#0047AB` | ![Typhoon](callsign/logo-typ-small.png)    |
+| `poolside/laguna-s-2.1`                                    | Trident         | `#2C9DFF` | ![Trident](callsign/logo-tri-small.png)    |
+| `tencent/hy3`                                              | Glaive          | `#00FFFF` | ![Glaive](callsign/logo-gla-small.png)     |
+| `anthropic/claude-opus-4.8`                                | Orbit           | `#FFD700` | ![Orbit](callsign/logo-orb-small.png)      |
+| `anthropic/claude-opus-5`                                  | Rocketship      | `#FBFF00` | ![Rocketship](callsign/logo-roc-small.png) |
+| `anthropic/claude-fable-5`                                 | Ancestral       | `#228B22` | ![Ancestral](callsign/logo-anc-small.png)  |
+| `openai/gpt-5.6-terra-pro`                                 | Citadel         | `#646A73` | ![Citadel](callsign/logo-cit-small.png)    |
+| `openai/gpt-5.6-sol-pro`                                   | Stronghold      | `#44547F` | ![Stronghold](callsign/logo-str-small.png) |
+| `meta/muse-spark-1.2`                                      | Mudcake         | `#66023C` | ![Mudcake](callsign/logo-mud-small.png)    |
+| `google/gemini-3.1-pro-preview`                            | Gargoyle        | `#3B241A` | ![Gargoyle](callsign/logo-gar-small.png)   |
+| `x-ai/grok-4.6`                                            | Eight Ball      | `#C4A484` | ![Eight Ball](callsign/logo-eig-small.png) |
+| `nvidia/nemotron-3-ultra-550b-a55b`                        | Neon            | `#39FF14` | ![Neon](callsign/logo-neo-small.png)       |
+| `mistralai/mistral-large-2512`                             | Monolith        | `#5D00B3` | ![Monolith](callsign/logo-mon-small.png)   |
+| `cognitivecomputations/dolphin-mistral-24b-venice-edition` | Dagger          | `#9CA3AB` | ![Dagger](callsign/logo-dag-small.png)     |
+| `nousresearch/hermes-3-llama-3.1-405b`                     | Harlequin       | `#D4AFE1` | ![Harlequin](callsign/logo-har-small.png)  |
+
 
 ## Core capabilities
 
