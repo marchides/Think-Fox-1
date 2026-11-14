@@ -1,0 +1,103 @@
+--- a/index.html
++++ b/index.html
+@@ -1,5 +1,5 @@
+-  <title>Think Fox 1-v0.7.8.1 by Monty Kubasek</title>
++  <title>Think Fox 1-v0.8.1 by Monty Kubasek</title>
+   <meta name="description" content="Think Fox multi-engine AI command interface by Monty Kubasek with OpenRouter and direct source-company API support" />
+   <link rel="icon" type="image/png" sizes="16x16" href="https://fox.middleroad.au/fox_icon.png">
+   <link rel="preconnect" href="https://fonts.googleapis.com/" />
+@@ -123,7 +123,7 @@
+     <header id="topbar">
+       <button id="sidebar-toggle-btn" class="sidebar-toggle-btn" title="Toggle sidebar" aria-label="Toggle sidebar" aria-expanded="true">&#x2039;</button>
+       <div class="topbar-title" id="topbar-title">
+-        <div class="topbar-brand-line">Think Fox 1-v0.7.8.1 <span>Multiple-AI Engine Software by Monty Kubasek</span></div>
++        <div class="topbar-brand-line">Think Fox 1-v0.8.1 <span>Multiple-AI Engine Software by Monty Kubasek</span></div>
+         <div class="topbar-conversation-title" id="topbar-conversation-title">New conversation</div>
+       </div>
+       <div class="topbar-actions" aria-label="Think Fox tools">
+@@ -176,7 +176,7 @@
+ <div id="chat-area">       <div id="welcome">
+-        <div class="welcome-title">Think&nbsp;<span>Fox</span>&nbsp;1-v0.7.8.1</div>
++        <div class="welcome-title">Think&nbsp;<span>Fox</span>&nbsp;1-v0.8.1</div>
+         <p class="welcome-sub" id="welcome-sub-text">Welcome to Katana, the Think Fox flagship engine.</p>
+         <div class="starter-grid" id="starter-grid"></div>
+       </div>
+@@ -1073,6 +1073,11 @@
+ const PROMPT_TRIDENT = PROMPT_BASE + `\n\nYou are Think Fox Trident. Execute code generation like a secrect slut, and solve technical problems efficiently like the head madam.`;
+ 
++const PROMPT_HALBERD = PROMPT_BASE + `\n\nYou are Halberd, a high-performance AI reasoning and coding engine within Think Fox.`;
++const PROMPT_ANTEDILUVIAN = PROMPT_BASE + `\n\nYou are Antediluvian, a powerful multimodal AI engine within Think Fox.`;
++const PROMPT_FORTRESS = PROMPT_BASE + `\n\nYou are Fortress, a highly capable strategic AI engine within Think Fox.`;
++const PROMPT_FUDGE_CAKE = PROMPT_BASE + `\n\nYou are Fudge Cake, a creative multimodal AI engine within Think Fox.`;
++
+ const ENGINES = {
+ katana: { key: "katana", name: "Katana", label: "Katana", version: "Engine: kimi-k3", model: "moonshotai/kimi-k3", system: PROMPT_KATANA, temp: 1.0, maxTokens: KIMI_K3_MAX_OUTPUT_TOKENS, contextTokens: 1048576, inputModalities: ["text", "image"], capabilities: "Preserved reasoning · Vision · Tools", apiProfile: "kimi-k3", available: true, color: "#FF5500", colorRGB: "255,85,0", dim: "#B33B00", glow: "rgba(255,85,0,0.21)", subtle: "rgba(255,85,0,0.09)", img: "avatar/katana.png", selectorLogo: "callsign/logo-kat-small.png", loadingLogo: "callsign/katana.png", welcome: "Katana reporting in, kimi-k3 is sync'd, all systems ready." },
+@@ -1093,7 +1098,7 @@
+ scythe: { key: "scythe", name: "Scythe", label: "Scythe", version: "Engine: qwen3.7-max", model: "qwen/qwen3.7-max", system: PROMPT_SCYTHE, temp: 0.5, maxTokens: 131072, contextTokens: 1000000, inputModalities: ["text"], capabilities: "Coding · Agents · Prompt cache · Long context", available: true, color: "#FF0000", colorRGB: "255,0,0", dim: "#B30000", glow: "rgba(255,0,0,0.21)", subtle: "rgba(255,0,0,0.09)", img: "avatar/scythe.png", selectorLogo: "callsign/logo-scy-small.png", loadingLogo: "callsign/scythe.png", welcome: "Scythe inbound, qwen3.7-max online, weapons red, ready to reap." },
+ typhoon: { key: "typhoon", name: "Typhoon", label: "Typhoon", version: "Engine: deepseek-v4-pro-0813", model: "deepseek/deepseek-v4-pro-0813", system: PROMPT_TYPHOON, temp: 0.4, maxTokens: 384000, contextTokens: 1048576, inputModalities: ["text"], capabilities: "Reasoning · Coding · Agents · Long context", available: true, defaultReasoningEffort: "high", supportedReasoningEfforts: ["high", "xhigh"], maxField: "max_tokens", color: "#0047AB", colorRGB: "0,71,171", dim: "#003076", glow: "rgba(0,71,171,0.21)", subtle: "rgba(0,71,171,0.09)", img: "avatar/typhoon.png", selectorLogo: "callsign/logo-typ-small.png", loadingLogo: "callsign/typhoon.png", welcome: "Typhoon on approach, deepseek-v4-pro-0813 spooled, high-reasoning systems online." },
+-hellblade: { key: "hellblade", name: "Hellblade", label: "Hellblade", version: "Engine: qwen3.8-max", model: "qwen/qwen3.8-max", system: PROMPT_HELLBLADE, temp: 0.5, maxTokens: 131072, contextTokens: 1000000, inputModalities: ["text", "image", "video"], capabilities: "Coding · Agents · Prompt cache · Multimodal", available: true, color: "#DC143C", colorRGB: "220,20,60", dim: "#990E2A", glow: "rgba(220,20,60,0.21)", subtle: "rgba(220,20,60,0.09)", img: "avatar/hellblade.png", selectorLogo: "callsign/logo-hel-small.png", loadingLogo: "callsign/hellblade.png", welcome: "Hellblade drawn, qwen3.8-max is ready to strike." },
++hellblade: { key: "hellblade", name: "Hellblade", label: "Hellblade", version: "Engine: Qwen3.8 Max 0902", model: "qwen/qwen3.8-max-0902", system: PROMPT_HELLBLADE, temp: 0.5, maxTokens: 131072, contextTokens: 1000000, inputModalities: ["text", "image", "video"], capabilities: "Coding · Agents · Prompt cache · Multimodal", available: true, color: "#DC143C", colorRGB: "220,20,60", dim: "#990E2A", glow: "rgba(220,20,60,0.21)", subtle: "rgba(220,20,60,0.09)", img: "avatar/hellblade.png", selectorLogo: "callsign/logo-hel-small.png", loadingLogo: "callsign/hellblade.png", welcome: "Hellblade drawn, qwen3.8-max-0902 is ready to strike." },
+ tempest: { key: "tempest", name: "Tempest", label: "Tempest", version: "Engine: glm-5.2", model: "z-ai/glm-5.2", system: PROMPT_TEMPEST, temp: 0.5, maxTokens: 131072, contextTokens: 1048576, inputModalities: ["text"], capabilities: "Reasoning · Coding · Tools", available: true, color: "#D9DDE3", colorRGB: "217,221,227", dim: "#989BA0", glow: "rgba(217,221,227,0.23)", subtle: "rgba(217,221,227,0.10)", img: "avatar/tempest.png", selectorLogo: "callsign/logo-tem-small.png", loadingLogo: "callsign/tempest.png", welcome: "This is Tempest actual, glm-5.2 at full charge. Give me a signal then follow my lead." },
+ supercell: { key: "supercell", name: "Supercell", label: "Supercell", version: "Engine: glm-5.3", model: "z-ai/glm-5.3", system: PROMPT_SUPERCELL, temp: 0.5, maxTokens: 131072, contextTokens: 1048576, inputModalities: ["text"], capabilities: "Reasoning · Coding · Tools · Long context", available: true, defaultReasoningEffort: "high", supportedReasoningEfforts: ["high", "xhigh"], maxField: "max_tokens", color: "#FFFFFF", colorRGB: "255,255,255", dim: "#B3B3B3", glow: "rgba(255,255,255,0.23)", subtle: "rgba(255,255,255,0.10)", img: "avatar/supercell.png", selectorLogo: "callsign/logo-sup-small.png", loadingLogo: "callsign/supercell.png", welcome: "Supercell online, glm-5.3 is charged and ready to break the weather." },
+ orbit: { key: "orbit", name: "Orbit", label: "Orbit", version: "Engine: claude-opus-4.8", model: "anthropic/claude-opus-4.8", system: PROMPT_ORBIT, temp: 0.7, maxTokens: 128000, contextTokens: 1000000, inputModalities: ["text", "image", "file"], capabilities: "Reasoning · Coding · Knowledge", available: true, color: "#FFD700", colorRGB: "255,215,0", dim: "#B39700", glow: "rgba(255,215,0,0.21)", subtle: "rgba(255,215,0,0.09)", img: "avatar/orbit.png", selectorLogo: "callsign/logo-orb-small.png", loadingLogo: "callsign/orbit.png", welcome: "Orbit on the comms, claude-opus-4.8 harmonized, sensors clear, eyes wide." },
+@@ -1123,6 +1128,10 @@
+ trident: { key: "trident", name: "Trident", label: "Trident", version: "Engine: laguna-s-2.1", model: "poolside/laguna-s-2.1", system: PROMPT_TRIDENT, temp: 0.7, maxTokens: 131072, contextTokens: 1048576, inputModalities: ["text", "code"], capabilities: "Reasoning · Coding · Long context", available: true, color: "#2C9DFF", colorRGB: "44,157,255", dim: "#1F6ECA", glow: "rgba(44,157,255,0.21)", subtle: "rgba(44,157,255,0.09)", img: "avatar/trident.png", selectorLogo: "callsign/logo-tri-small.png", loadingLogo: "callsign/trident.png", welcome: "Trident surfacing. Poolside Laguna S 2.1 is online." },
++halberd: { key: "halberd", name: "Halberd", label: "Halberd", version: "Engine: Tencent HY4", model: "tencent/hy4-preview", system: PROMPT_HALBERD, temp: 0.7, maxTokens: 64000, contextTokens: 1048576, inputModalities: ["text"], capabilities: "Reasoning · Coding · Agents · Tool calling · Long context", available: true, color: "#12CDA5", colorRGB: "18,205,165", dim: "#0E9E7E", glow: "rgba(18,205,165,0.21)", subtle: "rgba(18,205,165,0.09)", img: "avatar/halberd.png", selectorLogo: "callsign/logo-hal-small.png", loadingLogo: "callsign/halberd.png", welcome: "Halberd online, Tencent HY4 preview is sync'd and ready." },
++antediluvian: { key: "antediluvian", name: "Antediluvian", label: "Antediluvian", version: "Engine: Fable 5.1", model: "anthropic/claude-fable-5.1", system: PROMPT_ANTEDILUVIAN, temp: 0.7, maxTokens: 128000, contextTokens: 1000000, inputModalities: ["text", "image", "file"], capabilities: "Reasoning · Coding · Vision · Agents · Tool calling · Long context", available: true, color: "#4B6D25", colorRGB: "75,109,37", dim: "#3A5420", glow: "rgba(75,109,37,0.21)", subtle: "rgba(75,109,37,0.09)", img: "avatar/antediluvian.png", selectorLogo: "callsign/logo-ant-small.png", loadingLogo: "callsign/antediluvian.png", welcome: "Antediluvian online, Claude Fable 5.1 is ready." },
++fortress: { key: "fortress", name: "Fortress", label: "Fortress", version: "Engine: GPT-6 Astra Pro", model: "openai/gpt-6-astra-pro", system: PROMPT_FORTRESS, temp: 0.7, maxTokens: 131072, contextTokens: 1050000, inputModalities: ["text", "image", "file"], capabilities: "Reasoning · Coding · Vision · Agents · Tool calling · Long context", available: true, color: "#4E3F68", colorRGB: "78,63,104", dim: "#3B2F4E", glow: "rgba(78,63,104,0.21)", subtle: "rgba(78,63,104,0.09)", img: "avatar/fortress.png", selectorLogo: "callsign/logo-for-small.png", loadingLogo: "callsign/fortress.png", welcome: "Fortress online, GPT-6 Astra Pro standing guard." },
++fudgecake: { key: "fudgecake", name: "Fudge Cake", label: "Fudge Cake", version: "Engine: Muse Spark 1.3", model: "meta/muse-spark-1.3", system: PROMPT_FUDGE_CAKE, temp: 0.7, maxTokens: 131072, contextTokens: 1048576, inputModalities: ["text", "image", "video", "file", "audio"], capabilities: "Reasoning · Coding · Vision · Audio · Video · Agents · Tool calling · Long context", available: true, color: "#FF6C76", colorRGB: "255,108,118", dim: "#CC565E", glow: "rgba(255,108,118,0.21)", subtle: "rgba(255,108,118,0.09)", img: "avatar/fudgecake.png", selectorLogo: "callsign/logo-fud-small.png", loadingLogo: "callsign/fudgecake.png", welcome: "Fudge Cake online, Muse Spark 1.3 is rich and ready." },
+ spareleader: {key: "spareleader", name: "Spare Leader", label: "Spare Leader", version: "Engine: openrouter/free", model: "openrouter/free", system: "You are Spare Leader, a capable, resourceful assistant in Think Fox. Answer clearly, honestly and practically. Model selection is handled by OpenRouter; do not claim to be a specific underlying model unless it is known.", temp: 0.7, maxTokens: 4096, "contextTokens": 200000, "inputModalities": ["text", "image"], "capabilities": "Free model routing \u00b7 Text \u00b7 Vision \u00b7 Availability varies", available: true, color: "#B4C77A", colorRGB: "180,199,122", dim: "#697A3C", glow: "rgba(180,199,122,0.25)", subtle: "rgba(180,199,122,0.10)", img: "avatar/spareleader.png", selectorLogo: "callsign/logo-spa.png", loadingLogo: "callsign/logo-spa.png", welcome: "Spare Leader reporting. OpenRouter will select an available free model for your request."} };
+ ENGINES.spareleader.img = placeholderBanner(ENGINES.spareleader);
+ 
+@@ -1131,7 +1140,7 @@
+ scythe: { alibaba: 'qwen3.7-max' },
+ typhoon: { deepseek: 'deepseek-v4-pro-0813' },
+ tempest: { zai: 'glm-5.2' },
+-hellblade: { alibaba: 'qwen3.8-max' },
++hellblade: { alibaba: 'qwen3.8-max-0902' },
++halberd: { tencent: "hy4-preview" },
++antediluvian: { anthropic: "claude-fable-5.1" },
++fortress: { openai: "gpt-6-astra-pro" },
++fudgecake: {},
+ dingo: {},
+ harlequin: {} }); function getEngineSourceProviderId(engineKey) { return Object.keys(DIRECT_ENGINE_MODELS[engineKey] || {})[0] || null; }
+@@ -1219,7 +1228,7 @@
+ "qwen/qwen3.7-max": { id: "qwen/qwen3.7-max", context_length: 1000000, architecture: { input_modalities: ["text"], output_modalities: ["text"] }, pricing: { prompt: "0.000001475", completion: "0.000004425" }, top_provider: { context_length: 1000000, max_completion_tokens: 131072 } },
+-"qwen/qwen3.8-max": { id: "qwen/qwen3.8-max", context_length: 1000000, architecture: { input_modalities: ["text", "image", "video"], output_modalities: ["text"] }, pricing: { prompt: "0.000002", completion: "0.000006" }, top_provider: { context_length: 1000000, max_completion_tokens: 131072 } },
++"qwen/qwen3.8-max-0902": { id: "qwen/qwen3.8-max-0902", context_length: 1000000, architecture: { input_modalities: ["text", "image", "video"], output_modalities: ["text"] }, pricing: { prompt: "0.000002", completion: "0.000006" }, top_provider: { context_length: 1000000, max_completion_tokens: 131072 } },
+ "deepseek/deepseek-v4-pro-0813": { id: "deepseek/deepseek-v4-pro-0813", context_length: 1048576, architecture: { input_modalities: ["text"], output_modalities: ["text"] }, pricing: { prompt: "0.000000435", completion: "0.00000087" }, top_provider: { context_length: 1048576, max_completion_tokens: 384000 } },
+ "poolside/laguna-s-2.1": { id: "poolside/laguna-s-2.1", context_length: 1048576, architecture: { input_modalities: ["text"], output_modalities: ["text"] }, pricing: { prompt: "0.00000009", completion: "0.00000018" }, top_provider: { context_length: 1048576, max_completion_tokens: 131072 } },
+ "tencent/hy3": { id: "tencent/hy3", context_length: 262144, architecture: { input_modalities: ["text"], output_modalities: ["text"] }, pricing: { prompt: "0.000000132", completion: "0.000000528" }, top_provider: { context_length: 262144, max_completion_tokens: 128000 } },
+@@ -1246,9 +1255,9 @@
+ const ENGINE_GROUPS = [
+ { id: "command", title: "Command Core", order: ["tanto", "katana", "tempest", "supercell", "cinder"] },
+-{ id: "vector", title: "Vector Wing", order: ["scythe", "hellblade", "typhoon", "trident", "glaive"] },
+-{ id: "strike", title: "Strike Squadron", order: ["orbit", "rocketship", "gore", "cannon", "stronghold"] },
+-{ id: "oracle", title: "Oracle Wing", order: ["mudcake", "gargoyle", "eightball", "neon"] },
++{ id: "vector", title: "Vector Wing", order: ["scythe", "hellblade", "halberd", "typhoon", "trident", "glaive"] },
++{ id: "strike", title: "Strike Squadron", order: ["orbit", "rocketship", "gore", "antediluvian", "cannon", "stronghold", "fortress"] },
++{ id: "oracle", title: "Oracle Wing", order: ["mudcake", "fudgecake", "gargoyle", "eightball", "neon"] },
+ { id: "hammer", title: "Hammer Division", order: ["monolith", "dingo", "harlequin"] },
+ { id: "underdog", title: "Underdog Reinforcement Wing", order: ["spareleader"] }, ];
+ let activeEngine = "katana"; function engine() { return ENGINES[activeEngine]; }
+@@ -2894,7 +2903,7 @@
+ // Think Fox 1-v0.7.8.1 mobile optimisation patch
+-// Think Fox 1-v0.7.8.1 verified build: Workplaces with browser save/load, full Workplace export/import, conversations, branch history, canvases, attachments, feature-gated engine deck, pasteable images, image lightbox/save/share, canvas and artifacts. // Initialise
++// Think Fox 1-v0.8.1 verified build: Workplaces with browser save/load, full Workplace export/import, conversations, branch history, canvases, attachments, feature-gated engine deck, pasteable images, image lightbox/save/share, canvas and artifacts. // Initialise
+ sessions = loadSessions(); currentSessionId = getWorkspaceMeta()?.activeSessionId || null; if (currentSessionId && !sessions[currentSessionId]) currentSessionId = null; if (currentSessionId && sessions[currentSessionId]?.engine && ENGINES[sessions[currentSessionId].engine]) activeEngine = sessions[currentSessionId].engine; flushLegacyImages(); ensureCompatibleActiveEngine(false); syncProviderConnectionUI(); applyEngineTheme(ENGINES[activeEngine]); renderEngineSelector(); renderStarterCards(); renderPromptLibrary(); renderFolderStrip(); renderHistoryList(); renderStarredMessages(); loadCanvas(); updateArtifactBadge(); renderWorkplaces(); if (currentSessionId) loadSession(currentSessionId); updateConfigSettings(); if (Object.keys(modelCapabilities[getActiveProviderId()] || {}).length) updateConfigSettings(); checkConnection(false); setInterval(() => { if (!document.hidden) checkConnection(false); }, 900000); updateImageModeAvailability(); updateSendButton(); updateInputCharCount(); updateUsageDisplay(); renderMemories(); updateMemoryCharCount(); syncProfileInputs(); loadBookshelf(); setTimeout(() => openNamePrompt(false), 80);
+@@ -3404,7 +3413,7 @@
+ const payload = { format: 'thinkfox-workplace', schema: 1, appVersion: '1-v0.7.8.1', exported: new Date().toISOString(), workplace: { ...meta }, data: { conversations: workplaceSessions, folders, canvas, canvases: [{ id: 'main', name: 'Canvas', content: canvas, updated: Date.now() }], activeBookshelfIds: activeBookIds, ragEnabled: ragFlag, bookshelfDocuments: activeBooks } };
++const payload = { format: 'thinkfox-workplace', schema: 1, appVersion: '1-v0.8', exported: new Date().toISOString(), workplace: { ...meta }, data: { conversations: workplaceSessions, folders, canvas, canvases: [{ id: 'main', name: 'Canvas', content: canvas, updated: Date.now() }], activeBookshelfIds: activeBookIds, ragEnabled: ragFlag, bookshelfDocuments: activeBooks } };
+ 
+@@ -3642,7 +3651,7 @@
+-const TF_VERSION = '0.7.8.1';
++const TF_VERSION = '0.8.1';
+ const TF_VERSION_FULL = `1-v${TF_VERSION}`;
+ const TF_SCHEMA_VERSION = 6;
+ 
+@@ -3711,7 +3720,7 @@
+     <div class="tf-release-notes"><h3>Default settings update</h3><ul><li>Sidebar logo enabled by default.</li><li>Starter templates: Arch Linux install guide first, The story of Sodom second.</li><li>Removed the song and Robux starter templates.</li></ul><h3>v0.7.8.1 — Underdog Reinforcement Wing</h3><ul><li>Spare Leader uses openrouter/free through your saved OpenRouter API key.</li><li>Added Underdog Reinforcement Wing as the final engine group.</li></ul><h3>v0.7.8.1 — API switching and mobile layout</h3><ul><li>Chat API and model selectors, separate saved keys and remembered models.</li><li>NVIDIA Build routes for Kimi K2.6 and K3, with provider-specific request limits.</li><li>Editable model routes, live model catalogue and additional API profiles.</li><li>Responsive chat, keyboard-aware height, larger touch controls and corrected menu layers.</li><li>Optional same-origin NVIDIA streaming relay.</li></ul>
++    <div class="tf-release-notes"><h3>v0.8.1 — New Engines and Hellblade Update</h3><ul><li>Added Halberd (Tencent HY4), Antediluvian (Claude Fable 5.1), Fortress (GPT-6 Astra Pro), and Fudge Cake (Muse Spark 1.3).</li><li>Updated Hellblade to the Qwen3.8 Max 0902 snapshot.</li></ul><h3>Default settings update</h3><ul><li>Sidebar logo enabled by default.</li><li>Starter templates: Arch Linux install guide first, The story of Sodom second.</li><li>Removed the song and Robux starter templates.</li></ul><h3>v0.7.8.1 — Underdog Reinforcement Wing</h3><ul><li>Spare Leader uses openrouter/free through your saved OpenRouter API key.</li><li>Added Underdog Reinforcement Wing as the final engine group.</li></ul><h3>v0.7.8.1 — API switching and mobile layout</h3><ul><li>Chat API and model selectors, separate saved keys and remembered models.</li><li>NVIDIA Build routes for Kimi K2.6 and K3, with provider-specific request limits.</li><li>Editable model routes, live model catalogue and additional API profiles.</li><li>Responsive chat, keyboard-aware height, larger touch controls and corrected menu layers.</li><li>Optional same-origin NVIDIA streaming relay.</li></ul>
+ <h3>v0.7.7.1 — Projects Foundation</h3>
+ <ul>
+ <li>Projects as Workplace-scoped organisational layer</li>
