@@ -2,15 +2,15 @@
 const fs = require('fs');
 const path = require('path');
 
-const SRC = 'thinkfox_1-v077-fixed.html';
-const OUT = 'thinkfox_1-v0774.html';
+const SRC = path.join(__dirname, '../legacy/thinkfox_1-v077-fixed.html');
+const OUT = path.join(__dirname, '../legacy/thinkfox_1-v0774.html');
 
 const PATCHES = [
   'patch-v0771-projects.js',
 'patch-v0772-project-memories.js',
 'patch-v0773-project-context.js',
 'patch-v0774-project-retrieval.js'
-];
+].map(file => path.join(__dirname, file));
 
 function stripScriptTags(code) {
   return code

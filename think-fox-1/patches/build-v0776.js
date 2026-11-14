@@ -2,13 +2,13 @@
 const fs = require('fs');
 const path = require('path');
 
-const SRC = 'thinkfox_1-v0774.html';
-const OUT = 'thinkfox_1-v0776.html';
+const SRC = path.join(__dirname, '../legacy/thinkfox_1-v0774.html');
+const OUT = path.join(__dirname, '../legacy/thinkfox_1-v0776.html');
 
 const PATCHES = [
     'patch-v0775.js',
 'patch-v0776.js'
-];
+].map(file => path.join(__dirname, file));
 
 // ── Pre-flight checks ──────────────────────────────────────────
 

@@ -1,0 +1,227 @@
+# Think Fox 1
+
+<p align="center">
+  <img src="../shared/images/fox_icon.png" alt="Think Fox logo" width="96">
+</p>
+
+<p align="center">
+  <strong>Twenty-two AI engines. One browser-native command interface.</strong>
+</p>
+
+<p align="center">
+  <img src="../shared/images/thinkfox-wall3.png" alt="Think Fox interface" width="100%">
+</p>
+
+Think Fox is a multi-provider AI workspace delivered as a single HTML application. Bring your own API keys, switch between curated models, organise work into Projects with searchable context retrieval, connect GitHub repositories, search the web, work with documents, generate images, listen with text-to-speech, and preserve branching conversations—without running an application backend.
+
+**Current build:** v0.8.5<br>
+**Author:** Monty Kubasek
+
+## Highlights
+
+- **22 AI models (named engines)** with custom naming (callsigns) and avatars
+- **Engines are grouped into 5 Squadrons** Command Core, Vector Wing, Strike Squadron, Oracle Wing, and Hammer Division
+- **OpenRouter or direct APIs** from OpenAI, Anthropic, Google, xAI, Moonshot, Alibaba, DeepSeek, Z.AI, MiniMax, Mistral, NVIDIA, and Tencent
+- **Projects and Workplaces** for organising conversations, memories, and context per workstream
+- **GitHub repo access** with fine-grained PAT, tree browsing, file sync, SHA-guarded writes, and patch export
+- **Project context retrieval** with lexical search, scored chunk selection, and token-budgeted injection
+- **Streaming chat and reasoning** with stop, continue, regenerate, and edit controls
+- **Persistent conversation branches** with an interactive branch tree
+- **Local document workflows** for PDF, DOCX, EPUB, Markdown, text, and code files
+- **Bookshelf retrieval** using in-browser TF-IDF search or full-text injection
+- **Web search** through OpenRouter, Tavily, Brave Search, or SearXNG
+- **Image generation** through supported OpenAI and Google routes
+- **Text-to-speech** through OpenAI, ElevenLabs, Deepgram, or MiniMax
+- **Diagnostics and repair tools** with emergency backup export
+- **Workplace export/import** as a single JSON file—GitHub tokens never included
+- **Local-first data** stored in `localStorage` and IndexedDB
+
+## Quick start
+
+No package manager or build step is required.
+
+1. Clone or download this repository.
+2. Start a static web server from the repository root:
+
+   ```bash
+   python3 -m http.server 8000
+   ```
+
+3. Open the current application at [http://localhost:8000/think-fox-1/](http://localhost:8000/think-fox-1/).
+4. Open **Model Parameters → AI API source**.
+5. Select a provider, enter your API key, and use **Test connection**.
+6. Choose an engine and start a conversation.
+
+You can also open `releases/thinkfox_1-v0777.html` directly in a modern browser. A local server is recommended because browser security rules can restrict API, file, and clipboard features on `file://` pages.
+
+> `../index.html` is the project landing page. Its launch buttons target `thinkfox.html`; when deploying the site, copy or rename the current versioned application to `thinkfox.html`.
+
+## Engine deck
+
+Each engine combines a model mapping, callsign, colour theme, capability profile, default parameters, and concise system prompt. Model availability can change upstream; the in-app provider catalogue is the source of truth for live limits, modalities, parameters, and pricing.
+
+| Division | Engines |
+| --- | --- |
+| **Command Core** | Shuriken, Katana, Tempest, Supercell, Cinder |
+| **Vector Wing** | Scythe, Hellblade, Typhoon, Trident, Glaive |
+| **Strike Squadron** | Orbit, Rocketship, Ancestral, Citadel, Stronghold |
+| **Oracle Wing** | Mudcake, Gargoyle, Eight Ball, Neon |
+| **Hammer Division** | Monolith, Dagger, Harlequin |
+
+OpenRouter exposes the complete 22-engine deck with one key. Direct-provider mode enables only compatible engines and explains why other engines are locked. Harlequin and Dagger are OpenRouter-only.
+
+Latest engine list:
+
+| OpenRouter Model                                           | Engine Callsign |    Colour | Logo                        |
+| ---------------------------------------------------------- | --------------- | --------: | ------------------------------------------ |
+| `moonshotai/kimi-k2.6`                                     | Shuriken        | `#FFB347` | ![Shuriken](../shared/callsign/logo-shu-small.png)   |
+| `moonshotai/kimi-k3`                                       | Katana          | `#FF5500` | ![Katana](../shared/callsign/logo-kat-small.png)     |
+| `z-ai/glm-5.2`                                             | Tempest         | `#D9DDE3` | ![Tempest](../shared/callsign/logo-tem-small.png)    |
+| `z-ai/glm-5.3`                                             | Supercell       | `#FFFFFF` | ![Supercell](../shared/callsign/logo-sup-small.png)  |
+| `minimax/minimax-m3`                                       | Cinder          | `#FF1493` | ![Cinder](../shared/callsign/logo-cin-small.png)     |
+| `qwen/qwen3.7-max`                                         | Scythe          | `#FF0000` | ![Scythe](../shared/callsign/logo-scy-small.png)     |
+| `qwen/qwen3.8-max`                                         | Hellblade       | `#DC143C` | ![Hellblade](../shared/callsign/logo-hel-small.png)  |
+| `deepseek/deepseek-v4-pro-0813`                            | Typhoon         | `#0047AB` | ![Typhoon](../shared/callsign/logo-typ-small.png)    |
+| `poolside/laguna-s-2.1`                                    | Trident         | `#2C9DFF` | ![Trident](../shared/callsign/logo-tri-small.png)    |
+| `tencent/hy3`                                              | Glaive          | `#00FFFF` | ![Glaive](../shared/callsign/logo-gla-small.png)     |
+| `anthropic/claude-opus-4.8`                                | Orbit           | `#FFD700` | ![Orbit](../shared/callsign/logo-orb-small.png)      |
+| `anthropic/claude-opus-5`                                  | Rocketship      | `#FBFF00` | ![Rocketship](../shared/callsign/logo-roc-small.png) |
+| `anthropic/claude-fable-5`                                 | Ancestral       | `#228B22` | ![Ancestral](../shared/callsign/logo-anc-small.png)  |
+| `openai/gpt-5.6-terra-pro`                                 | Citadel         | `#646A73` | ![Citadel](../shared/callsign/logo-cit-small.png)    |
+| `openai/gpt-5.6-sol-pro`                                   | Stronghold      | `#44547F` | ![Stronghold](../shared/callsign/logo-str-small.png) |
+| `meta/muse-spark-1.2`                                      | Mudcake         | `#66023C` | ![Mudcake](../shared/callsign/logo-mud-small.png)    |
+| `google/gemini-3.1-pro-preview`                            | Gargoyle        | `#3B241A` | ![Gargoyle](../shared/callsign/logo-gar-small.png)   |
+| `x-ai/grok-4.6`                                            | Eight Ball      | `#C4A484` | ![Eight Ball](../shared/callsign/logo-eig-small.png) |
+| `nvidia/nemotron-3-ultra-550b-a55b`                        | Neon            | `#39FF14` | ![Neon](../shared/callsign/logo-neo-small.png)       |
+| `mistralai/mistral-large-2512`                             | Monolith        | `#5D00B3` | ![Monolith](../shared/callsign/logo-mon-small.png)   |
+| `cognitivecomputations/dolphin-mistral-24b-venice-edition` | Dagger          | `#9CA3AB` | ![Dagger](../shared/callsign/logo-dag-small.png)     |
+| `nousresearch/hermes-3-llama-3.1-405b`                     | Harlequin       | `#D4AFE1` | ![Harlequin](../shared/callsign/logo-har-small.png)  |
+
+
+## Core capabilities
+
+### Chat and model control
+
+- Server-sent event streaming with collapsible reasoning traces
+- Per-engine system prompt, sampling, reasoning, and output-token settings
+- Live capability gating for unsupported parameters
+- Conversation-aware engine switching and per-engine settings
+- Adaptive context trimming, retry with backoff, request timeouts, and partial-output recovery
+- Per-session token counts, latency, and estimated cost using live provider pricing
+
+### Projects and Workplaces
+
+- Organise conversations into Projects inside Workplaces
+- Assign, move, filter, archive, and delete Projects
+- Project colour, icon, description, and status (Active / Paused / Archived)
+- Project memories: manual entries and conversation summaries with pin, enable, and stale tracking
+- Project context index: conversations chunked into searchable segments with lexical search
+- Project context modes: Off, Pinned only, Pinned + Summaries, and Search
+- Budget-limited retrieval with scored chunk selection and used-context inspection
+- Workplace export/import as a single JSON backup with full round-trip fidelity
+
+### GitHub repo access
+
+- Connect a Project to a GitHub repository using a fine-grained personal access token
+- Browse the repository tree with include/exclude glob filters
+- Sync selected files into the Project context index
+- Retrieve relevant repo files during conversation via scored search
+- Write modes: update existing file, create new file, export `.patch` locally
+- SHA-guarded writes with diff preview and explicit confirmation before commit
+- Stale detection when remote files change after sync
+- Token stored locally only and never included in Workplace exports
+
+### Conversations and context
+
+- Edit or re-stream any message to create a non-destructive fork
+- Navigate sibling branches inline or use the full branch-tree overlay
+- Organise conversations with folders, tags, search, and starred messages
+- Maintain a user profile, pinned memories, and reusable slash-command prompts
+- Export conversations as Markdown or structured JSON
+
+### Documents and media
+
+- Attach images, PDFs, and more than 40 text/code file types
+- Store large attachments and generated images in IndexedDB
+- Build reference bookshelves from PDF, DOCX, EPUB, TXT, or Markdown
+- Render Markdown, syntax-highlighted code, KaTeX maths, and Mermaid diagrams
+- Generate images inline and play responses with configurable text-to-speech
+
+### Search
+
+The **Search** pill can use the OpenRouter web plugin or call Tavily, Brave Search, or a CORS-enabled SearXNG instance. Search results, attachments, books, and memories are clearly framed as untrusted context before being sent to a model.
+
+### Diagnostics and repair
+
+- Built-in diagnostics panel showing system state, storage estimates, stale items, and orphan records
+- Repair tools: fix orphan conversations, rebuild Project index, export emergency backup
+- Schema migration system with automatic backup before upgrade
+- Release notes accessible from the sidebar
+
+## Screenshots
+
+| Engine selection | Model parameters | Conversation branches |
+| --- | --- | --- |
+| ![Engine selector](../shared/icons/tf-engine-select.svg) | ![Model parameters](../shared/icons/tf-engine-parameters.svg) | ![Conversation branch tree](../shared/icons/tf-conversation-branches.svg) |
+
+| Bookshelf | Memories | Prompt templates |
+| --- | --- | --- |
+| ![Bookshelf](../shared/icons/tf-book-shelf.svg) | ![Memories](../shared/icons/tf-memories.svg) | ![Prompt templates](../shared/icons/tf-prompt-library.svg) |
+
+## Data and privacy
+
+Think Fox has no application server, account system, analytics, or cookies. Its local data is split as follows:
+
+| Data | Browser storage |
+| --- | --- |
+| Conversations, settings, API keys, memories, prompts, and folders | `localStorage` |
+| Projects, Project memories, context modes, and retrieval settings | `localStorage` (scoped per Workplace) |
+| Project context index (conversation chunks, summaries, repo files) | IndexedDB `thinkfox_project_context` |
+| GitHub file contents | IndexedDB `thinkfox_github_files` |
+| GitHub tokens | `localStorage` (never exported) |
+| Attached and generated images | IndexedDB `thinkfox_store/images` |
+| Chat documents | IndexedDB `thinkfox_store/files` |
+| Bookshelf documents | IndexedDB `thinkfox_bookshelf` |
+| Model capability cache | `localStorage` with a six-hour TTL |
+
+API keys and GitHub tokens remain in the browser, but prompts and any selected context are sent directly to the provider, GitHub API, or search service you configure. Use Think Fox on a trusted device, review each provider's data policy, and avoid attaching secrets you do not intend to transmit. Clearing site data removes locally stored Think Fox content unless you exported a backup.
+
+Workplace exports include conversations, Projects, memories, context index, canvas, attachments, and settings—but never GitHub tokens. Imported Workplaces restore GitHub connections as disconnected, requiring the user to re-enter tokens.
+
+External libraries—including KaTeX, highlight.js, Mermaid, PDF.js, Mammoth, and JSZip—load from CDNs, so the interface is not fully offline by default.
+
+## Repository layout
+
+- `think_fox_1-v0.8.5.html` — current build
+- `index.html` — launcher for that build
+- `releases/` — other builds formerly kept at repository root
+- `legacy/` — older releases and original landing page
+- `patches/` — historical assembly scripts and patch files
+- `tools/` — update script and browser patcher
+- `../shared/` — artwork, icons and historical assets shared by the apps
+
+Run the static server from the repository root, not this folder. Build scripts resolve their source and patch paths relative to the script and write generated HTML under `legacy/`.
+
+## Version history
+
+| Version | Milestone |
+| --- | --- |
+| v0.7.7.1 | Projects Foundation — organisational layer inside Workplaces |
+| v0.7.7.2 | Project Memories — manual and generated memory with pin/enable controls |
+| v0.7.7.3 | Project Context Index — chunked conversation indexing with lexical search |
+| v0.7.7.4 | Project Retrieval — scored search, budget-limited injection, used-context inspector |
+| v0.7.7.5 | GitHub Repo Access — PAT connection, tree browsing, file sync, SHA-guarded writes |
+| v0.7.7.6 | Polish, Hardening, Release Candidate — schema freeze, migration, diagnostics, repair |
+| v0.7.7.7 | Supercell update — added Z.ai GLM 5.3, own Supercell artwork paths, and revised Tempest/Dagger/Citadel colours |
+
+## Browser support
+
+A current desktop or mobile browser with JavaScript, `localStorage`, IndexedDB, `fetch`, and streaming response support is required. Provider APIs must permit browser-origin requests; some services or self-hosted endpoints may require CORS configuration. Brave Search commonly blocks direct browser requests, depending on the plan and endpoint.
+
+## License
+
+Think Fox 1 is an AI interface created by Monty Kubasek · monty@middleroad.au
+
+---
+
+<p align="center"><em>Pick an engine. Bring a key. Keep your workflow.</em> 🦊</p>
